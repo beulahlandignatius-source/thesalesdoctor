@@ -39,7 +39,7 @@ function Free() {
           <F label="Business or brand name"><input name="business" required className={field} /></F>
           <F label="What do you sell?"><input name="sell" required className={field} /></F>
           <Options name="target" label="What target are you working toward?" options={TARGETS} placeholder="Select your next target" />
-          <StuckPicker label="Where are you getting stuck? (choose as many as apply)" />
+          <StuckPicker grouped label="Where are you getting stuck? (choose as many as apply)" />
           <F label="Anything else I should know? (optional)"><input name="notes" placeholder="One line is enough" className={field} /></F>
           <F label="Website or LinkedIn (optional)"><input name="site" placeholder="https://" className={field} /></F>
           <FormError msg={error} />

@@ -6,6 +6,7 @@ import { StackedCards } from "@/components/stacked-cards";
 import { Button } from "@/components/ui/button";
 import { CalendarDays, ClipboardList, Check, UserRound, Mail, Building2, Target, Globe, MessageSquare, BriefcaseBusiness, ChevronDown, LockKeyhole, ArrowRight } from "lucide-react";
 import { WhatsAppIcon } from "@/components/whatsapp-icon";
+import { Checkbox } from "@/components/ui/checkbox";
 import logo from "@/assets/logo-transparent.png";
 
 export const field = "w-full rounded-2xl border border-input bg-card px-4 py-3.5 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
@@ -32,8 +33,31 @@ export function Options({ name, label, options, placeholder }: { name: string; l
   );
 }
 
-export function StuckPicker({ label }: { label: string }) {
+export function StuckPicker({ label, grouped = false }: { label: string; grouped?: boolean }) {
   const [sel, setSel] = useState<string[]>([]);
+  if (grouped) {
+    const groups = [
+      { title: "Getting attention", options: STUCK.slice(0, 5) },
+      { title: "Turning it into clients", options: STUCK.slice(5, 11) },
+      { title: null, options: STUCK.slice(11) },
+    ];
+    return <fieldset className="form-choices">
+      <legend className="mb-2 text-sm font-semibold">{label}</legend>
+      <div className="rounded-2xl border border-border px-3 py-4 sm:px-5">
+        {groups.map((group, index) => <div key={index} className={index === 2 ? "mt-3 border-t border-border pt-3" : index > 0 ? "mt-5" : ""}>
+          {group.title && <p className="mb-2 px-2 font-display text-xs font-bold uppercase text-primary">{group.title}</p>}
+          <div className="space-y-1">{group.options.map(option => {
+            const checked = sel.includes(option);
+            return <label key={option} className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl px-2 py-3 text-sm leading-relaxed transition-colors hover:bg-muted ${checked ? "bg-blush text-foreground" : "text-foreground"}`}>
+              <Checkbox checked={checked} onCheckedChange={value => setSel(value === true ? [...sel, option] : sel.filter(item => item !== option))} className="h-5 w-5 rounded-md border-input shadow-none data-[state=checked]:border-primary" />
+              <span>{option}</span>
+            </label>;
+          })}</div>
+        </div>)}
+      </div>
+      {sel.map(option => <input key={option} type="hidden" name="stuck" value={option} />)}
+    </fieldset>;
+  }
   return (
     <fieldset className="form-choices">
       <legend className="mb-2 text-sm font-semibold">{label}</legend>
