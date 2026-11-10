@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { STUCK } from "@/lib/links";
+import { submitEnquiry } from "@/lib/enquiries.functions";
 
 export const field = "w-full rounded-md border border-input bg-card px-4 py-3 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
@@ -41,6 +42,7 @@ export function StuckPicker({ label }: { label: string }) {
           );
         })}
       </div>
+      {sel.map((s) => <input key={s} type="hidden" name="stuck" value={s} />)}
     </fieldset>
   );
 }
@@ -68,6 +70,41 @@ export function FormShell({ eyebrow, title, intro, steps, children }: { eyebrow?
       <div className="rounded-xl border border-border bg-card p-6 shadow-sm md:p-8">{children}</div>
     </main>
   );
+}
+
+type Kind = "free_review" | "private_clinic" | "mentorship";
+
+/** Save a Sales Clinic form to the backend. Returns the person's name/email for the next step. */
+export function useEnquiry(kind: Kind) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  async function save(form: HTMLFormElement) {
+    const d = new FormData(form);
+    const details: Record<string, string | string[]> = {};
+    for (const [k, v] of d.entries()) {
+      if (["name", "email", "phone"].includes(k)) continue;
+      const val = String(v);
+      if (k === "stuck") (details.stuck = [...((details.stuck as string[]) ?? []), val]);
+      else details[k] = val;
+    }
+    const who = { name: String(d.get("name")).trim(), email: String(d.get("email")).trim() };
+    setBusy(true);
+    setError("");
+    try {
+      await submitEnquiry({ data: { kind, ...who, whatsapp: String(d.get("phone")).trim(), details } });
+      return who;
+    } catch {
+      setError("Something went wrong saving your details. Please check them and try again.");
+      return null;
+    } finally {
+      setBusy(false);
+    }
+  }
+  return { save, busy, error };
+}
+
+export function FormError({ msg }: { msg: string }) {
+  return msg ? <p role="alert" className="rounded-md bg-blush p-3 text-sm text-destructive">{msg}</p> : null;
 }
 
 export const privacy = <p className="mt-3 text-center text-xs text-muted-foreground">Your details are only used to prepare for your session.</p>;

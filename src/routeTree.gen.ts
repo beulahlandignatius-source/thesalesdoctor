@@ -14,7 +14,9 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuditRouteImport } from './routes/audit'
 import { Route as MentorshipRouteImport } from './routes/mentorship'
 import { Route as ResultsRouteImport } from './routes/results'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminIdRouteImport } from './routes/admin.$id'
+import { Route as AdminEnquiriesRouteImport } from './routes/admin.enquiries'
 import { Route as AdminXrayRouteImport } from './routes/admin.xray'
 import { Route as BookIndexRouteImport } from './routes/book.index'
 import { Route as BookClinicRouteImport } from './routes/book.clinic'
@@ -47,9 +49,19 @@ const ResultsRoute = ResultsRouteImport.update({
   path: '/results',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminIdRoute = AdminIdRouteImport.update({
   id: '/$id',
   path: '/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminEnquiriesRoute = AdminEnquiriesRouteImport.update({
+  id: '/enquiries',
+  path: '/enquiries',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminXrayRoute = AdminXrayRouteImport.update({
@@ -90,24 +102,27 @@ export interface FileRoutesByFullPath {
   '/mentorship': typeof MentorshipRoute
   '/results': typeof ResultsRoute
   '/admin/$id': typeof AdminIdRoute
+  '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
   '/xray/book': typeof XrayBookRoute
+  '/admin/': typeof AdminIndexRoute
   '/book/': typeof BookIndexRoute
   '/xray/': typeof XrayIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
   '/audit': typeof AuditRoute
   '/mentorship': typeof MentorshipRoute
   '/results': typeof ResultsRoute
   '/admin/$id': typeof AdminIdRoute
+  '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
   '/xray/book': typeof XrayBookRoute
+  '/admin': typeof AdminIndexRoute
   '/book': typeof BookIndexRoute
   '/xray': typeof XrayIndexRoute
 }
@@ -119,10 +134,12 @@ export interface FileRoutesById {
   '/mentorship': typeof MentorshipRoute
   '/results': typeof ResultsRoute
   '/admin/$id': typeof AdminIdRoute
+  '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
   '/xray/book': typeof XrayBookRoute
+  '/admin/': typeof AdminIndexRoute
   '/book/': typeof BookIndexRoute
   '/xray/': typeof XrayIndexRoute
 }
@@ -135,24 +152,27 @@ export interface FileRouteTypes {
     | '/mentorship'
     | '/results'
     | '/admin/$id'
+    | '/admin/enquiries'
     | '/admin/xray'
     | '/book/clinic'
     | '/book/free'
     | '/xray/book'
+    | '/admin/'
     | '/book/'
     | '/xray/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/audit'
     | '/mentorship'
     | '/results'
     | '/admin/$id'
+    | '/admin/enquiries'
     | '/admin/xray'
     | '/book/clinic'
     | '/book/free'
     | '/xray/book'
+    | '/admin'
     | '/book'
     | '/xray'
   id:
@@ -163,10 +183,12 @@ export interface FileRouteTypes {
     | '/mentorship'
     | '/results'
     | '/admin/$id'
+    | '/admin/enquiries'
     | '/admin/xray'
     | '/book/clinic'
     | '/book/free'
     | '/xray/book'
+    | '/admin/'
     | '/book/'
     | '/xray/'
   fileRoutesById: FileRoutesById
@@ -221,11 +243,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResultsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/$id': {
       id: '/admin/$id'
       path: '/$id'
       fullPath: '/admin/$id'
       preLoaderRoute: typeof AdminIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/enquiries': {
+      id: '/admin/enquiries'
+      path: '/enquiries'
+      fullPath: '/admin/enquiries'
+      preLoaderRoute: typeof AdminEnquiriesRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/xray': {
@@ -275,12 +311,16 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminIdRoute: typeof AdminIdRoute
+  AdminEnquiriesRoute: typeof AdminEnquiriesRoute
   AdminXrayRoute: typeof AdminXrayRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminIdRoute: AdminIdRoute,
+  AdminEnquiriesRoute: AdminEnquiriesRoute,
   AdminXrayRoute: AdminXrayRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
