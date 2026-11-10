@@ -14,13 +14,211 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      admin_users: {
+        Row: {
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      audit_answers: {
+        Row: {
+          answer: string
+          created_at: string
+          id: string
+          question_id: string
+          score: number | null
+          session_id: string
+        }
+        Insert: {
+          answer: string
+          created_at?: string
+          id?: string
+          question_id: string
+          score?: number | null
+          session_id: string
+        }
+        Update: {
+          answer?: string
+          created_at?: string
+          id?: string
+          question_id?: string
+          score?: number | null
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_answers_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "audit_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_results: {
+        Row: {
+          business_impact: string
+          confidence: number
+          created_at: string
+          diagnosis: string
+          diagnosis_title: string
+          evidence: Json
+          follow_up_score: number | null
+          id: string
+          lead_generation_score: number | null
+          market_score: number | null
+          offer_score: number | null
+          one_sentence_diagnosis: string
+          positioning_score: number | null
+          sales_score: number | null
+          secondary_observation: string | null
+          session_id: string
+          severity: string
+        }
+        Insert: {
+          business_impact: string
+          confidence: number
+          created_at?: string
+          diagnosis: string
+          diagnosis_title: string
+          evidence?: Json
+          follow_up_score?: number | null
+          id?: string
+          lead_generation_score?: number | null
+          market_score?: number | null
+          offer_score?: number | null
+          one_sentence_diagnosis: string
+          positioning_score?: number | null
+          sales_score?: number | null
+          secondary_observation?: string | null
+          session_id: string
+          severity: string
+        }
+        Update: {
+          business_impact?: string
+          confidence?: number
+          created_at?: string
+          diagnosis?: string
+          diagnosis_title?: string
+          evidence?: Json
+          follow_up_score?: number | null
+          id?: string
+          lead_generation_score?: number | null
+          market_score?: number | null
+          offer_score?: number | null
+          one_sentence_diagnosis?: string
+          positioning_score?: number | null
+          sales_score?: number | null
+          secondary_observation?: string | null
+          session_id?: string
+          severity?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_results_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: true
+            referencedRelation: "audit_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_sessions: {
+        Row: {
+          access_token_hash: string
+          booked: boolean
+          completed_at: string | null
+          confidence: number | null
+          created_at: string
+          current_step: number
+          diagnosis_title: string | null
+          email: string
+          id: string
+          name: string
+          phone: string
+          primary_diagnosis: string | null
+          severity: string | null
+        }
+        Insert: {
+          access_token_hash: string
+          booked?: boolean
+          completed_at?: string | null
+          confidence?: number | null
+          created_at?: string
+          current_step?: number
+          diagnosis_title?: string | null
+          email: string
+          id?: string
+          name: string
+          phone: string
+          primary_diagnosis?: string | null
+          severity?: string | null
+        }
+        Update: {
+          access_token_hash?: string
+          booked?: boolean
+          completed_at?: string | null
+          confidence?: number | null
+          created_at?: string
+          current_step?: number
+          diagnosis_title?: string | null
+          email?: string
+          id?: string
+          name?: string
+          phone?: string
+          primary_diagnosis?: string | null
+          severity?: string | null
+        }
+        Relationships: []
+      }
+      clinic_enquiries: {
+        Row: {
+          created_at: string
+          details: Json
+          email: string
+          id: string
+          kind: string
+          name: string
+          status: string
+          whatsapp: string
+        }
+        Insert: {
+          created_at?: string
+          details?: Json
+          email: string
+          id?: string
+          kind: string
+          name: string
+          status?: string
+          whatsapp: string
+        }
+        Update: {
+          created_at?: string
+          details?: Json
+          email?: string
+          id?: string
+          kind?: string
+          name?: string
+          status?: string
+          whatsapp?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
