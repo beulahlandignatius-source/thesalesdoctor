@@ -1,7 +1,9 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { CheckCircle2, ArrowUpRight } from "lucide-react";
 import { F, FormError, FormShell, Options, StuckPicker, field, privacy, useEnquiry } from "@/components/form-bits";
-import { btnClass } from "@/components/site";
-import { TARGETS } from "@/lib/links";
+import { btnClass, ExtLink } from "@/components/site";
+import { LINKS, TARGETS } from "@/lib/links";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/book/free")({
@@ -18,18 +20,30 @@ export const Route = createFileRoute("/book/free")({
   component: Free,
 });
 
-function Free() {
-  const navigate = useNavigate();
+export function Free() {
+  const [submitted, setSubmitted] = useState(false);
+  const confirmation = useRef<HTMLHeadingElement>(null);
   const { save, busy, error } = useEnquiry("free_review");
+  useEffect(() => {
+    if (!submitted) return;
+    confirmation.current?.focus();
+    confirmation.current?.scrollIntoView({ behavior: "instant", block: "center" });
+  }, [submitted]);
   return (
     <FormShell eyebrow="Free · 25 minutes" title="Book your free Client Acquisition Review"
       intro="A focused 25 minutes on your goals, what’s working, what’s holding you back, and your biggest opportunity to grow."
-      steps={["Tell me about your business (about 2 minutes).", "Pick a time that works for you.", "Show up. We’ll find what’s in the way."]}>
-      {(
+      steps={["Tell me about your business (about 2 minutes).", "Message Dr. Dan on WhatsApp to arrange your free review.", "Show up. We’ll find what’s in the way."]}>
+      {submitted ? <div className="py-4 text-center" role="status">
+        <CheckCircle2 className="mx-auto h-12 w-12 text-primary" aria-hidden="true" />
+        <h2 ref={confirmation} tabIndex={-1} className="mt-5 font-display text-2xl font-bold outline-none">Your enquiry has been submitted.</h2>
+        <p className="mt-3 text-muted-foreground">Your details are saved. Next, message Dr. Dan on WhatsApp to arrange your free 25-minute Client Acquisition Review.</p>
+        <p className="mt-3 text-sm text-muted-foreground">Your appointment is not confirmed yet. You’ll agree on a time with Dr. Dan on WhatsApp.</p>
+        <ExtLink href={LINKS.whatsapp} className="mt-6 w-full">Continue to WhatsApp<ArrowUpRight className="h-4 w-4" /></ExtLink>
+      </div> : (
         <form className="space-y-5" onSubmit={async (e) => {
           e.preventDefault();
           const who = await save(e.currentTarget);
-          if (who) navigate({ to: "/book/schedule", search: { session: "free", name: who.name, email: who.email } });
+          if (who) setSubmitted(true);
         }}>
           <div className="form-contact grid gap-5 sm:grid-cols-2">
           <F label="Full name"><input name="name" required autoComplete="name" className={field} /></F>
