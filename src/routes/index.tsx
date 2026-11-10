@@ -199,7 +199,7 @@ function Index() {
           {testimonials.map(([q, n, r]) => (
             <figure key={n} className="flex flex-col rounded-xl border border-border bg-card p-6">
               <span className="font-display text-5xl leading-none text-primary">“</span>
-              <blockquote className="mt-2 flex-1">{q.replace(/^“|”$/g, "")}</blockquote>
+              <blockquote className="mt-2 flex-1">{(q ?? "").replace(/^“|”$/g, "")}</blockquote>
               <figcaption className="mt-5 border-t border-border pt-4">
                 <p className="font-semibold">{n}</p>
                 <p className="text-sm text-muted-foreground">{r}</p>
