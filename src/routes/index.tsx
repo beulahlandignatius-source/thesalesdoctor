@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CtaLink } from "@/components/site";
 import { ClientReviews, reviewsQuery } from "@/components/client-reviews";
 import { StackedCards } from "@/components/stacked-cards";
-import { CalendarDays, ClipboardList, TrendingUp, BadgeDollarSign, Users, Globe2 } from "lucide-react";
+import { CalendarDays, ClipboardList, TrendingUp, BadgeDollarSign, Users, Globe2, Target, Zap } from "lucide-react";
 import desk from "@/assets/dr-dan-desk.jpg";
 import portrait from "@/assets/dr-dan-portrait.jpg.asset.json";
 import standing from "@/assets/dr-dan-standing.jpg.asset.json";
@@ -158,10 +158,14 @@ function Index() {
           </h2>
           <div className="mt-14 grid md:grid-cols-2">
             {who.map(([q, d], i) => (
-              <div key={q} className={`symptom group border-t border-ink-foreground/20 py-8 md:px-8 ${i % 2 ? "md:border-l" : "md:pl-0"}`}>
-                <p className="font-display text-xs font-bold tracking-[0.2em] text-primary">0{i + 1}</p>
-                <h3 className="mt-3 text-2xl font-extrabold leading-tight transition-transform duration-300 group-hover:translate-x-1 md:text-3xl">{q}</h3>
-                <p className="mt-3 max-w-md text-ink-foreground/65">{d}</p>
+              <div key={q} className={`symptom who-tile who-tile-${i + 1} group border-t border-ink-foreground/20 py-8 md:px-8 ${i % 2 ? "md:border-l" : "md:pl-0"}`}>
+                <span aria-hidden="true" className="who-ghost">0{i + 1}</span>
+                <div className="flex items-center gap-3">
+                  <span className="who-icon">{(() => { const I = [Target, TrendingUp, Users, Zap][i] ?? Target; return <I className="h-5 w-5" />; })()}</span>
+                  <p className="font-display text-xs font-bold tracking-[0.2em] text-primary">0{i + 1}</p>
+                </div>
+                <h3 className="relative mt-5 text-2xl font-extrabold leading-tight transition-transform duration-300 group-hover:translate-x-1 md:text-3xl">{q}</h3>
+                <p className="relative mt-3 max-w-md text-ink-foreground/65">{d}</p>
               </div>
             ))}
           </div>
