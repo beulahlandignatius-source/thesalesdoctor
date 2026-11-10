@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        premium: "btn-primary rounded-full min-h-12 font-bold",
+        premium: "btn-primary !rounded-full min-h-12 font-bold active:scale-[0.97]",
         answer:
           "answer-card !h-auto !min-h-16 !justify-start !whitespace-normal !px-5 !py-4 !text-left !text-base",
         default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
@@ -22,8 +22,8 @@ const buttonVariants = cva(
       },
       size: {
         default: "min-h-11 px-4 py-2",
-        sm: "min-h-11 rounded-md px-3 text-xs",
-        lg: "h-10 rounded-md px-8",
+        sm: "min-h-11 rounded-full px-3 text-xs",
+        lg: "min-h-12 rounded-full px-8",
         icon: "h-11 w-11",
       },
     },

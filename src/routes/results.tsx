@@ -127,7 +127,7 @@ function ResultView({ r }: { r: Result }) {
         <img src={logo} alt="The Sales Doctor" className="mx-auto w-28" />
         <p className={`${label} text-center`}>Your client acquisition diagnosis</p>
 
-        <div className="border-y border-border py-10 text-center">
+        <div className="rounded-[2rem] bg-card px-5 py-10 text-center">
           <p className={label}>Your biggest problem</p>
           <h1 className="mt-3 break-words font-display text-4xl font-bold uppercase leading-tight text-primary">
             {r.diagnosis_title}
@@ -177,7 +177,7 @@ function ResultView({ r }: { r: Result }) {
           </section>
         )}
 
-        <section className="border-t-2 border-secondary py-8">
+        <section className="mt-4 rounded-[2rem] bg-card p-6">
           <p className={label}>Your next move</p>
           <p className="mt-3 text-foreground">
             The diagnosis tells us where the problem is. It doesn’t tell us everything that needs to

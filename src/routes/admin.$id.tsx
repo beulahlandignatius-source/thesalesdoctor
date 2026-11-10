@@ -62,7 +62,7 @@ function LeadDetail() {
     ["Follow-up", r?.follow_up_score],
   ];
   const evidence = (r?.evidence as string[] | undefined) ?? [];
-  const card = "rounded-2xl border border-border bg-card p-6";
+  const card = "rounded-3xl border border-border bg-card p-6";
   const label = "text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground";
 
   return (

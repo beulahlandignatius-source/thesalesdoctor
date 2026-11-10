@@ -84,7 +84,7 @@ function Book() {
           )}
         </div>
 
-        <div className="relative mt-8 overflow-hidden rounded-lg border border-border bg-card">
+        <div className="relative mt-8 overflow-hidden rounded-[2rem] border border-border bg-card">
           {!loaded && src && (
             <div
               role="status"

@@ -48,7 +48,7 @@ function Overview() {
 
       <section>
         <h2 className="font-display text-xl font-bold">Latest enquiries</h2>
-        <ul className="mt-4 divide-y divide-border rounded-xl border border-border bg-card">
+        <ul className="mt-4 divide-y divide-border rounded-3xl border border-border bg-card">
           {data.recent.length === 0 && <li className="p-6 text-center text-muted-foreground">No enquiries yet.</li>}
           {data.recent.map((r) => (
             <li key={r.id} className="flex flex-wrap items-center justify-between gap-2 p-4">
@@ -67,7 +67,7 @@ function Overview() {
 
 function Stat({ label, n }: { label: string; n: number }) {
   return (
-    <div className="rounded-xl border border-border bg-card p-5">
+    <div className="rounded-3xl border border-border bg-card p-5">
       <p className="font-display text-3xl font-black text-foreground">{n}</p>
       <p className="mt-1 text-sm text-muted-foreground">{label}</p>
     </div>

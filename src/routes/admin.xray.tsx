@@ -93,7 +93,7 @@ function AdminList() {
         </select>
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="mt-6 overflow-hidden rounded-3xl border border-border bg-card">
         {isLoading ? (
           <p role="status" className="p-8 text-center text-muted-foreground">
             Loading…
