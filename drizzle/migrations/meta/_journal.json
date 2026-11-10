@@ -50,6 +50,13 @@
       "when": 1794351678666,
       "tag": "0006_admin_saved_views",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794353455028,
+      "tag": "0007_restrict_site_overrides_reads",
+      "breakpoints": true
     }
   ]
 }

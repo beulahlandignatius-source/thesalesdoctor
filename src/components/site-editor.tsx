@@ -3,6 +3,7 @@ import { useRouterState, useNavigate } from "@tanstack/react-router";
 import { Pencil, X, ImageUp, Check, RotateCcw } from "lucide-react";
 import { backend as supabase } from "@/lib/backend/client";
 import { applyAll, buildMaps, norm, originalText, type Maps, type OverrideRow } from "@/lib/site-content/engine";
+import { getSiteOverrides } from "@/lib/site-content/overrides.functions";
 import { canShowPageEditor } from "@/lib/site-content/editor-scope";
 
 const PAGES = [["/", "Home"], ["/services", "Services"], ["/about", "About"], ["/book", "Sessions"], ["/book/free", "Free review"], ["/book/clinic", "Private Clinic"], ["/mentorship", "Mentorship"], ["/xray", "Client X-Ray"], ["/reviews", "Reviews gallery"]] as const;
@@ -30,14 +31,9 @@ export function SiteEditor() {
   const allowed = canShowPageEditor(isAdmin, embeddedEditor, "/admin/content");
 
   const load = useCallback(async () => {
-    const { data } = await supabase.from("site_overrides").select("kind, original, replacement");
-    const rows = (data ?? []) as OverrideRow[];
-    const paths = rows.filter((r) => r.kind === "image").map((r) => r.replacement);
-    const urls = new Map<string, string>();
-    if (paths.length) {
-      const { data: signed } = await supabase.storage.from("site-media").createSignedUrls(paths, 60 * 60 * 24 * 7);
-      signed?.forEach((s) => { if (s.path && s.signedUrl) urls.set(s.path, s.signedUrl); });
-    }
+    const { rows: raw, urls: signed } = await getSiteOverrides();
+    const rows = raw as OverrideRow[];
+    const urls = new Map<string, string>(Object.entries(signed));
     maps.current = buildMaps(rows, (p) => urls.get(p));
     apply();
   }, [apply]);
