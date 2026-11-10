@@ -25,7 +25,19 @@ function Reviews() {
   const load = useServerFn(adminReviews);
   const update = useServerFn(moderateReview);
   const { data, isPending, isError } = useQuery({ queryKey: ["admin-reviews"], queryFn: () => load() });
-  const mutation = useMutation({ mutationFn: (data: { id: string; status: "published" | "hidden" }) => update({ data }), onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-reviews"] }); qc.invalidateQueries({ queryKey: ["public-reviews"] }); } });
+  const mutation = useMutation({
+    mutationFn: (data: { id: string; status: "published" | "hidden" }) => update({ data }),
+    onSuccess: (_result, variables) => {
+      window.__lovableEvents?.track?.("project.review_moderated", {
+        decision: variables.status === "published" ? "approved" : "rejected",
+      });
+      if (variables.status === "published") {
+        window.__lovableEvents?.track?.("project.review_published", {});
+      }
+      qc.invalidateQueries({ queryKey: ["admin-reviews"] });
+      qc.invalidateQueries({ queryKey: ["public-reviews"] });
+    },
+  });
   const rows = (data ?? []).filter((r) => !filter || r.status === filter);
   return <div>
     <h1 className="text-3xl font-extrabold">Reviews</h1>

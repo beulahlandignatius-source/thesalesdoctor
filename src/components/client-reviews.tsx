@@ -41,7 +41,11 @@ export function ClientReviews({ existing }: { existing: string[][] }) {
           const parsed = reviewSchema.safeParse({ name: form.get("name"), role: form.get("role"), body: form.get("body"), rating, consent: form.get("consent") === "on", website: form.get("website") ?? "" });
           if (!parsed.success) { setError(parsed.error.issues[0]?.message ?? "Please check your review."); return; }
           setBusy(true); setError("");
-          try { await save({ data: parsed.data }); setDone(true); } catch { setError("Your review couldn’t be saved. Please try again."); } finally { setBusy(false); }
+          try {
+            await save({ data: parsed.data });
+            window.__lovableEvents?.track?.("project.review_submitted", {});
+            setDone(true);
+          } catch { setError("Your review couldn’t be saved. Please try again."); } finally { setBusy(false); }
         }}>
           <fieldset><legend className="text-sm font-semibold">Your rating</legend><div className="mt-2 flex gap-2">{[1,2,3,4,5].map((n) => <Button type="button" key={n} variant="ghost" size="icon" aria-label={`Rate ${n} stars`} aria-pressed={rating === n} onClick={() => setRating(n)} className="text-primary"><Star className={`!h-7 !w-7 ${n <= rating ? "fill-current" : ""}`} /></Button>)}</div></fieldset>
           <label className="block text-sm font-semibold">Name<input name="name" required maxLength={120} className="field mt-2" autoComplete="name" /></label>

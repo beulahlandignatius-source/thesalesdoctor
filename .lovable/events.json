@@ -75,6 +75,56 @@
         }
       }
     },
+    "project.review_moderated": {
+      "event_schema_version": 1,
+      "description": "An admin successfully approved a review using Publish or rejected/removed it using Hide.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "decision"
+        ],
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "rejected"
+            ]
+          }
+        }
+      }
+    },
+    "project.review_published": {
+      "event_schema_version": 1,
+      "description": "An admin successfully changed a review to published, including republication after hiding; counts publications, not review views.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      }
+    },
+    "project.review_submitted": {
+      "event_schema_version": 1,
+      "description": "A visitor review was successfully saved awaiting admin approval.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      }
+    },
     "project.xray_completed": {
       "event_schema_version": 1,
       "description": "A visitor finished the Client X-Ray and their diagnosis was generated.",
