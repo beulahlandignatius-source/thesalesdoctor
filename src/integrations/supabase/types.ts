@@ -294,6 +294,42 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_proofs: {
+        Row: {
+          content_type: string
+          created_at: string
+          email: string
+          file_path: string
+          id: string
+          name: string
+          provider: string
+          reviewed_at: string | null
+          status: string
+        }
+        Insert: {
+          content_type: string
+          created_at?: string
+          email: string
+          file_path: string
+          id?: string
+          name: string
+          provider: string
+          reviewed_at?: string | null
+          status?: string
+        }
+        Update: {
+          content_type?: string
+          created_at?: string
+          email?: string
+          file_path?: string
+          id?: string
+          name?: string
+          provider?: string
+          reviewed_at?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

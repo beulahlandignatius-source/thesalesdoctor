@@ -19,6 +19,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminIdRouteImport } from './routes/admin.$id'
 import { Route as AdminEnquiriesRouteImport } from './routes/admin.enquiries'
 import { Route as AdminPasswordRouteImport } from './routes/admin.password'
+import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminReviewsRouteImport } from './routes/admin.reviews'
 import { Route as AdminXrayRouteImport } from './routes/admin.xray'
 import { Route as BookIndexRouteImport } from './routes/book.index'
@@ -78,6 +79,11 @@ const AdminEnquiriesRoute = AdminEnquiriesRouteImport.update({
 const AdminPasswordRoute = AdminPasswordRouteImport.update({
   id: '/password',
   path: '/password',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminReviewsRoute = AdminReviewsRouteImport.update({
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/admin/$id': typeof AdminIdRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/password': typeof AdminPasswordRoute
+  '/admin/payments': typeof AdminPaymentsRoute
   '/admin/reviews': typeof AdminReviewsRoute
   '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByTo {
   '/admin/$id': typeof AdminIdRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/password': typeof AdminPasswordRoute
+  '/admin/payments': typeof AdminPaymentsRoute
   '/admin/reviews': typeof AdminReviewsRoute
   '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
@@ -186,6 +194,7 @@ export interface FileRoutesById {
   '/admin/$id': typeof AdminIdRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/password': typeof AdminPasswordRoute
+  '/admin/payments': typeof AdminPaymentsRoute
   '/admin/reviews': typeof AdminReviewsRoute
   '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
@@ -210,6 +219,7 @@ export interface FileRouteTypes {
     | '/admin/$id'
     | '/admin/enquiries'
     | '/admin/password'
+    | '/admin/payments'
     | '/admin/reviews'
     | '/admin/xray'
     | '/book/clinic'
@@ -231,6 +241,7 @@ export interface FileRouteTypes {
     | '/admin/$id'
     | '/admin/enquiries'
     | '/admin/password'
+    | '/admin/payments'
     | '/admin/reviews'
     | '/admin/xray'
     | '/book/clinic'
@@ -253,6 +264,7 @@ export interface FileRouteTypes {
     | '/admin/$id'
     | '/admin/enquiries'
     | '/admin/password'
+    | '/admin/payments'
     | '/admin/reviews'
     | '/admin/xray'
     | '/book/clinic'
@@ -355,6 +367,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPasswordRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/payments': {
+      id: '/admin/payments'
+      path: '/payments'
+      fullPath: '/admin/payments'
+      preLoaderRoute: typeof AdminPaymentsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/reviews': {
       id: '/admin/reviews'
       path: '/reviews'
@@ -432,6 +451,7 @@ interface AdminRouteChildren {
   AdminIdRoute: typeof AdminIdRoute
   AdminEnquiriesRoute: typeof AdminEnquiriesRoute
   AdminPasswordRoute: typeof AdminPasswordRoute
+  AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminReviewsRoute: typeof AdminReviewsRoute
   AdminXrayRoute: typeof AdminXrayRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -441,6 +461,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminIdRoute: AdminIdRoute,
   AdminEnquiriesRoute: AdminEnquiriesRoute,
   AdminPasswordRoute: AdminPasswordRoute,
+  AdminPaymentsRoute: AdminPaymentsRoute,
   AdminReviewsRoute: AdminReviewsRoute,
   AdminXrayRoute: AdminXrayRoute,
   AdminIndexRoute: AdminIndexRoute,
