@@ -519,3 +519,17 @@ main img:hover { transform: scale(1.015); }
 
 /* Sales Doctor logo: original on light, white on dark */
 .dark img[alt="The Sales Doctor"] { filter: brightness(0) invert(1); }
+
+/* Who this is for: proof-style bento */
+.who-bento { display: grid; gap: 1rem; }
+.who-bento-1 { background: var(--primary); color: var(--primary-foreground); }
+.who-bento-2 { background: var(--blush); color: var(--foreground); }
+.who-bento-3 { background: var(--background); color: var(--foreground); }
+.who-bento-4 { background: color-mix(in oklab, var(--primary) 22%, var(--ink)); color: var(--ink-foreground); border: 1px solid color-mix(in oklab, var(--ink-foreground) 15%, transparent); }
+.who-bento-2 .proof-icon, .who-bento-2 path, .who-bento-3 .proof-icon, .who-bento-3 path { color: var(--primary); }
+@media (min-width: 768px) {
+  .who-bento { grid-template-columns: 1.35fr 1fr 1fr; }
+  .who-bento-1 { grid-row: span 2; min-height: 36rem; padding: 2.5rem; }
+  .who-bento-1 h3 { font-size: clamp(2rem, 3.4vw, 3rem); }
+  .who-bento-4 { grid-column: span 2; }
+}

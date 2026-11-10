@@ -156,18 +156,18 @@ function Index() {
           <h2 className="mt-5 max-w-5xl text-[clamp(2rem,5.5vw,4.75rem)] font-black leading-[0.95] tracking-tight">
             You don’t have to be stuck to need a better system. <span className="text-primary">You just need a bigger target.</span>
           </h2>
-          <div className="mt-14 grid md:grid-cols-2">
-            {who.map(([q, d], i) => (
-              <div key={q} className={`symptom who-tile who-tile-${i + 1} group border-t border-ink-foreground/20 py-8 md:px-8 ${i % 2 ? "md:border-l" : "md:pl-0"}`}>
-                <span aria-hidden="true" className="who-ghost">0{i + 1}</span>
-                <div className="flex items-center gap-3">
-                  <span className="who-icon">{(() => { const I = [Target, TrendingUp, Users, Zap][i] ?? Target; return <I className="h-5 w-5" />; })()}</span>
-                  <p className="font-display text-xs font-bold tracking-[0.2em] text-primary">0{i + 1}</p>
+          <div className="who-bento mt-14">
+            {who.map(([q, d], i) => {
+              const Icon = [Target, TrendingUp, Users, Zap][i] ?? Target;
+              return <article key={q} className={`proof-tile who-bento-tile who-bento-${i + 1}`}>
+                <div className="flex items-center justify-between"><span className="proof-icon"><Icon aria-hidden="true" className="h-6 w-6" /></span><Pulse className="h-8 w-28 opacity-70" /></div>
+                <div>
+                  <p className="font-display text-xs font-bold tracking-[0.2em] opacity-70">0{i + 1}</p>
+                  <h3 className="mt-3 text-2xl font-extrabold leading-tight md:text-3xl">{q}</h3>
+                  <p className="proof-label">{d}</p>
                 </div>
-                <h3 className="relative mt-5 text-2xl font-extrabold leading-tight transition-transform duration-300 group-hover:translate-x-1 md:text-3xl">{q}</h3>
-                <p className="relative mt-3 max-w-md text-ink-foreground/65">{d}</p>
-              </div>
-            ))}
+              </article>;
+            })}
           </div>
           <div className="mt-12 flex flex-col gap-4 border-t border-ink-foreground/20 pt-10 sm:flex-row sm:items-center">
             <CtaLink to="/book">FIND MY NEXT STEP →</CtaLink>
