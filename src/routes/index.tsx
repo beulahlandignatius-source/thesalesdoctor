@@ -145,7 +145,7 @@ function Index() {
 
       {/* ===== 3 QUESTIONS — the funnel ===== */}
       <section className="motion-layer relative mx-auto max-w-7xl px-5 py-20 md:py-28">
-        <JourneyLine anchors=".session-number" />
+        <JourneyLine cards=".session-question" dot=".session-number" />
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
             <p className="eyebrow">Your session</p>
@@ -167,7 +167,7 @@ function Index() {
 
       {/* ===== WHO — dark editorial ===== */}
       <section className="motion-layer relative overflow-hidden bg-ink text-ink-foreground">
-        <JourneyLine anchors=".who-bento .proof-icon" />
+        <JourneyLine cards=".who-bento-tile" dot=".proof-icon" />
         <div className="mx-auto max-w-7xl px-5 py-20 md:py-28">
           <p className="eyebrow">Who this is for</p>
           <h2 className="mt-5 max-w-5xl text-[clamp(2rem,5.5vw,4.75rem)] font-black leading-[0.95] tracking-tight">
@@ -211,7 +211,7 @@ function Index() {
 
       {/* ===== MENTORSHIP — asymmetric magazine spread ===== */}
       <section className="mentorship-spread motion-layer relative overflow-hidden">
-        <JourneyLine anchors=".benefit-number" />
+        <JourneyLine cards=".mentorship-benefit" dot=".benefit-number" />
         <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 md:grid-cols-12 md:py-28">
           <div className="md:col-span-7">
             <p className="eyebrow">Mentorship</p>

@@ -19,9 +19,9 @@ export function StackedCards({ items, label }: { items: ReactNode[]; label: stri
     </div>
     <div className="mt-8 flex items-center justify-between gap-4">
       <Button variant="outline" size="icon" className="rounded-full" title={`Previous ${label}`} aria-label={`Previous ${label}`} disabled={current === 0} onClick={() => go(-1)}><ChevronLeft /></Button>
-      {items.length > 6 ? <p className="font-display text-sm font-bold tabular-nums" aria-live="polite"><span className="text-primary">{String(current + 1).padStart(2, "0")}</span> <span className="text-muted-foreground">/ {String(items.length).padStart(2, "0")}</span></p> : <div className="flex items-center gap-1" aria-label={`${label} pages`}>
-        {items.map((_, i) => <Button key={i} variant="ghost" size="icon" className="h-11 w-6 rounded-full" aria-label={`Show ${label} ${i + 1}`} aria-current={i === current ? "true" : undefined} onClick={() => setIndex(i)}><span className={`h-1.5 rounded-full ${i === current ? "w-6 bg-primary" : "w-2 bg-border"}`} /></Button>)}
-      </div>}
+      <div className={`flex min-w-0 items-center ${items.length > 6 ? "gap-0" : "gap-1"}`} aria-label={`${label} pages`}>
+        {items.map((_, i) => <Button key={i} variant="ghost" size="icon" className={`h-11 rounded-full ${items.length > 6 ? "w-3.5 min-w-0" : "w-6"}`} aria-label={`Show ${label} ${i + 1}`} aria-current={i === current ? "true" : undefined} onClick={() => setIndex(i)}><span className={`h-1.5 rounded-full ${i === current ? (items.length > 6 ? "w-3 bg-primary" : "w-6 bg-primary") : "w-1.5 bg-border"}`} /></Button>)}
+      </div>
       <Button variant="outline" size="icon" className="rounded-full" title={`Next ${label}`} aria-label={`Next ${label}`} disabled={current >= items.length - 1} onClick={() => go(1)}><ChevronRight /></Button>
     </div>
   </div>;
