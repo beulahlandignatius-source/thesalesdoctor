@@ -17,7 +17,7 @@ import {
   type BasicInfo,
 } from "@/lib/audit";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/audit")({
   head: () => ({
@@ -164,6 +164,7 @@ function Audit() {
   const selected = multi ? answer.split(MULTI_SEP).filter(Boolean) : [answer];
   const pick = (v: string) => {
     if (!q) return;
+    try { navigator.vibrate?.(8); } catch {}
     if (multi) {
       const set = selected.includes(v) ? selected.filter((x) => x !== v) : [...selected, v];
       setAnswer(set.join(MULTI_SEP));
@@ -181,10 +182,31 @@ function Audit() {
     }
   };
 
+  const keyRef = useRef<(e: KeyboardEvent) => void>(() => {});
+  keyRef.current = (e: KeyboardEvent) => {
+    const t = e.target as HTMLElement | null;
+    if (t && (t.tagName === "TEXTAREA" || t.tagName === "INPUT")) {
+      if (e.key === "Enter" && t.tagName === "INPUT") { e.preventDefault(); next(); }
+      return;
+    }
+    if (e.key === "Enter") { e.preventDefault(); next(); return; }
+    if (q && q.type !== "text") {
+      const n = e.key.toUpperCase().charCodeAt(0) - 65;
+      if (e.key.length === 1 && n >= 0 && n < q.options.length) pick(q.options[n]!);
+    }
+  };
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => keyRef.current(e);
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, []);
+  const pct = Math.round(((step + 1) / TOTAL) * 100);
+  const cheer = pct >= 90 ? "Almost there — your X-Ray is nearly ready" : pct >= 50 ? "Over halfway — keep going" : null;
+
   return (
-    <div className="min-h-dvh bg-background">
+    <div className="min-h-dvh bg-background xray-ambient">
       <div className="mx-auto flex min-h-dvh max-w-xl flex-col px-6 pb-32 pt-5 sm:pt-8">
-        <header className="flex items-center justify-between pr-14">
+        <header className="xray-bar flex items-center justify-between pr-14">
           <Button
             onClick={back}
             variant="ghost"
@@ -211,7 +233,7 @@ function Audit() {
           className="mt-5 h-1 w-full overflow-hidden rounded-full bg-muted"
         >
           <div
-            className="h-full bg-primary transition-all duration-500"
+            className="xray-progress h-full rounded-full bg-primary transition-all duration-700 ease-out"
             style={{ width: `${((step + 1) / TOTAL) * 100}%` }}
           />
         </div>
@@ -258,9 +280,15 @@ function Audit() {
             </>
           ) : (
             <>
-              <p className="eyebrow">
-                Question {step} of {QUESTIONS.length} · {q.section}
-              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-full bg-secondary px-3 py-1 text-xs font-bold text-primary">{q.section}</span>
+                <span className="text-xs font-semibold text-muted-foreground">Question {step} of {QUESTIONS.length}</span>
+              </div>
+              {cheer && (
+                <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary animate-in fade-in duration-500">
+                  <Sparkles className="h-3.5 w-3.5" /> {cheer}
+                </p>
+              )}
               <h1
                 id="question-heading"
                 ref={heading}
@@ -278,6 +306,7 @@ function Audit() {
                 </p>
               )}
               {q.type === "text" ? (
+                <>
                 <textarea
                   aria-labelledby="question-heading"
                   required={!OPTIONAL_IDS.has(q.id)}
@@ -288,9 +317,11 @@ function Audit() {
                   placeholder={q.placeholder ?? "Type your answer"}
                   className="field mt-6 resize-none"
                 />
+                <p className="mt-2 text-right text-xs tabular-nums text-muted-foreground">{answer.length}/1000</p>
+                </>
               ) : (
                 <div role="group" aria-labelledby="question-heading" className="mt-6 space-y-3">
-                  {q.options.map((o) => {
+                  {q.options.map((o, oi) => {
                     const on = selected.includes(o);
                     return (
                       <Button
@@ -299,17 +330,25 @@ function Audit() {
                         disabled={!ready || busy}
                         onClick={() => pick(o)}
                         aria-pressed={on}
-                        className={on ? "answer-card-on" : ""}
+                        className={`xray-option animate-in fade-in slide-in-from-bottom-2 fill-mode-both ${on ? "answer-card-on" : ""}`}
+                        style={{ animationDelay: `${oi * 45}ms` }}
                       >
                         <span
                           aria-hidden="true"
-                          className={`h-5 w-5 shrink-0 ${multi ? "rounded-md" : "rounded-full"} border-2 ${on ? "border-primary bg-primary" : "border-secondary"}`}
-                        />
-                        <span>{o}</span>
+                          className={`flex h-7 w-7 shrink-0 items-center justify-center text-xs font-bold transition-all duration-200 ${multi ? "rounded-lg" : "rounded-full"} border-2 ${on ? "scale-110 border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground"}`}
+                        >
+                          {on ? <Check className="h-4 w-4 animate-in zoom-in duration-200" /> : String.fromCharCode(65 + oi)}
+                        </span>
+                        <span className="flex-1">{o}</span>
                       </Button>
                     );
                   })}
                 </div>
+              )}
+              {q.type !== "text" && (
+                <p className="mt-6 hidden text-xs text-muted-foreground sm:block">
+                  Tip: press <kbd className="rounded border border-border bg-card px-1.5">A</kbd>–<kbd className="rounded border border-border bg-card px-1.5">{String.fromCharCode(64 + q.options.length)}</kbd> to choose, <kbd className="rounded border border-border bg-card px-1.5">Enter</kbd> to continue.
+                </p>
               )}
             </>
           )}

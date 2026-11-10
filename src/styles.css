@@ -87,7 +87,7 @@
   }
   h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
   input, select, textarea { border-radius: 1rem; }
-  header { backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4); }
+  header:not(.xray-bar) { backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4); }
   img { border-radius: inherit; }
 }
 
@@ -219,3 +219,34 @@
     transform: none;
   }
 }
+
+/* ---------- Premium layer ---------- */
+body {
+  background-image:
+    radial-gradient(60rem 40rem at 100% -10%, color-mix(in oklab, var(--primary) 9%, transparent), transparent 60%),
+    radial-gradient(50rem 30rem at -10% 30%, color-mix(in oklab, var(--blush) 70%, transparent), transparent 60%);
+  background-attachment: fixed;
+}
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .035; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection { background: var(--primary); color: var(--primary-foreground); }
+h1 { text-wrap: balance; }
+p { text-wrap: pretty; }
+header:not(.xray-bar) { background-color: color-mix(in oklab, var(--background) 72%, transparent) !important; }
+main section { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 35%; }
+@keyframes reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+main img { transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+main img:hover { transform: scale(1.02); }
+a[class*="rounded-full"], button[class*="rounded-full"] { box-shadow: 0 10px 30px -12px color-mix(in oklab, var(--primary) 55%, transparent); }
+a[class*="rounded-full"]:hover, button[class*="rounded-full"]:hover { transform: translateY(-1px); }
+.bg-card { border: 1px solid color-mix(in oklab, var(--border) 60%, transparent); transition: transform .3s, box-shadow .3s; }
+
+/* Client X-Ray interactions */
+.xray-ambient { background-color: transparent; }
+.xray-progress { box-shadow: 0 0 14px color-mix(in oklab, var(--primary) 60%, transparent); background-image: linear-gradient(90deg, var(--primary), color-mix(in oklab, var(--primary) 70%, white)); }
+.xray-option { border-radius: 1.1rem !important; transition: transform .18s, box-shadow .25s, border-color .2s, background-color .2s !important; }
+.xray-option:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -16px color-mix(in oklab, var(--foreground) 35%, transparent); }
+.xray-option:active { transform: scale(.98); }
+@media (prefers-reduced-motion: reduce) { main section { animation: none; } }
