@@ -55,7 +55,7 @@ function Overview() {
       {top}
       <ClinicPulse data={data} range={range} m={m} p={p} />
       <div className="dash-stats dash-stats-5 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-5">
-        <Stat label="Paid Private Clinics" sub={`Stripe ${m.stripe} · Flutterwave ${m.flw}`} n={m.stripe + m.flw} delta={change(m.stripe + m.flw, p.stripe + p.flw)} icon={CreditCard} to="/admin/enquiries" search={{ ...range, kind: "private_clinic" }} accent />
+        <Stat label="Paid Private Clinics" sub={`Stripe ${m.stripe} · Flutterwave ${m.flw}`} n={m.stripe + m.flw} delta={change(m.stripe + m.flw, p.stripe + p.flw)} icon={CreditCard} to="/admin/payments" accent />
         <Stat label="Sales Clinic enquiries" n={m.total} delta={change(m.total, p.total)} icon={Inbox} to="/admin/enquiries" search={range} />
         <Stat label="New, not yet handled" n={m.newOnes} icon={ClipboardList} to="/admin/enquiries" search={{ ...range, status: "new" }} />
         <Stat label="Completed X-Rays" n={m.xrays} delta={change(m.xrays, p.xrays)} icon={ScanLine} to="/admin/xray" search={range} />
@@ -175,7 +175,7 @@ function Vital({ n, label, dot, delta }: { n: number | string; label: string; do
   return <div className="clinic-vital"><p className="flex flex-wrap items-center gap-2 font-display text-3xl font-extrabold tabular-nums">{n}{delta !== undefined && <Delta pct={delta} light />}</p><p className="mt-1 flex items-center gap-1.5 text-xs opacity-70">{dot && <span className={`vital-dot vital-${dot}`} />}{label}</p></div>;
 }
 
-function Stat({ label, sub, n, delta, icon: Icon, to, search, accent = false }: { label: string; sub?: string | undefined; n: number | string; delta?: number | null; icon: typeof Inbox; to: "/admin/enquiries" | "/admin/xray" | "/admin/reviews"; search?: Record<string, string>; accent?: boolean }) {
+function Stat({ label, sub, n, delta, icon: Icon, to, search, accent = false }: { label: string; sub?: string | undefined; n: number | string; delta?: number | null; icon: typeof Inbox; to: "/admin/enquiries" | "/admin/xray" | "/admin/reviews" | "/admin/payments"; search?: Record<string, string>; accent?: boolean }) {
   return (
     <Link to={to} search={search as never} className={`dashboard-stat ${accent ? "dashboard-stat-accent" : ""}`}><div className="flex items-center justify-between gap-2"><span className="dashboard-stat-icon"><Icon className="h-5 w-5" /></span>{delta !== undefined ? <Delta pct={delta} light={accent} /> : <ArrowUpRight className="h-4 w-4 opacity-50" />}</div><p className="mt-6 font-display text-4xl font-extrabold tabular-nums">{n}</p><p className="mt-2 text-sm font-medium leading-snug opacity-80">{label}</p>{sub && <p className="mt-1 text-xs leading-snug opacity-70">{sub}</p>}</Link>
   );
