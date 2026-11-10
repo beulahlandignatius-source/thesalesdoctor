@@ -110,7 +110,7 @@ function Audit() {
         const info = { name: i.name.trim(), email: i.email.trim(), whatsapp: i.whatsapp.trim() };
         let session = s.session;
         if (session) await updateAuditInfo({ data: { ...session, info } });
-        else session = await startAuditSession({ data: { info } });
+        else { session = await startAuditSession({ data: { info } }); window.__lovableEvents?.track?.("project.xray_started", {}); }
         setS({ ...s, session, step: 1 });
         window.scrollTo(0, 0);
       } catch {

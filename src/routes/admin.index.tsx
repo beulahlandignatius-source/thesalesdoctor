@@ -5,7 +5,8 @@ import { KIND_LABEL, fmt } from "@/components/admin/enquiry-labels";
 import { adminReviews } from "@/lib/reviews.functions";
 import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
-import { Inbox, ScanLine, Star, CalendarCheck, ArrowUpRight, RefreshCw, ClipboardList, Users, CircleCheck, CreditCard } from "lucide-react";
+import { PulseChart, EmptyState, lastDays, bucket, dayLabel } from "@/components/admin/pulse-chart";
+import { Inbox, ScanLine, Star, CalendarCheck, ArrowUpRight, RefreshCw, ClipboardList, Users, CircleCheck, CreditCard, Activity, HeartPulse } from "lucide-react";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({
@@ -39,7 +40,8 @@ function Overview() {
         <div><p className="eyebrow">The Sales Clinic · Admin</p><h1 className="mt-4 font-display text-4xl font-extrabold">Overview</h1></div>
         <Button variant="outline" className="rounded-full" disabled={overview.isFetching || reviews.isFetching} onClick={() => { overview.refetch(); reviews.refetch(); }}><RefreshCw className={overview.isFetching ? "animate-spin" : ""} />Refresh</Button>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+      <ClinicPulse data={data} />
+      <div className="dash-stats grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-5">
         <Stat label={`Paid Private Clinics this month · Stripe ${data.stripePaid} · Flutterwave ${data.flutterwavePaid}`} n={data.stripePaid + data.flutterwavePaid} icon={CreditCard} to="/admin/enquiries" accent />
         <Stat label="Sales Clinic enquiries" n={total} icon={Inbox} to="/admin/enquiries" />
         <Stat label="New, not yet handled" n={data.newOnes} icon={ClipboardList} to="/admin/enquiries" />
@@ -51,6 +53,7 @@ function Overview() {
         <div className="grid gap-4 md:grid-cols-2">
           {([["free_review", "Free Client Acquisition Review"], ["private_clinic", "Private Sales Clinic"]] as const).map(([k, label]) => {
             const f = data.funnel[k] ?? { viewed: 0, started: 0, completed: 0 };
+            if (!f["viewed"] && !f["started"] && !f["completed"]) return <div key={k} className="dashboard-distribution"><div className="flex items-center gap-2 border-b border-border pb-4"><CalendarCheck className="h-5 w-5 text-primary" /><span className="font-semibold">{label}</span></div><EmptyState icon={CalendarCheck} title="No calendar activity this month" body="Views, booking starts and completed bookings show here once visitors open the calendar." /></div>;
             return (
               <div key={k} className="dashboard-distribution">
                 <div className="flex items-center gap-2 border-b border-border pb-4"><CalendarCheck className="h-5 w-5 text-primary" /><span className="font-semibold">{label}</span></div>
@@ -95,7 +98,7 @@ function Overview() {
       <div className="grid gap-8 xl:grid-cols-[1.4fr_1fr]">
         <section className="min-w-0"><div className="mb-5 flex items-center justify-between gap-3"><h2 className="text-xl font-bold">Latest enquiries</h2><Inbox className="h-5 w-5 text-muted-foreground" /></div>
           <ul className="dashboard-activity divide-y divide-border">
-            {data.recent.length === 0 && <li className="flex flex-col items-center py-14 text-center"><Users className="h-9 w-9 text-muted-foreground/50" strokeWidth={1.5} /><p className="mt-4 text-sm text-muted-foreground">No enquiries yet.</p></li>}
+            {data.recent.length === 0 && <li><EmptyState icon={Users} title="No enquiries yet" body="New free review, clinic and mentorship requests land here first." /></li>}
             {data.recent.map((r) => <li key={r.id} className="flex flex-wrap items-center justify-between gap-3 px-5 py-5"><div className="flex min-w-0 gap-3"><span className="dashboard-avatar">{r.name.slice(0, 1)}</span><div className="min-w-0"><p className="break-words font-semibold">{r.name}</p><p className="mt-1 text-xs text-muted-foreground">{KIND_LABEL[r.kind] ?? r.kind} · {fmt(r.created_at)}</p></div></div><span className="rounded-full bg-blush px-3 py-1 text-xs font-semibold capitalize text-primary">{r.status}</span></li>)}
           </ul>
         </section>
@@ -107,6 +110,36 @@ function Overview() {
       </div>
     </div>
   );
+}
+
+type OverviewData = Awaited<ReturnType<typeof adminOverview>>;
+function ClinicPulse({ data }: { data: OverviewData }) {
+  const days = lastDays(14);
+  const enq = bucket(data.trend.enquiries, days), xr = bucket(data.trend.xrays, days);
+  const totalE = enq.reduce((a, b) => a + b, 0), totalX = xr.reduce((a, b) => a + b, 0);
+  const completion = data.startedXrays ? Math.round((data.xrays / data.startedXrays) * 100) : null;
+  const bookRate = data.xrays ? Math.round((data.booked / data.xrays) * 100) : null;
+  return <section className="clinic-pulse">
+    <div className="grid gap-8 lg:grid-cols-[1fr_1.6fr] lg:items-center">
+      <div>
+        <p className="clinic-pulse-tag"><HeartPulse className="h-4 w-4" /> Clinic vitals · last 14 days</p>
+        <div className="mt-6 grid grid-cols-2 gap-4">
+          <Vital n={totalE} label="Sales Clinic enquiries" dot="primary" />
+          <Vital n={totalX} label="Completed X-Rays" dot="soft" />
+          <Vital n={completion == null ? "-" : `${completion}%`} label="X-Rays started that were finished" />
+          <Vital n={bookRate == null ? "-" : `${bookRate}%`} label="X-Rays that booked a call" />
+        </div>
+      </div>
+      <div className="clinic-pulse-chart">
+        {totalE + totalX === 0
+          ? <EmptyState icon={Activity} title="No activity in the last 14 days" body="The heartbeat line appears as soon as enquiries or X-Rays come in." />
+          : <PulseChart labels={days.map(dayLabel)} series={[{ name: "Enquiries", values: enq, tone: "primary" }, { name: "X-Rays", values: xr, tone: "soft" }]} />}
+      </div>
+    </div>
+  </section>;
+}
+function Vital({ n, label, dot }: { n: number | string; label: string; dot?: "primary" | "soft" }) {
+  return <div className="clinic-vital"><p className="font-display text-3xl font-extrabold tabular-nums">{n}</p><p className="mt-1 flex items-center gap-1.5 text-xs opacity-70">{dot && <span className={`vital-dot vital-${dot}`} />}{label}</p></div>;
 }
 
 function Stat({ label, n, icon: Icon, to, accent = false }: { label: string; n: number | string; icon: typeof Inbox; to: "/admin/enquiries" | "/admin/xray" | "/admin/reviews"; accent?: boolean }) {

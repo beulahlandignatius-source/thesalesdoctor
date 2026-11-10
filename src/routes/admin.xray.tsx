@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { listAudits } from "@/lib/admin.functions";
 import { SeverityBadge, DIAGNOSIS_OPTIONS, fmtDate } from "@/components/admin/Severity";
+import { PulseChart, EmptyState, lastDays, bucket, dayLabel } from "@/components/admin/pulse-chart";
+import { ScanLine, CalendarCheck, Siren, Stethoscope } from "lucide-react";
 
 export const Route = createFileRoute("/admin/xray")({
   head: () => ({
@@ -48,7 +50,8 @@ function AdminList() {
   const sel = "field w-full sm:!w-auto !py-2 text-sm min-h-11";
   return (
     <div>
-      <h1 className="mb-6 font-display text-2xl font-semibold">Completed X-Rays</h1>
+      <div className="mb-6"><p className="eyebrow">Client X-Ray · Admin</p><h1 className="mt-4 font-display text-4xl font-extrabold">Completed X-Rays</h1></div>
+      {!isLoading && !isError && <XrayScan rows={data ?? []} />}
       <div className="flex flex-wrap gap-3">
         <input
           aria-label="Search name or email"
@@ -185,4 +188,38 @@ function AdminList() {
       </div>
     </div>
   );
+}
+
+type Row = { completed_at: string | null; primary_diagnosis: string | null; severity: string | null; booked: boolean | null };
+function XrayScan({ rows }: { rows: Row[] }) {
+  if (!rows.length) return <div className="xray-scan mb-8"><EmptyState icon={ScanLine} title="No X-Ray scans yet" body="Diagnosis trends, severity mix and booking rate appear after the first completed X-Ray." /></div>;
+  const days = lastDays(30);
+  const trend = bucket(rows.map((r) => r.completed_at), days);
+  const booked = rows.filter((r) => r.booked).length;
+  const urgent = rows.filter((r) => r.severity === "HIGH" || r.severity === "CRITICAL").length;
+  const diag = DIAGNOSIS_OPTIONS.map(([k, l]) => [l, rows.filter((r) => r.primary_diagnosis === k).length] as const).sort((a, b) => b[1] - a[1]);
+  const topN = diag[0]?.[1] ?? 0;
+  const sevs = ["LOW", "MODERATE", "HIGH", "CRITICAL"].map((s) => [s, rows.filter((r) => r.severity === s).length] as const);
+  return <section className="xray-scan mb-8 space-y-5">
+    <div className="dash-stats grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+      <ScanStat icon={ScanLine} n={rows.length} label="Completed X-Rays" accent />
+      <ScanStat icon={CalendarCheck} n={`${Math.round((booked / rows.length) * 100)}%`} label={`Booked a call · ${booked} of ${rows.length}`} />
+      <ScanStat icon={Siren} n={urgent} label="High or critical severity" />
+      <ScanStat icon={Stethoscope} n={topN ? diag[0]![0].replace("The ", "") : "-"} label="Most common diagnosis" small />
+    </div>
+    <div className="grid gap-5 lg:grid-cols-[1.5fr_1fr]">
+      <div className="dashboard-distribution"><div className="flex items-center justify-between border-b border-border pb-4"><span className="font-semibold">Scans in the last 30 days</span><span className="font-display text-2xl font-extrabold tabular-nums">{trend.reduce((a, b) => a + b, 0)}</span></div>
+        <div className="mt-4">{trend.some(Boolean) ? <PulseChart labels={days.map(dayLabel)} series={[{ name: "X-Rays", values: trend, tone: "primary" }]} /> : <EmptyState icon={ScanLine} title="Quiet month" body="No X-Rays were completed in the last 30 days." />}</div></div>
+      <div className="dashboard-distribution"><p className="border-b border-border pb-4 font-semibold">Severity mix</p>
+        <div className="severity-bar mt-5" aria-hidden="true">{sevs.map(([s, n]) => n ? <span key={s} className={`sev-${s}`} style={{ flexGrow: n }} /> : null)}</div>
+        <ul className="mt-4 grid grid-cols-2 gap-2 text-sm">{sevs.map(([s, n]) => <li key={s} className="flex items-center gap-2"><span className={`sev-dot sev-${s}`} />{s.charAt(0) + s.slice(1).toLowerCase()}<strong className="ml-auto tabular-nums">{n}</strong></li>)}</ul>
+      </div>
+    </div>
+    <div className="dashboard-distribution"><p className="border-b border-border pb-4 font-semibold">Diagnosis ranking</p>
+      <ol className="mt-5 space-y-4">{diag.map(([l, n], i) => <li key={l}><div className="mb-1.5 flex justify-between gap-3 text-sm"><span><span className="mr-2 font-display text-xs font-bold text-primary">0{i + 1}</span>{l}</span><strong className="tabular-nums">{n}</strong></div><div className="h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-primary" style={{ width: `${topN ? (n / topN) * 100 : 0}%`, opacity: 1 - i * 0.12 }} /></div></li>)}</ol>
+    </div>
+  </section>;
+}
+function ScanStat({ icon: Icon, n, label, accent, small }: { icon: typeof ScanLine; n: number | string; label: string; accent?: boolean; small?: boolean }) {
+  return <div className={`dashboard-stat ${accent ? "dashboard-stat-accent" : ""}`}><span className="dashboard-stat-icon"><Icon className="h-5 w-5" /></span><p className={`mt-6 font-display font-extrabold tabular-nums ${small ? "text-2xl leading-tight" : "text-4xl"}`}>{n}</p><p className="mt-2 text-sm opacity-75">{label}</p></div>;
 }

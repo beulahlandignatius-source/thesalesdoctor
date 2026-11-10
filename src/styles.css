@@ -650,3 +650,29 @@ main img:hover { transform: scale(1.015); }
 .close-option { display: flex; align-items: center; gap: .6rem; padding: .8rem 1rem; border-radius: 1rem; background: color-mix(in oklab, var(--primary-foreground) 10%, transparent); font-size: .9rem; font-weight: 600; transition: background .25s, transform .25s; }
 .close-option:hover { background: color-mix(in oklab, var(--primary-foreground) 20%, transparent); transform: translateX(4px); }
 @media (prefers-reduced-motion: reduce) { .philo-ring, .close-blob { animation: none; } }
+
+/* ===== Admin vitals & charts ===== */
+.clinic-pulse { position: relative; overflow: hidden; border-radius: 2rem .75rem 2rem 2rem; background: var(--ink); color: var(--ink-foreground); padding: 1.75rem; box-shadow: 0 30px 70px -35px color-mix(in oklab, var(--primary) 70%, transparent); }
+.clinic-pulse::before { content: ""; position: absolute; right: -8rem; top: -8rem; width: 22rem; height: 22rem; border-radius: 9999px; background: radial-gradient(circle, color-mix(in oklab, var(--primary) 40%, transparent), transparent 65%); pointer-events: none; }
+.clinic-pulse > * { position: relative; }
+.clinic-pulse-tag { display: inline-flex; align-items: center; gap: .5rem; padding: .4rem .85rem; border-radius: 9999px; background: color-mix(in oklab, var(--primary) 25%, transparent); color: var(--ink-foreground); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.clinic-vital { padding: 1rem; border-radius: 1.25rem; border: 1px solid color-mix(in oklab, var(--ink-foreground) 12%, transparent); background: color-mix(in oklab, var(--ink-foreground) 4%, transparent); }
+.vital-dot { width: 8px; height: 8px; border-radius: 9999px; } .vital-primary { background: var(--primary); } .vital-soft { background: var(--blush); }
+.clinic-pulse-chart { border-radius: 1.5rem; padding: 1.25rem; background: color-mix(in oklab, var(--ink-foreground) 5%, transparent); }
+.clinic-pulse .text-muted-foreground { color: color-mix(in oklab, var(--ink-foreground) 60%, transparent); }
+@media (min-width: 768px) { .clinic-pulse { padding: 2.25rem; } }
+.pulse-chart { overflow: visible; }
+.pulse-grid { stroke: currentColor; opacity: .1; stroke-dasharray: 3 6; }
+.pulse-stroke { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: pulse-draw 1.6s cubic-bezier(.2,.8,.2,1) forwards; }
+.pulse-area { opacity: .12; }
+.pulse-primary .pulse-stroke { stroke: var(--primary); filter: drop-shadow(0 0 6px color-mix(in oklab, var(--primary) 60%, transparent)); } .pulse-primary .pulse-area, .pulse-primary .pulse-dot { fill: var(--primary); }
+.pulse-soft .pulse-stroke { stroke: var(--blush); } .pulse-soft .pulse-area, .pulse-soft .pulse-dot { fill: var(--blush); }
+@keyframes pulse-draw { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .pulse-stroke { animation: none; stroke-dashoffset: 0; } }
+.dash-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2.5rem 1rem; }
+.dash-empty-icon { display: grid; place-items: center; width: 3.25rem; height: 3.25rem; border-radius: 9999px; color: var(--primary); background: color-mix(in oklab, var(--primary) 12%, transparent); box-shadow: 0 0 0 8px color-mix(in oklab, var(--primary) 5%, transparent); }
+.xray-scan > .dash-empty, .xray-scan.mb-8 > .dash-empty { border: 1.5px dashed var(--border); border-radius: 1.5rem; background: var(--card); }
+.severity-bar { display: flex; gap: 3px; height: .9rem; overflow: hidden; border-radius: 9999px; background: var(--muted); }
+.sev-dot { width: 10px; height: 10px; border-radius: 9999px; }
+.sev-LOW { background: var(--border); } .sev-MODERATE { background: var(--blush); } .sev-HIGH { background: color-mix(in oklab, var(--primary) 60%, var(--card)); } .sev-CRITICAL { background: var(--primary); }
+@media (max-width: 639px) { .dash-stats > .dashboard-stat { padding: 1.1rem; } .dash-stats > .dashboard-stat-accent:first-child { grid-column: span 2; } .dash-stats .text-4xl { font-size: 1.9rem; } }

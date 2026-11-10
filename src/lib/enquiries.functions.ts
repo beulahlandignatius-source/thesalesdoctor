@@ -80,5 +80,12 @@ export const adminOverview = createServerFn({ method: "POST" })
       .select("id, kind, name, status, created_at")
       .order("created_at", { ascending: false })
       .limit(5);
-    return { free, clinic, mentor, newOnes, xrays, booked, stripePaid, flutterwavePaid, funnel, recent: recent ?? [] };
+    const since = new Date(Date.now() - 14 * 864e5).toISOString();
+    const [{ data: enqDates }, { data: xrayDates }, startedXrays] = await Promise.all([
+      sb.from("clinic_enquiries").select("created_at").gte("created_at", since).limit(5000),
+      sb.from("audit_sessions").select("completed_at").gte("completed_at", since).limit(5000),
+      count(sb.from("audit_sessions").select("id", { count: "exact", head: true })),
+    ]);
+    return { free, clinic, mentor, newOnes, xrays, booked, stripePaid, flutterwavePaid, funnel, recent: recent ?? [], startedXrays,
+      trend: { enquiries: (enqDates ?? []).map((r) => r.created_at as string), xrays: (xrayDates ?? []).map((r) => r.completed_at as string | null) } };
   });

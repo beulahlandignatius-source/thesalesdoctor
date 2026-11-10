@@ -198,6 +198,19 @@
         "additionalProperties": false,
         "properties": {}
       }
+    },
+    "project.xray_started": {
+      "event_schema_version": 1,
+      "description": "Fires when a visitor submits their details and begins the Client X-Ray questions.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
     }
   }
 }
