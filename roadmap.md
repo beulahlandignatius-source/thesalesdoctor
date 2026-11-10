@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Reduce oversized visitor text and card spacing below 640px; verify 14 visitor pages at nine phone widths, unchanged tablet/desktop sizing, and consultation/X-Ray controls.
 - [x] Save personal enquiry/payment filter views in Cloud and verify save, recall, rename, delete and persistence on desktop/mobile.
 - [x] Add global admin search across enquiries, confirmed payments, payment screenshots and reviews; verify real enquiry navigation on desktop and mobile (payment/review tables currently have no matching records).
 - [x] Compact mobile/tablet admin navigation, simplify crowded dashboard panels and controls, and verify signed-in pages.

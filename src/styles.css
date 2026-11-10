@@ -1109,3 +1109,54 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .admin-editor-page > header { display: grid; gap: 1rem; backdrop-filter: none; }
   .admin-editor-page .dashboard-card { border-radius: .75rem; box-shadow: none; }
 }
+
+/* Phone-only visitor scale: independent of device brand, with larger screens untouched. */
+@media (max-width: 639px) {
+  .visitor-pages h1 { font-size: 1.875rem; font-weight: 700; line-height: 1.2; text-wrap: pretty; }
+  .visitor-pages .farmora-home h1 { font-size: 2.125rem; line-height: 1.15; font-weight: 700; }
+  .visitor-pages h2, .visitor-pages .farmora-home h2 { font-size: 1.5rem; font-weight: 700; line-height: 1.25; }
+  .visitor-pages h3, .visitor-pages .farmora-home h3 { font-size: 1.125rem; font-weight: 700; line-height: 1.4; }
+  .visitor-pages :is(p, li, blockquote)[class~="text-lg"],
+  .visitor-pages :is(p, li, blockquote)[class~="text-xl"],
+  .visitor-pages :is(p, li, blockquote)[class~="text-2xl"] { font-size: 1rem; line-height: 1.65; }
+  .visitor-pages :is(p, li, blockquote)[class~="font-semibold"] { font-weight: 500; }
+  .visitor-pages .font-display:is(p, dt)[class~="font-black"] { font-weight: 700; }
+  .visitor-pages .proof-number { font-size: 3rem; line-height: 1; margin-top: 1.5rem; letter-spacing: 0; }
+  .visitor-pages .farmora-home dl.about-stats > div dt { font-size: 1.75rem; line-height: 1.2; }
+  .visitor-pages .farmora-home .hero-stat dt { font-size: 1.125rem !important; line-height: 1.2; }
+  .visitor-pages .hero-stats { gap: .65rem; }
+  .visitor-pages .hero-stat { padding: .875rem .65rem; }
+  .visitor-pages .proof-label { font-size: .9375rem; line-height: 1.65; }
+  .visitor-pages .proof-tile { padding: 1.25rem; min-height: 14rem; }
+  .visitor-pages .xray-bento .proof-tile { min-height: 0; padding: 1.25rem; }
+  .visitor-pages .xray-bento .proof-tile-1 p { font-size: 1rem; }
+  .visitor-pages .proof-icon { width: 2.75rem; height: 2.75rem; }
+  .visitor-pages .session-question { padding: 1.125rem; gap: .875rem; }
+  .visitor-pages .farmora-home .session-number { width: 2.75rem; height: 2.75rem; font-size: .9375rem; flex-shrink: 0; }
+  .visitor-pages .session-question > div { min-width: 0; }
+  .visitor-pages :is(.service-card, .mentorship-benefit, .principle-tile, .about-step) { padding: 1.25rem; }
+  .visitor-pages .service-card { min-height: 0; }
+  .visitor-pages .about-stat { padding: 1.125rem; }
+  .visitor-pages .service-num { font-size: 5rem; }
+  .visitor-pages :is(section, section > div)[class~="py-20"] { padding-block: 3rem; }
+  .visitor-pages :is(section, section > div)[class~="py-24"] { padding-block: 3.5rem; }
+  .visitor-pages .close-card { padding: 1.5rem; }
+  .visitor-pages .close-panel { padding: 1.125rem; }
+  .visitor-pages .booking-shell .stack-card { padding: 1.25rem; }
+  .visitor-pages .booking-shell .stack-card p { font-size: 1rem; line-height: 1.6; font-weight: 500; }
+  .visitor-pages .review-stack blockquote { font-size: 1rem; font-weight: 500; line-height: 1.65; }
+  .visitor-pages .session-track article { padding: 1.25rem; }
+  .visitor-pages .session-track .text-6xl { font-size: 2.5rem; }
+  .visitor-pages .xray-question { font-size: 1.375rem; line-height: 1.35; }
+  .visitor-pages .xray-qnum { font-size: 2rem; }
+  .visitor-pages .results-workspace h1 { font-size: 1.5rem; }
+  .visitor-pages .results-workspace h2 { font-size: 1.25rem; }
+  .visitor-pages .results-workspace h3 { font-size: 1.0625rem; }
+  /* Inputs stay at 16px to avoid iOS focus zoom; touch targets remain at least 44px. */
+  .visitor-pages :is(input, select, textarea):not([type="checkbox"]):not([type="radio"]) { font-size: 1rem; }
+  .visitor-pages :is(.btn-sweep, .btn-primary, .xray-continue) { font-size: .875rem; font-weight: 600; min-height: 3rem; height: auto; padding: .875rem 1.25rem; }
+  .site-footer-card { padding-top: 2rem; }
+  .site-footer .footer-wordmark { font-size: 2.5rem; font-weight: 700; line-height: 1.05; letter-spacing: 0; padding-top: 2rem; }
+  .site-footer .footer-tile { padding: .875rem; }
+  .site-footer .footer-tile > span:last-child { margin-top: 1.125rem; font-weight: 600; letter-spacing: 0; }
+}
