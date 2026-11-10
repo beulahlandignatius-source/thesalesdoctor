@@ -19,6 +19,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   return <ThemeContext.Provider value={{ dark, toggle: () => setDark((value) => !value) }}>{children}</ThemeContext.Provider>;
 }
 
+export const useThemeState = () => useContext(ThemeContext);
+
 export function ThemeToggle() {
   const { dark, toggle } = useContext(ThemeContext);
   const label = dark ? "Switch to light theme" : "Switch to dark theme";
