@@ -4,6 +4,7 @@ import { btnClass, ExtLink } from "@/components/site";
 import { LINKS, CLINIC_PRICE } from "@/lib/links";
 import redSuit from "@/assets/dr-dan-red-suit.jpg";
 import { useMotionFx } from "@/components/motion";
+import { WhatsAppIcon } from "@/components/whatsapp-icon";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -56,7 +57,7 @@ function Services() {
           <h2 className="mt-2 font-display text-2xl font-black md:text-3xl">{s.title}</h2>
           <p className="mt-3 opacity-80">{s.body}</p>
           <ul className="mt-5 space-y-2 text-sm">{s.points.map((p) => <li key={p} className="flex gap-2"><span className="service-dot" aria-hidden="true" />{p}</li>)}</ul>
-          <div className="mt-auto pt-6">{s.cta.to ? <Link to={s.cta.to} className="service-cta">{s.cta.label} <ArrowUpRight className="h-4 w-4" /></Link> : <a href={s.cta.href} target="_blank" rel="noopener noreferrer" className="service-cta">{s.cta.label} <ArrowUpRight className="h-4 w-4" /></a>}</div>
+          <div className="mt-auto pt-6">{s.cta.to ? <Link to={s.cta.to} className="service-cta">{s.cta.label} <ArrowUpRight className="h-4 w-4" /></Link> : <a href={s.cta.href} target="_blank" rel="noopener noreferrer" className="service-cta"><WhatsAppIcon className="h-4 w-4 shrink-0" />{s.cta.label} <ArrowUpRight className="h-4 w-4" /></a>}</div>
         </article>; })}
       </div>
     </section>

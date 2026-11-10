@@ -45,3 +45,4 @@ use the editor.
 - The visitor mascot companion uses an isolated deterministic guidance adapter and in-memory answers; it does not alter Client X-Ray diagnoses or store conversations, and is excluded from admin and focused assessment screens to avoid obstructing controls.
 - About and Services reuse the shared motion hook with editorial-scoped selectors; keep reduced-motion fallbacks and existing photo framing intact to avoid separate animation systems.
 - Shared PageTransition animates committed route content without keys, exit waits or transformed containers; browser history indexes supply direction, and page-transition.ts centralizes timing for future design documentation.
+- Use the shared WhatsAppIcon brand mark for WhatsApp contact actions and fields; ExtLink adds it for WhatsApp destinations so repeated links stay consistent.

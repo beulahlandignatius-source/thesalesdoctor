@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { DateRangePicker } from "@/components/admin/date-range-picker";
 import { inRange, readRange, fmtRange } from "@/lib/date-range";
 import { X } from "lucide-react";
+import { WhatsAppIcon } from "@/components/whatsapp-icon";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ENQUIRY_STATUSES, listEnquiries, updateEnquiryStatus } from "@/lib/enquiries.functions";
@@ -87,7 +88,7 @@ function Enquiries() {
                   <p className="mt-1 text-xs text-muted-foreground">{fmt(r.created_at)} · {open === r.id ? "Hide details" : "Show details"}</p>
                 </button>
                 <div className="flex flex-wrap items-center gap-2">
-                  <a href={`https://wa.me/${r.whatsapp.replace(/[^\d]/g, "")}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-full border border-border px-4 text-sm font-semibold hover:border-primary">WhatsApp</a>
+                  <a href={`https://wa.me/${r.whatsapp.replace(/[^\d]/g, "")}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 text-sm font-semibold hover:border-primary"><WhatsAppIcon className="h-4 w-4 shrink-0" />WhatsApp</a>
                   <a href={`mailto:${r.email}`} className="inline-flex min-h-11 items-center rounded-full border border-border px-4 text-sm font-semibold hover:border-primary">Email</a>
                   <select aria-label={`Status for ${r.name}`} value={r.status} disabled={setStatus.isPending}
                     onChange={(e) => setStatus.mutate({ id: r.id, status: e.target.value as (typeof ENQUIRY_STATUSES)[number] })}

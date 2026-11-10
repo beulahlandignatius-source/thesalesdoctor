@@ -1,5 +1,6 @@
 import { LINKS } from "@/lib/links";
-import { Linkedin, MessageCircle } from "lucide-react";
+import { Linkedin } from "lucide-react";
+import { WhatsAppIcon } from "@/components/whatsapp-icon";
 import { Link, useRouterState } from "@tanstack/react-router";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useEffect, useState, type ReactNode } from "react";
@@ -129,7 +130,7 @@ export function Footer() {
             <Link to="/book" className={btnClass("primary", "md", "mt-6")}>Book a consultation →</Link>
             <div className="mt-6 flex gap-2.5" aria-label="Social media">
               <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Dr. Dan on LinkedIn" className="footer-social"><Linkedin className="h-4 w-4" /></a>
-              <a href={LINKS.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="Chat with Dr. Dan on WhatsApp" className="footer-social"><MessageCircle className="h-4 w-4" /></a>
+              <a href={LINKS.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="Chat with Dr. Dan on WhatsApp" className="footer-social"><WhatsAppIcon className="h-4 w-4" /></a>
             </div>
           </div>
           <nav aria-label="Footer" className="grid grid-cols-2 gap-2.5 md:col-span-7">
@@ -169,5 +170,6 @@ export function CtaLink({ to, children, variant = "primary", size = "md", classN
 }
 
 export function ExtLink({ href, children, variant = "primary", className, onClick }: { href: string; children: ReactNode; variant?: V; className?: string; onClick?: () => void }) {
-  return <a href={href} onClick={onClick} target="_blank" rel="noopener noreferrer" className={btnClass(variant, "md", className)}>{children}</a>;
+  const isWhatsApp = /^https:\/\/(wa\.link|wa\.me|(?:api\.|web\.)?whatsapp\.com)(\/|$)/i.test(href);
+  return <a href={href} onClick={onClick} target="_blank" rel="noopener noreferrer" className={btnClass(variant, "md", className)}>{isWhatsApp && <WhatsAppIcon className="h-4 w-4 shrink-0" />}{children}</a>;
 }

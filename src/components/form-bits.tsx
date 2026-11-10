@@ -4,13 +4,14 @@ import { STUCK } from "@/lib/links";
 import { submitEnquiry } from "@/lib/enquiries.functions";
 import { StackedCards } from "@/components/stacked-cards";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, ClipboardList, Check, UserRound, Mail, Phone, Building2, Target, Globe, MessageSquare, BriefcaseBusiness, ChevronDown, LockKeyhole, ArrowRight } from "lucide-react";
+import { CalendarDays, ClipboardList, Check, UserRound, Mail, Building2, Target, Globe, MessageSquare, BriefcaseBusiness, ChevronDown, LockKeyhole, ArrowRight } from "lucide-react";
+import { WhatsAppIcon } from "@/components/whatsapp-icon";
 import logo from "@/assets/logo-transparent.png";
 
 export const field = "w-full rounded-2xl border border-input bg-card px-4 py-3.5 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
 export function F({ label, children }: { label: string; children: ReactNode }) {
-  const Icon = /email/i.test(label) ? Mail : /name/i.test(label) ? (/business/i.test(label) ? Building2 : UserRound) : /whatsapp/i.test(label) ? Phone : /website|linkedin/i.test(label) ? Globe : /achieve|target/i.test(label) ? Target : /sell|do\?/i.test(label) ? BriefcaseBusiness : MessageSquare;
+  const Icon = /email/i.test(label) ? Mail : /name/i.test(label) ? (/business/i.test(label) ? Building2 : UserRound) : /whatsapp/i.test(label) ? WhatsAppIcon : /website|linkedin/i.test(label) ? Globe : /achieve|target/i.test(label) ? Target : /sell|do\?/i.test(label) ? BriefcaseBusiness : MessageSquare;
   return (
     <label className="form-field block">
       <span className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-foreground"><Icon aria-hidden="true" className="h-4 w-4 shrink-0 text-primary" />{label}</span>
