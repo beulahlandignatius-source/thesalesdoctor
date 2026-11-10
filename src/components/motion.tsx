@@ -45,6 +45,16 @@ export function useMotionFx() {
     }), { threshold: 0.5 });
     document.querySelectorAll<HTMLElement>(".farmora-home .proof-number, .farmora-home .hero-stat dt").forEach((el) => { el.dataset["count"] = el.textContent ?? ""; io.observe(el); });
 
+    // Staggered scroll reveals for cards and rows.
+    const revealEls = Array.from(document.querySelectorAll<HTMLElement>(".farmora-home .session-question, .farmora-home .who-bento-tile, .farmora-home .mentorship-benefit, .farmora-home .proof-tile, .farmora-home section h2, .farmora-home section .eyebrow"));
+    const rio = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("fx-in"); rio.unobserve(e.target); } }), { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+    revealEls.forEach((el) => { const sib = el.parentElement ? Array.from(el.parentElement.children).indexOf(el) : 0; el.style.setProperty("--fx-delay", `${Math.min(sib, 5) * 90}ms`); el.classList.add("fx-reveal"); rio.observe(el); });
+    // Subtle parallax for floating décor.
+    const para = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"));
+    let praf = 0;
+    const onScroll = () => { if (praf) return; praf = requestAnimationFrame(() => { praf = 0; para.forEach((el) => { el.style.translate = `0 ${window.scrollY * Number(el.dataset["parallax"])}px`; }); }); };
+    if (para.length) window.addEventListener("scroll", onScroll, { passive: true });
+
     const fine = window.matchMedia("(pointer: fine)").matches;
     const tiles = fine ? Array.from(document.querySelectorAll<HTMLElement>(".farmora-home .proof-tile, .farmora-home .session-question, .farmora-home .mentorship-benefit, .farmora-home .hero-stat")) : [];
     const move = (e: PointerEvent) => { const el = e.currentTarget as HTMLElement; const r = el.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
@@ -56,6 +66,6 @@ export function useMotionFx() {
     const ctas = fine ? Array.from(document.querySelectorAll<HTMLElement>(".farmora-home section a[href^='/book'], .farmora-home section a[href^='/mentorship']")) : [];
     const mag = (e: PointerEvent) => { const el = e.currentTarget as HTMLElement; const r = el.getBoundingClientRect(); el.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.15}px, ${(e.clientY - r.top - r.height / 2) * 0.25}px)`; };
     ctas.forEach((c) => { c.addEventListener("pointermove", mag); c.addEventListener("pointerleave", leave); });
-    return () => { io.disconnect(); tiles.forEach((t) => { t.removeEventListener("pointermove", move); t.removeEventListener("pointerleave", leave); }); ctas.forEach((c) => { c.removeEventListener("pointermove", mag); c.removeEventListener("pointerleave", leave); }); };
+    return () => { io.disconnect(); rio.disconnect(); window.removeEventListener("scroll", onScroll); cancelAnimationFrame(praf); tiles.forEach((t) => { t.removeEventListener("pointermove", move); t.removeEventListener("pointerleave", leave); }); ctas.forEach((c) => { c.removeEventListener("pointermove", mag); c.removeEventListener("pointerleave", leave); }); };
   }, []);
 }

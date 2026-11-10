@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CtaLink } from "@/components/site";
 import { ClientReviews, reviewsQuery } from "@/components/client-reviews";
 import { StackedCards } from "@/components/stacked-cards";
-import { ScrollPath, Words, useMotionFx } from "@/components/motion";
+import { Words, useMotionFx } from "@/components/motion";
+import { JourneyLine } from "@/components/journey-line";
 import { CalendarDays, ClipboardList, TrendingUp, BadgeDollarSign, Users, Globe2, Target, Zap, HeartPulse } from "lucide-react";
 import desk from "@/assets/dr-dan-desk.jpg";
 import portrait from "@/assets/dr-dan-portrait.jpg.asset.json";
@@ -93,8 +94,8 @@ function Index() {
       {/* ===== HERO ===== */}
       <section className="relative">
         <div className="grid-paper pointer-events-none absolute inset-0" aria-hidden="true" />
-        <span className="float-orb -left-16 top-40 h-40 w-40 bg-primary/10 blur-2xl" aria-hidden="true" />
-        <span className="orbit right-[8%] top-10 hidden h-56 w-56 md:block" aria-hidden="true" />
+        <span data-parallax="0.25" className="float-orb -left-16 top-40 h-40 w-40 bg-primary/10 blur-2xl" aria-hidden="true" />
+        <span data-parallax="-0.15" className="orbit right-[8%] top-10 hidden h-56 w-56 md:block" aria-hidden="true" />
         <div className="relative mx-auto grid max-w-7xl gap-10 px-5 pb-10 pt-8 md:grid-cols-12 md:gap-6 md:pb-16 md:pt-14">
           <div className="md:col-span-7 md:pt-6">
             <p className="eyebrow flex items-center gap-3"><HeartPulse className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />With Dr. Dan Odotukpono, The Sales Doctor</p>
@@ -144,7 +145,7 @@ function Index() {
 
       {/* ===== 3 QUESTIONS — the funnel ===== */}
       <section className="motion-layer relative mx-auto max-w-7xl px-5 py-20 md:py-28">
-        <ScrollPath d="M2 0 C 2 30, 40 20, 38 45 S 70 60, 75 75 S 96 90, 98 100" />
+        <JourneyLine anchors=".session-number" />
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
             <p className="eyebrow">Your session</p>
@@ -166,7 +167,7 @@ function Index() {
 
       {/* ===== WHO — dark editorial ===== */}
       <section className="motion-layer relative overflow-hidden bg-ink text-ink-foreground">
-        <ScrollPath d="M98 0 C 80 15, 20 10, 30 35 S 85 55, 60 75 S 5 85, 10 100" />
+        <JourneyLine anchors=".who-bento .proof-icon" />
         <div className="mx-auto max-w-7xl px-5 py-20 md:py-28">
           <p className="eyebrow">Who this is for</p>
           <h2 className="mt-5 max-w-5xl text-[clamp(2rem,5.5vw,4.75rem)] font-black leading-[0.95] tracking-tight">
@@ -210,7 +211,7 @@ function Index() {
 
       {/* ===== MENTORSHIP — asymmetric magazine spread ===== */}
       <section className="mentorship-spread motion-layer relative overflow-hidden">
-        <ScrollPath d="M10 0 C 30 20, 5 40, 45 50 S 95 70, 70 100" />
+        <JourneyLine anchors=".benefit-number" />
         <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 md:grid-cols-12 md:py-28">
           <div className="md:col-span-7">
             <p className="eyebrow">Mentorship</p>

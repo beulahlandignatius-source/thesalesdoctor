@@ -19,9 +19,9 @@ export function StackedCards({ items, label }: { items: ReactNode[]; label: stri
     </div>
     <div className="mt-8 flex items-center justify-between gap-4">
       <Button variant="outline" size="icon" className="rounded-full" title={`Previous ${label}`} aria-label={`Previous ${label}`} disabled={current === 0} onClick={() => go(-1)}><ChevronLeft /></Button>
-      <div className="flex items-center gap-1" aria-label={`${label} pages`}>
+      {items.length > 6 ? <p className="font-display text-sm font-bold tabular-nums" aria-live="polite"><span className="text-primary">{String(current + 1).padStart(2, "0")}</span> <span className="text-muted-foreground">/ {String(items.length).padStart(2, "0")}</span></p> : <div className="flex items-center gap-1" aria-label={`${label} pages`}>
         {items.map((_, i) => <Button key={i} variant="ghost" size="icon" className="h-11 w-6 rounded-full" aria-label={`Show ${label} ${i + 1}`} aria-current={i === current ? "true" : undefined} onClick={() => setIndex(i)}><span className={`h-1.5 rounded-full ${i === current ? "w-6 bg-primary" : "w-2 bg-border"}`} /></Button>)}
-      </div>
+      </div>}
       <Button variant="outline" size="icon" className="rounded-full" title={`Next ${label}`} aria-label={`Next ${label}`} disabled={current >= items.length - 1} onClick={() => go(1)}><ChevronRight /></Button>
     </div>
   </div>;

@@ -1,8 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme";
 import logo from "@/assets/logo-transparent.png";
 
@@ -15,37 +14,46 @@ const NAV = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const link = "ulink mx-3 py-2 font-display text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground transition hover:text-foreground";
-  const active = { className: "!text-primary" };
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 24);
+    on(); window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
+  useEffect(() => {
+    if (!open) return;
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    window.addEventListener("keydown", esc); return () => window.removeEventListener("keydown", esc);
+  }, [open]);
   return (
-    <header className="site-header sticky top-3 z-40 mx-3 mb-6 mt-3 rounded-full border border-border bg-background/90 backdrop-blur md:mx-auto md:max-w-7xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-5">
-        <Link to="/" className="flex items-center gap-2 font-display text-sm font-black tracking-[0.2em] text-foreground">
-          <img src={logo} alt="The Sales Doctor" className="h-9 w-14 shrink-0 object-contain" />
-          THE SALES <span className="text-primary">CLINIC</span>
+    <header className={cn("site-header sticky z-40 mx-3 mb-6 mt-3 md:mx-auto md:max-w-6xl", scrolled && "is-scrolled", open && "is-open")}>
+      <div className="site-header-bar mx-auto flex items-center justify-between gap-3 px-3 sm:px-4">
+        <Link to="/" className="flex items-center gap-2.5 font-display text-[13px] font-black tracking-[0.18em] text-foreground">
+          <span className="nav-logo"><img src={logo} alt="The Sales Doctor" className="h-8 w-12 shrink-0 object-contain" /></span>
+          <span className="leading-none">THE SALES <span className="text-primary">CLINIC</span></span>
         </Link>
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
+        <nav className="nav-track hidden items-center md:flex" aria-label="Main">
           {NAV.map((n) => (
-            <Link key={n.to} to={n.to} activeOptions={{ exact: n.exact }} activeProps={active} className={link}>{n.label}</Link>
+            <Link key={n.to} to={n.to} activeOptions={{ exact: n.exact }} activeProps={{ className: "is-active" }} className="nav-link">{n.label}</Link>
           ))}
         </nav>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <CtaLink to="/book" size="sm" className="hidden sm:inline-flex">BOOK A CONSULTATION</CtaLink>
-          <Button variant="outline" size="icon" className="rounded-full md:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
+          <CtaLink to="/book" size="sm" className="nav-cta hidden sm:inline-flex">BOOK A CONSULTATION</CtaLink>
+          <button type="button" className="nav-burger md:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+          </button>
         </div>
       </div>
-      {open && (
-        <nav className="absolute inset-x-0 top-full mt-3 rounded-3xl border border-border bg-background px-5 pb-5 pt-2 shadow-lg md:hidden" aria-label="Mobile">
-          {NAV.map((n) => (
-            <Link key={n.to} to={n.to} onClick={() => setOpen(false)} activeOptions={{ exact: n.exact }} activeProps={active}
-              className="block border-b border-border/60 py-3.5 font-display text-lg font-bold text-foreground">{n.label}</Link>
-          ))}
-          <Link to="/book" onClick={() => setOpen(false)} className={btnClass("primary", "md", "mt-5 w-full")}>BOOK A CONSULTATION</Link>
-        </nav>
-      )}
+      <nav className={cn("nav-sheet md:hidden", open && "is-open")} aria-label="Mobile" inert={!open}>
+        {NAV.map((n, i) => (
+          <Link key={n.to} to={n.to} onClick={() => setOpen(false)} activeOptions={{ exact: n.exact }} activeProps={{ className: "is-active" }}
+            className="nav-sheet-link" style={{ transitionDelay: open ? `${80 + i * 50}ms` : "0ms" }}>
+            <span className="nav-sheet-num">0{i + 1}</span>{n.label}<span className="nav-sheet-arrow" aria-hidden="true">→</span>
+          </Link>
+        ))}
+        <Link to="/book" onClick={() => setOpen(false)} className={btnClass("primary", "md", "mt-4 w-full")}>BOOK A CONSULTATION</Link>
+      </nav>
     </header>
   );
 }
