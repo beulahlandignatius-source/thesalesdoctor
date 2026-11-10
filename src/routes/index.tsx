@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CtaLink } from "@/components/site";
 import { ClientReviews, reviewsQuery } from "@/components/client-reviews";
 import { StackedCards } from "@/components/stacked-cards";
+import { ScrollPath, Words, useMotionFx } from "@/components/motion";
 import { CalendarDays, ClipboardList, TrendingUp, BadgeDollarSign, Users, Globe2, Target, Zap, HeartPulse } from "lucide-react";
 import desk from "@/assets/dr-dan-desk.jpg";
 import portrait from "@/assets/dr-dan-portrait.jpg.asset.json";
@@ -86,17 +87,20 @@ function Pulse({ className = "" }: { className?: string }) {
 }
 
 function Index() {
+  useMotionFx();
   return (
     <main className="farmora-home overflow-x-clip">
       {/* ===== HERO ===== */}
       <section className="relative">
         <div className="grid-paper pointer-events-none absolute inset-0" aria-hidden="true" />
+        <span className="float-orb -left-16 top-40 h-40 w-40 bg-primary/10 blur-2xl" aria-hidden="true" />
+        <span className="orbit right-[8%] top-10 hidden h-56 w-56 md:block" aria-hidden="true" />
         <div className="relative mx-auto grid max-w-7xl gap-10 px-5 pb-10 pt-8 md:grid-cols-12 md:gap-6 md:pb-16 md:pt-14">
           <div className="md:col-span-7 md:pt-6">
             <p className="eyebrow flex items-center gap-3"><HeartPulse className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />With Dr. Dan Odotukpono, The Sales Doctor</p>
             <h1 className="mt-6 font-black uppercase leading-[0.88] tracking-[-0.045em] text-[clamp(2.9rem,9.2vw,7.4rem)] md:text-[clamp(3.5rem,6.4vw,6.2rem)]">
-              What would it take to get you to your{" "}
-              <span className="relative inline text-primary">next revenue target?</span>
+              <Words text="What would it take to get you to your" />{" "}
+              <span className="relative inline text-primary"><Words text="next revenue target?" start={8} /></span>
             </h1>
             <Pulse className="mt-6 h-12 w-full text-primary md:h-16" />
             <div className="mt-6 grid gap-8 md:grid-cols-[1.4fr_1fr] md:items-end">
@@ -112,8 +116,8 @@ function Index() {
 
           <div className="relative md:col-span-5">
             <div className="relative ml-6 md:ml-0">
-              <div className="absolute -left-6 -top-6 h-full w-full bg-primary md:-left-8 md:-top-8" aria-hidden="true" />
-              <div className="relative overflow-hidden bg-ink">
+              <div className="hero-block-in absolute -left-6 -top-6 h-full w-full bg-primary md:-left-8 md:-top-8" aria-hidden="true" />
+              <div className="hero-photo-in relative overflow-hidden bg-ink">
                 <img src={portrait.url} alt="Dr. Dan Odotukpono, The Sales Doctor, smiling with a stethoscope" className="aspect-[4/5] w-full object-cover object-top" />
                 {/* diagnostic overlay */}
                 <div className="scan pointer-events-none absolute inset-0" aria-hidden="true" />
@@ -139,7 +143,8 @@ function Index() {
       </section>
 
       {/* ===== 3 QUESTIONS — the funnel ===== */}
-      <section className="mx-auto max-w-7xl px-5 py-20 md:py-28">
+      <section className="motion-layer relative mx-auto max-w-7xl px-5 py-20 md:py-28">
+        <ScrollPath d="M2 0 C 2 30, 40 20, 38 45 S 70 60, 75 75 S 96 90, 98 100" />
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
             <p className="eyebrow">Your session</p>
@@ -160,7 +165,8 @@ function Index() {
       </section>
 
       {/* ===== WHO — dark editorial ===== */}
-      <section className="relative bg-ink text-ink-foreground">
+      <section className="motion-layer relative overflow-hidden bg-ink text-ink-foreground">
+        <ScrollPath d="M98 0 C 80 15, 20 10, 30 35 S 85 55, 60 75 S 5 85, 10 100" />
         <div className="mx-auto max-w-7xl px-5 py-20 md:py-28">
           <p className="eyebrow">Who this is for</p>
           <h2 className="mt-5 max-w-5xl text-[clamp(2rem,5.5vw,4.75rem)] font-black leading-[0.95] tracking-tight">
@@ -191,7 +197,7 @@ function Index() {
         <div className="grid gap-6 md:grid-cols-12 md:items-end">
           <p className="eyebrow md:col-span-12">How it works</p>
           <h2 className="text-[clamp(2rem,5vw,4.25rem)] font-black leading-[0.95] tracking-tight md:col-span-9">
-            From “not sure what’s wrong” to <span className="marker">“I know exactly what to do.”</span>
+            From “not sure what’s wrong” to <span className="marker marker-draw">“I know exactly what to do.”</span>
           </h2>
         </div>
         <div className="mt-14">
@@ -203,7 +209,8 @@ function Index() {
       </section>
 
       {/* ===== MENTORSHIP — asymmetric magazine spread ===== */}
-      <section className="mentorship-spread">
+      <section className="mentorship-spread motion-layer relative overflow-hidden">
+        <ScrollPath d="M10 0 C 30 20, 5 40, 45 50 S 95 70, 70 100" />
         <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 md:grid-cols-12 md:py-28">
           <div className="md:col-span-7">
             <p className="eyebrow">Mentorship</p>

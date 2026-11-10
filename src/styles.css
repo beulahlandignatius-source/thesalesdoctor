@@ -548,3 +548,32 @@ main img:hover { transform: scale(1.015); }
 .xray-continue-arrow { display: grid; width: 2rem; height: 2rem; place-items: center; border-radius: 9999px; background: var(--primary-foreground); color: var(--primary); transition: transform .3s; }
 .xray-continue:not(:disabled):hover .xray-continue-arrow { transform: translateX(4px); }
 @media (prefers-reduced-motion: reduce) { .xray-continue, .xray-continue::before, .xray-continue-arrow { transition: none; } }
+
+/* ===== Motion layer: connecting lines, word reveals, tilt + spotlight ===== */
+.scroll-path { z-index: 0; overflow: visible; }
+.scroll-path path { fill: none; stroke-linecap: round; }
+.scroll-path-ghost { stroke: color-mix(in oklab, var(--primary) 14%, transparent); stroke-width: 2; stroke-dasharray: 4 8; }
+.scroll-path-line { stroke: var(--primary); stroke-width: 2.5; stroke-dasharray: 1; stroke-dashoffset: 1; filter: drop-shadow(0 0 6px color-mix(in oklab, var(--primary) 55%, transparent)); }
+.motion-layer > * { position: relative; z-index: 1; }
+.word-mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: .08em; margin-bottom: -.08em; }
+.word { display: inline-block; animation: word-up .9s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes word-up { from { transform: translateY(105%) rotate(4deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.hero-photo-in { animation: photo-in 1.3s cubic-bezier(.2,.8,.2,1) .3s both; }
+@keyframes photo-in { from { transform: scale(1.12); clip-path: inset(100% 0 0 0); } to { transform: none; clip-path: inset(0); } }
+.hero-block-in { animation: block-in 1s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes block-in { from { transform: translate(24px, 24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.float-orb { position: absolute; border-radius: 9999px; pointer-events: none; animation: drift 14s ease-in-out infinite alternate; }
+@keyframes drift { from { transform: translate(0, 0) rotate(0); } to { transform: translate(30px, -40px) rotate(40deg); } }
+.orbit { position: absolute; pointer-events: none; border: 1.5px dashed color-mix(in oklab, var(--primary) 40%, transparent); border-radius: 9999px; animation: spin 40s linear infinite; }
+.orbit::after { content: ""; position: absolute; top: -6px; left: 50%; width: 12px; height: 12px; border-radius: 9999px; background: var(--primary); box-shadow: 0 0 12px var(--primary); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.fx-tilt { transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .3s; will-change: transform; }
+.fx-tilt::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s; background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklab, var(--primary-foreground) 22%, transparent), transparent 45%); z-index: 1; }
+.fx-tilt:hover::before { opacity: 1; }
+.session-question, .mentorship-benefit, .hero-stat { position: relative; }
+.marker-draw { background: linear-gradient(var(--blush), var(--blush)) no-repeat 0 85% / 0% 40%; animation: mark 1.2s .2s cubic-bezier(.2,.8,.2,1) forwards; animation-timeline: view(); animation-range: entry 40% cover 45%; }
+@keyframes mark { to { background-size: 100% 40%; } }
+@media (prefers-reduced-motion: reduce) {
+  .word, .hero-photo-in, .hero-block-in, .float-orb, .orbit, .marker-draw { animation: none !important; }
+  .marker-draw { background-size: 100% 40%; }
+}
