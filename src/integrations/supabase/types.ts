@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_saved_views: {
+        Row: {
+          created_at: string
+          filters: Json
+          id: string
+          name: string
+          scope: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          filters?: Json
+          id?: string
+          name: string
+          scope: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          filters?: Json
+          id?: string
+          name?: string
+          scope?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       admin_users: {
         Row: {
           created_at: string

@@ -1,11 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useState } from "react";
 import { Check, ExternalLink, Info, RotateCcw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { listPaymentProofs, reviewPaymentProof } from "@/lib/payment-proof.functions";
 import { z } from "zod";
+import { SavedViews } from "@/components/admin/SavedViews";
 
 export const Route = createFileRoute("/admin/payments")({
   head: () => ({ meta: [
@@ -17,15 +17,20 @@ export const Route = createFileRoute("/admin/payments")({
     { name: "twitter:card", content: "summary" },
     { name: "robots", content: "noindex" },
   ] }),
-  validateSearch: (s: Record<string, unknown>): { record?: string | undefined } => ({ record: z.string().uuid().safeParse(s["record"]).success ? String(s["record"]) : undefined }),
+  validateSearch: (s: Record<string, unknown>): { record?: string | undefined; status?: "" | "pending" | "verified" | "rejected" | undefined; provider?: "" | "stripe" | "flutterwave" | undefined } => ({
+    record: z.string().uuid().safeParse(s["record"]).success ? String(s["record"]) : undefined,
+    status: z.enum(["", "pending", "verified", "rejected"]).catch("pending").parse(s["status"]),
+    provider: z.enum(["", "stripe", "flutterwave"]).catch("").parse(s["provider"]),
+  }),
   component: Payments,
 });
 
 const LABEL: Record<string, string> = { pending: "To check", verified: "Verified by you", rejected: "Rejected" };
 
 function Payments() {
-  const { record } = Route.useSearch();
-  const [filter, setFilter] = useState("pending");
+  const { record, status = "pending", provider = "" } = Route.useSearch();
+  const filter = status;
+  const navigate = useNavigate({ from: "/admin/payments" });
   const qc = useQueryClient();
   const load = useServerFn(listPaymentProofs);
   const update = useServerFn(reviewPaymentProof);
@@ -34,12 +39,15 @@ function Payments() {
     mutationFn: (d: { id: string; status: "pending" | "verified" | "rejected" }) => update({ data: d }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-payment-proofs"] }),
   });
-  const rows = (data ?? []).filter((r) => record ? r.id === record : !filter || r.status === filter);
+  const rows = (data ?? []).filter((r) => record ? r.id === record : (!filter || r.status === filter) && (!provider || r.provider === provider));
   return <div className="admin-page admin-payment-page">
     <h1 className="text-3xl font-extrabold">Payment screenshots</h1>
     {record && <Button variant="outline" className="mt-4" asChild><Link to="/admin/payments" search={{}}>Show all screenshots</Link></Button>}
     <p className="mt-3 flex max-w-2xl gap-2 rounded-2xl bg-secondary p-4 text-sm"><Info className="h-4 w-4 shrink-0 text-primary" />Screenshots are uploaded by visitors and are not proof of payment. Check the payment in Stripe or Flutterwave before marking it verified. Paid clinic counts on the Overview come only from Stripe and Flutterwave directly.</p>
-    {!record && <select aria-label="Screenshot status" className="field mt-6 sm:!w-56" value={filter} onChange={(e) => setFilter(e.target.value)}><option value="pending">To check</option><option value="verified">Verified by you</option><option value="rejected">Rejected</option><option value="">All</option></select>}
+    {!record && <><div className="admin-filter-grid mt-6">
+      <select aria-label="Screenshot status" className="field sm:!w-56" value={filter} onChange={(e) => navigate({ search: (prev) => ({ ...prev, status: e.target.value as typeof filter }), replace: true })}><option value="pending">To check</option><option value="verified">Verified by you</option><option value="rejected">Rejected</option><option value="">All</option></select>
+      <select aria-label="Payment provider" className="field sm:!w-56" value={provider} onChange={(e) => navigate({ search: (prev) => ({ ...prev, provider: e.target.value as typeof provider }), replace: true })}><option value="">All providers</option><option value="stripe">Stripe</option><option value="flutterwave">Flutterwave</option></select>
+    </div><SavedViews scope="payments" filters={{ status: filter, provider }} onApply={(filters) => navigate({ search: { status: filters.status as typeof filter, provider: filters.provider ?? "" } })} /></>}
     {m.isError && <p className="mt-4 text-destructive" role="alert">Couldn’t update. Please try again.</p>}
     <div className="mt-6 grid gap-4 md:grid-cols-2">
       {isPending ? <p role="status">Loading screenshots…</p> : isError ? <p role="alert">Couldn’t load screenshots. Please refresh.</p> : rows.length === 0 ? <p className="py-8 text-muted-foreground">No screenshots in this view.</p> : rows.map((r) => <article key={r.id} className="overflow-hidden rounded-3xl border border-border bg-card">

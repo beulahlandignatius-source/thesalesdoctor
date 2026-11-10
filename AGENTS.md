@@ -48,3 +48,4 @@ use the editor.
 - Use the shared WhatsAppIcon brand mark for WhatsApp contact actions and fields; ExtLink adds it for WhatsApp destinations so repeated links stay consistent.
 - Admin navigation below the desktop sidebar breakpoint uses three primary tabs and one accessible More dialog for secondary sections and account actions; keep dashboard layout adjustments scoped to the admin shell.
 - Global admin search uses authenticated, admin-checked RLS queries with literal-text matching; record links fetch by ID independently of list limits/status filters, and provider-confirmed payments remain distinct from uploaded screenshots.
+- Saved admin views persist filter definitions per admin and scope in Cloud with owner/admin RLS; reapplying replaces the current filters, preserves exact date ranges, and never stores result records.

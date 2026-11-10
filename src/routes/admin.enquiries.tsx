@@ -9,6 +9,7 @@ import { ENQUIRY_STATUSES, listEnquiries, updateEnquiryStatus } from "@/lib/enqu
 import { DETAIL_LABEL, KIND_LABEL, fmt } from "@/components/admin/enquiry-labels";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { SavedViews } from "@/components/admin/SavedViews";
 
 export const Route = createFileRoute("/admin/enquiries")({
   head: () => ({
@@ -79,6 +80,7 @@ function Enquiries() {
         </select>
       </div>
 
+      {!search.record && <SavedViews scope="enquiries" filters={{ q, kind: kind as "" | "free_review" | "private_clinic" | "mentorship", status: status as "" | "new" | "contacted" | "booked" | "paid" | "closed", ...(range ?? {}) }} onApply={(filters) => { setQ(filters.q ?? ""); setOpen(null); navigate({ search: { from: filters.from, to: filters.to, kind: filters.kind || undefined, status: filters.status || undefined } }); }} />}
       <div className="mt-6 space-y-3">
         {isLoading ? <p role="status" className="text-muted-foreground">Loading…</p>
           : isError ? <p role="alert" className="text-destructive">Couldn’t load enquiries. Please refresh.</p>
