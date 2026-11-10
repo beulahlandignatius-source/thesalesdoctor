@@ -992,3 +992,38 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .diagnostic-sweep { display: none; }
   .guide-character, .guide-message, .guide-scan-track span, .diagnostic-finding, .diagnostic-evidence, .diagnostic-result-title { animation: none !important; opacity: 1; translate: none; transform: none; }
 }
+
+/* Mobile X-Ray: quiet hierarchy, readable answers and room for thumb actions. */
+@media (max-width: 639px) {
+  .xray-introduction { padding-inline: 1.25rem; padding-block: 2.5rem; }
+  .xray-introduction h2 { font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
+  .xray-bento { margin-top: 1.75rem; gap: 1.25rem; }
+  .xray-bento .proof-tile { min-height: 0; padding: 1.5rem; }
+  .xray-bento .proof-tile-1 p { margin-top: 1.5rem; font-size: 1.125rem; line-height: 1.65; }
+  .xray-bento .proof-label { font-size: 1rem; line-height: 1.65; opacity: 1; }
+  .assessment-workspace { padding-inline: 1.25rem; padding-bottom: 10rem; }
+  .xray-bar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .5rem; }
+  .xray-bar > a { min-width: 0; font-size: .875rem; text-align: center; }
+  .xray-bar > span { white-space: nowrap; }
+  .assessment-question { margin-top: 1.75rem; padding-top: 1.5rem; }
+  .xray-question { font-size: 1.5rem; line-height: 1.3; letter-spacing: 0; text-wrap: pretty; }
+  .xray-qnum { font-size: 2.5rem; margin-bottom: .75rem; }
+  .assessment-workspace .xray-option { gap: .75rem; padding: 1rem; min-height: 4rem; border-radius: 1rem !important; }
+  .xray-option > span:nth-child(2) { min-width: 0; overflow-wrap: anywhere; line-height: 1.5; }
+  .xray-option-arrow { display: none; }
+  .assessment-workspace .field { line-height: 1.5; scroll-margin-block: 8rem; }
+  .assessment-workspace .guide-compact, .results-workspace .guide-compact { display: grid; grid-template-columns: 3.5rem minmax(0, 1fr); gap: .75rem; min-height: 0; }
+  .assessment-workspace .guide-portrait, .results-workspace .guide-portrait { width: 3.5rem; }
+  .assessment-workspace .guide-speech, .results-workspace .guide-speech { padding: .875rem; }
+  .guide-compact .guide-message { font-size: .9375rem; line-height: 1.55; }
+  .results-workspace { padding-inline: 1.25rem; }
+  .results-workspace .diagnostic-result-title { padding: 1.75rem 1.25rem; border-radius: 1.5rem; }
+  .results-workspace h1 { font-size: 1.75rem; line-height: 1.25; }
+  .results-workspace p, .results-workspace li { line-height: 1.7; overflow-wrap: anywhere; }
+  .results-workspace > div > section { padding-top: 1.5rem; padding-bottom: 1rem; }
+  .results-workspace .diagnostic-treatment { padding: 1.5rem; }
+  .results-workspace .diagnostic-treatment a { white-space: normal; height: auto; min-height: 3.5rem; padding-block: 1rem; }
+}
+@media (hover: none) {
+  .assessment-workspace .xray-option:hover:not(:disabled) { transform: none; }
+}

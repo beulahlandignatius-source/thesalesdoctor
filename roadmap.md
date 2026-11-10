@@ -1,4 +1,6 @@
 # Roadmap
+- [x] Improve mobile X-Ray readability and control spacing; verify the full assessment and results.
+- [x] Verify desktop/mobile navigation through free consultation submission and WhatsApp confirmation with real test enquiries.
 - [x] Add shared fade-and-slide transitions; verify browser back/forward, mobile, reduced motion and preserved navigation.
 - [x] Animate About and Services while preserving content and photos; compact visitor navigation without scrolling.
 - [x] Add a small contextual mascot companion with accessible open, close and minimise controls.
