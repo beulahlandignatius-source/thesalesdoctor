@@ -65,7 +65,7 @@ function Index() {
         <h2 className="mt-4 max-w-2xl font-display text-[clamp(2rem,5vw,4.25rem)] font-black leading-[0.95] tracking-tight">
           This isn't a generic <span className="text-primary">marketing quiz.</span>
         </h2>
-        <div className="proof-bento mt-12">
+        <div className="proof-bento xray-bento mt-12">
           <article className="proof-tile proof-tile-1">
             <div className="flex items-center justify-between"><span className="proof-icon"><ScanSearch aria-hidden="true" className="h-6 w-6" /></span><Pulse /></div>
             <p className="mt-10 font-display text-2xl font-bold leading-snug sm:text-3xl">A free 5-minute assessment that examines how you attract, convert and follow up with potential clients, then identifies the biggest problem holding you back.</p>

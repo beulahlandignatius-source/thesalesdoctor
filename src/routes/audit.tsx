@@ -383,7 +383,7 @@ function Audit() {
             variant="premium"
             onClick={next}
             disabled={!canContinue || busy || !ready}
-            className="w-full"
+            className="xray-continue group h-14 w-full text-base"
           >
             {busy
               ? "Saving…"
@@ -392,7 +392,7 @@ function Audit() {
                 : q && OPTIONAL_IDS.has(q.id) && !answer
                   ? "Skip"
                   : "Continue"}
-            {!busy && <ArrowRight className="ml-2" />}
+            {!busy && <span className="xray-continue-arrow ml-3"><ArrowRight className="h-4 w-4" /></span>}
           </Button>
         </div>
       </div>
