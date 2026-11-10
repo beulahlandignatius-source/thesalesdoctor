@@ -50,6 +50,7 @@ function Results() {
       try {
         localStorage.setItem(RESULT_KEY, JSON.stringify(res));
       } catch {}
+      window.__lovableEvents?.track?.("project.xray_completed", {});
       setResult(res as Result);
       setStatus("done");
     } catch {
@@ -238,7 +239,10 @@ function ReportDownload({ r }: { r: Result }) {
             setAttempt((n) => n + 1);
             return;
           }
-          if (blob) void deliverFile(blob, "my-client-xray.pdf").catch(() => setError(true));
+          if (blob) {
+            window.__lovableEvents?.track?.("project.xray_report_downloaded", {});
+            void deliverFile(blob, "my-client-xray.pdf").catch(() => setError(true));
+          }
         }}
       >
         {error ? <RefreshCw aria-hidden="true" /> : <Download aria-hidden="true" />}

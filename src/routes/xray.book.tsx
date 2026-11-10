@@ -113,6 +113,7 @@ function Book() {
             Calendar not loading?{" "}
             <a
               href={src}
+              onClick={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "xray_followup" })}
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary underline"
