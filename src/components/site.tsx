@@ -1,3 +1,5 @@
+import { LINKS } from "@/lib/links";
+import { Linkedin, MessageCircle } from "lucide-react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useEffect, useState, type ReactNode } from "react";
@@ -123,6 +125,10 @@ export function Footer() {
             <span className="footer-logo"><img src={logo} alt="The Sales Doctor" className="h-16 w-28 object-contain" /></span>
             <svg viewBox="0 0 300 40" className="footer-ecg mt-6" aria-hidden="true" preserveAspectRatio="none"><path d="M0 26 H60 L70 26 L78 8 L86 36 L94 18 L102 26 H160 L170 26 L178 4 L186 38 L194 20 L202 26 H300" className="footer-ecg-trace" /><path d="M0 26 H60 L70 26 L78 8 L86 36 L94 18 L102 26 H160 L170 26 L178 4 L186 38 L194 20 L202 26 H300" className="footer-ecg-beat" pathLength={100} /></svg>
             <Link to="/book" className={btnClass("primary", "md", "mt-6")}>Book a consultation →</Link>
+            <div className="mt-6 flex gap-2.5" aria-label="Social media">
+              <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Dr. Dan on LinkedIn" className="footer-social"><Linkedin className="h-4 w-4" /></a>
+              <a href={LINKS.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="Chat with Dr. Dan on WhatsApp" className="footer-social"><MessageCircle className="h-4 w-4" /></a>
+            </div>
           </div>
           <nav aria-label="Footer" className="grid grid-cols-2 gap-2.5 md:col-span-7">
             {NAV.map((n, i) => {

@@ -3,6 +3,7 @@ export const LINKS = {
   stripe: "https://buy.stripe.com/9B600lb5Vgslcake8y2ZO0L",
   flutterwave: "https://flutterwave.com/pay/kyqfrin1z57j",
   whatsapp: "https://wa.link/ez0syb",
+  linkedin: "https://www.linkedin.com/in/the-salesdoctor",
 } as const;
 
 export const CLINIC_PRICE = "$53";

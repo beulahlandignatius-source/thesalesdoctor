@@ -797,3 +797,6 @@ main img:hover { transform: scale(1.015); }
 .mentor-portrait-frame { overflow: hidden; height: 22rem; border-radius: 2rem 2rem 2rem .75rem; background: var(--blush); }
 .mentor-portrait-frame img { object-position: center 20%; }
 @media (min-width: 768px) { .mentor-portrait-frame { height: 32rem; max-width: 26rem; margin-inline: auto; } .mentor-portrait-frame img { object-position: center 8%; } }
+
+.footer-social { display:inline-grid; place-items:center; width:2.75rem; height:2.75rem; border-radius:999px; border:1px solid color-mix(in oklab, var(--ink-foreground) 20%, transparent); color: var(--ink-foreground); transition: background .25s, transform .25s, border-color .25s; }
+.footer-social:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-2px); }
