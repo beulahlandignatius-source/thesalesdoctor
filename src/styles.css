@@ -43,7 +43,7 @@
 :root {
   /* One UI–style: generous rounded corners, soft background, white floating cards */
   --radius: 1.25rem;
-  --background: oklch(0.965 0.006 60);
+  --background: oklch(0.982 0.005 95);
   --foreground: oklch(0.2 0.012 20);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.2 0.012 20);
@@ -221,12 +221,6 @@
 }
 
 /* ---------- Premium layer ---------- */
-body {
-  background-image:
-    radial-gradient(60rem 40rem at 100% -10%, color-mix(in oklab, var(--primary) 9%, transparent), transparent 60%),
-    radial-gradient(50rem 30rem at -10% 30%, color-mix(in oklab, var(--blush) 70%, transparent), transparent 60%);
-  background-attachment: fixed;
-}
 body::after {
   content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .035; mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -238,9 +232,7 @@ header:not(.xray-bar) { background-color: color-mix(in oklab, var(--background) 
 main section { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 35%; }
 @keyframes reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 main img { transition: transform .8s cubic-bezier(.2,.7,.2,1); }
-main img:hover { transform: scale(1.02); }
-a[class*="rounded-full"], button[class*="rounded-full"] { box-shadow: 0 10px 30px -12px color-mix(in oklab, var(--primary) 55%, transparent); }
-a[class*="rounded-full"]:hover, button[class*="rounded-full"]:hover { transform: translateY(-1px); }
+main img:hover { transform: scale(1.015); }
 .bg-card { border: 1px solid color-mix(in oklab, var(--border) 60%, transparent); transition: transform .3s, box-shadow .3s; }
 
 /* Client X-Ray interactions */
@@ -250,3 +242,35 @@ a[class*="rounded-full"]:hover, button[class*="rounded-full"]:hover { transform:
 .xray-option:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -16px color-mix(in oklab, var(--foreground) 35%, transparent); }
 .xray-option:active { transform: scale(.98); }
 @media (prefers-reduced-motion: reduce) { main section { animation: none; } }
+
+/* ---------- Editorial direction ---------- */
+.btn-sweep { position: relative; overflow: hidden; isolation: isolate; }
+.btn-sweep::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--foreground); transform: scaleX(0); transform-origin: right; transition: transform .45s cubic-bezier(.7,0,.2,1); }
+.btn-sweep:hover::before { transform: scaleX(1); transform-origin: left; }
+.btn-sweep.bg-primary:hover { color: var(--background); }
+.btn-sweep.bg-ink::before { background: var(--primary); }
+.btn-sweep.bg-ink-foreground::before { background: var(--ink); }
+.btn-sweep.bg-ink-foreground:hover { color: var(--ink-foreground); }
+.ulink { background: linear-gradient(currentColor,currentColor) left bottom / 0 2px no-repeat; transition: background-size .35s, color .2s; }
+.ulink:hover, .ulink[aria-current="page"] { background-size: 100% 2px; }
+.grid-paper { background-image: linear-gradient(color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px); background-size: 56px 56px; mask-image: linear-gradient(to bottom, black, transparent 85%); }
+.ecg { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: draw 2.6s .3s cubic-bezier(.6,0,.2,1) forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.scan { background: linear-gradient(to bottom, transparent 0, color-mix(in oklab, var(--primary) 30%, transparent) 50%, transparent 52%) 0 -100% / 100% 60% no-repeat; animation: scan 5s 1.2s ease-in-out infinite; mix-blend-mode: screen; }
+@keyframes scan { 0% { background-position: 0 -120%; } 60%,100% { background-position: 0 260%; } }
+.crosshair { width: 22px; height: 22px; border-left: 2px solid var(--ink-foreground); border-top: 2px solid var(--ink-foreground); opacity: .85; }
+.marker { background: linear-gradient(transparent 62%, color-mix(in oklab, var(--primary) 28%, transparent) 62%); }
+.funnel-row { transition: padding-left .35s cubic-bezier(.2,.7,.2,1); }
+.funnel-row:hover { padding-left: .75rem; }
+.symptom { position: relative; }
+.symptom::before { content: ""; position: absolute; left: 0; top: -1px; height: 2px; width: 0; background: var(--primary); transition: width .5s cubic-bezier(.2,.7,.2,1); }
+.symptom:hover::before { width: 100%; }
+@media (min-width: 768px) {
+  .pipeline::before { content: ""; position: absolute; top: 21px; left: 0; right: 0; height: 2px; background: repeating-linear-gradient(90deg, var(--foreground) 0 10px, transparent 10px 18px); }
+  .pipeline li:last-child .node { background: var(--primary); }
+}
+@media (max-width: 767px) {
+  .pipeline::before { content: ""; position: absolute; left: 21px; top: 0; bottom: 0; width: 2px; background: repeating-linear-gradient(180deg, var(--foreground) 0 10px, transparent 10px 18px); }
+  .pipeline li:last-child .node { background: var(--primary); }
+}
+@media (prefers-reduced-motion: reduce) { .ecg { stroke-dashoffset: 0; animation: none; } .scan { animation: none; } }

@@ -12,12 +12,13 @@ const NAV = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const link = "rounded-md px-3 py-2 text-sm font-semibold text-muted-foreground transition hover:text-foreground";
+  const link = "ulink mx-3 py-2 font-display text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground transition hover:text-foreground";
   const active = { className: "!text-primary" };
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
-        <Link to="/" className="font-display text-sm font-extrabold tracking-[0.2em] text-foreground">
+    <header className="sticky top-0 z-40 border-b-2 border-foreground bg-background/90 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-5">
+        <Link to="/" className="flex items-center gap-2 font-display text-sm font-black tracking-[0.2em] text-foreground">
+          <span className="h-3 w-3 bg-primary" aria-hidden="true" />
           THE SALES <span className="text-primary">CLINIC</span>
         </Link>
         <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
@@ -47,18 +48,29 @@ export function Header() {
 
 export function Footer() {
   return (
-    <footer className="bg-ink text-ink-foreground">
-      <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-8 text-sm text-ink-foreground/70 md:flex-row md:justify-between">
-        <p>© 2026 The Sales Clinic · Dr. Dan Odotukpono, The Sales Doctor</p>
-        <p>Results shown are past outcomes, not guarantees.</p>
+    <footer className="overflow-hidden bg-ink text-ink-foreground">
+      <div className="mx-auto max-w-7xl px-5 pt-14">
+        <nav aria-label="Footer" className="flex flex-wrap gap-x-8 gap-y-3 border-b border-ink-foreground/15 pb-8 font-display text-sm font-bold uppercase tracking-[0.16em]">
+          {NAV.map((n) => (
+            <Link key={n.to} to={n.to} className="ulink text-ink-foreground/70 hover:text-ink-foreground">{n.label}</Link>
+          ))}
+          <Link to="/book" className="ulink text-primary">Book a consultation →</Link>
+        </nav>
+        <p aria-hidden="true" className="select-none pt-8 font-display font-black uppercase leading-[0.8] tracking-[-0.05em] text-[clamp(3.2rem,15vw,13rem)]">
+          The Sales <span className="text-primary">Clinic</span>
+        </p>
+        <div className="flex flex-col gap-2 border-t border-ink-foreground/15 py-6 text-sm text-ink-foreground/60 md:flex-row md:justify-between">
+          <p>© 2026 The Sales Clinic · Dr. Dan Odotukpono, The Sales Doctor</p>
+          <p>Results shown are past outcomes, not guarantees.</p>
+        </div>
       </div>
     </footer>
   );
 }
 
 const btn = {
-  base: "inline-flex items-center justify-center gap-2 rounded-full font-display active:scale-[0.97] font-bold tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60",
-  primary: "bg-primary text-primary-foreground hover:brightness-110 shadow-[0_10px_30px_-12px_var(--color-primary)]",
+  base: "btn-sweep inline-flex items-center justify-center gap-2 rounded-[2px] font-display active:scale-[0.98] font-extrabold tracking-[0.08em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60",
+  primary: "bg-primary text-primary-foreground",
   dark: "bg-ink text-ink-foreground hover:bg-ink/85",
   outline: "border-2 border-foreground text-foreground hover:bg-foreground hover:text-background",
   light: "bg-ink-foreground text-ink hover:bg-blush",
