@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import logo from "@/assets/logo-transparent.png";
+import logo from "@/assets/logo-white.png";
 
 export function Splash() {
   const [phase, setPhase] = useState<"show" | "fade" | "gone">("show");

@@ -1,4 +1,4 @@
-import logoUrl from "@/assets/logo-transparent.png";
+import logoUrl from "@/assets/logo-white.png";
 import { MEANING, costText, type DiagnosisResult } from "./result-presentation";
 import type { BasicInfo } from "./audit";
 

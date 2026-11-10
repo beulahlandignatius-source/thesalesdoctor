@@ -5,7 +5,7 @@ import { submitEnquiry } from "@/lib/enquiries.functions";
 import { StackedCards } from "@/components/stacked-cards";
 import { Button } from "@/components/ui/button";
 import { CalendarDays, ClipboardList, Check, UserRound, Mail, Phone, Building2, Target, Globe, MessageSquare, BriefcaseBusiness, ChevronDown, LockKeyhole } from "lucide-react";
-import logo from "@/assets/logo-transparent.png";
+import logo from "@/assets/logo-white.png";
 
 export const field = "w-full rounded-2xl border border-input bg-card px-4 py-3.5 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import logo from "@/assets/logo-transparent.png";
+import logo from "@/assets/logo-white.png";
 import { loadState } from "@/lib/audit";
 import { buildBookingUrl } from "@/lib/booking";
 
