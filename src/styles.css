@@ -41,8 +41,9 @@
 
 /* Brand: red #B3261E, ink #1A1414, milk #FAF9F5, pale red #F3E4E1, grey #5C5050 */
 :root {
-  --radius: 0.375rem;
-  --background: oklch(0.982 0.005 95);
+  /* One UI–style: generous rounded corners, soft background, white floating cards */
+  --radius: 1.25rem;
+  --background: oklch(0.965 0.006 60);
   --foreground: oklch(0.2 0.012 20);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.2 0.012 20);
@@ -85,6 +86,14 @@
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
+  input, select, textarea { border-radius: 1rem; }
+  header { backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4); }
+  img { border-radius: inherit; }
+}
+
+@layer components {
+  /* One UI-style soft shadow on cards and bordered panels */
+  .bg-card { box-shadow: 0 1px 2px color-mix(in oklab, var(--foreground) 4%, transparent), 0 8px 24px -12px color-mix(in oklab, var(--foreground) 12%, transparent); }
 }
 
 @utility eyebrow {

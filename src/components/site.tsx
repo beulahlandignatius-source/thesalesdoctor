@@ -57,7 +57,7 @@ export function Footer() {
 }
 
 const btn = {
-  base: "inline-flex items-center justify-center gap-2 rounded-md font-display font-bold tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60",
+  base: "inline-flex items-center justify-center gap-2 rounded-full font-display active:scale-[0.97] font-bold tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60",
   primary: "bg-primary text-primary-foreground hover:brightness-110 shadow-[0_10px_30px_-12px_var(--color-primary)]",
   dark: "bg-ink text-ink-foreground hover:bg-ink/85",
   outline: "border-2 border-foreground text-foreground hover:bg-foreground hover:text-background",
