@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import logo from "@/assets/logo-transparent.png";
 import studio from "@/assets/diagnostic-studio.jpg";
 import { ArrowUpRight, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -28,12 +27,6 @@ export const Route = createFileRoute("/xray/")({
 function Index() {
   return (
     <div className="min-h-dvh bg-background">
-      <header className="mx-auto flex h-20 max-w-6xl items-center justify-between px-6 pr-20 sm:px-10 sm:pr-24">
-        <img src={logo} alt="The Sales Doctor" className="w-28 sm:w-32" />
-        <span className="hidden text-xs font-medium text-muted-foreground sm:block">
-          The Client X-Ray
-        </span>
-      </header>
       <section className="studio-hero relative isolate overflow-hidden">
         <img
           src={studio}

@@ -152,7 +152,7 @@ function Audit() {
   const back = () => {
     if (advanceTimer.current) clearTimeout(advanceTimer.current);
     setError("");
-    if (step === 0) nav({ to: "/" });
+    if (step === 0) nav({ to: "/xray" });
     else {
       setS({ ...s, step: step - 1 });
       window.scrollTo(0, 0);
@@ -194,7 +194,7 @@ function Audit() {
           >
             <ArrowLeft /> Back
           </Button>
-          <Link to="/" className="font-display text-base font-medium text-primary">
+          <Link to="/xray" className="font-display text-base font-medium text-primary">
             Client X-Ray
           </Link>
           <span className="text-xs font-semibold tabular-nums text-muted-foreground">

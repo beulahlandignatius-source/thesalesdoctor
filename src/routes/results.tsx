@@ -194,7 +194,7 @@ function ResultView({ r }: { r: Result }) {
           </p>
           {url ? (
             <Button asChild variant="premium" className="mt-6 w-full">
-              <Link to="/book">BOOK WITH DR. DAN</Link>
+              <Link to="/xray/book">BOOK WITH DR. DAN</Link>
             </Button>
           ) : (
             <Button variant="premium" disabled className="mt-6 w-full">
