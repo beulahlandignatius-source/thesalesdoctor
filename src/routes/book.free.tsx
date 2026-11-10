@@ -3,6 +3,7 @@ import { useState } from "react";
 import { F, FormError, FormShell, Options, StuckPicker, field, privacy, useEnquiry } from "@/components/form-bits";
 import { ExtLink, btnClass } from "@/components/site";
 import { TARGETS, calendlyUrl } from "@/lib/links";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/book/free")({
   head: () => ({
@@ -37,9 +38,11 @@ function Free() {
           const who = await save(e.currentTarget);
           if (who) { setDone(calendlyUrl(who.name, who.email)); window.scrollTo({ top: 0, behavior: "smooth" }); }
         }}>
-          <F label="Full name"><input name="name" required className={field} /></F>
-          <F label="Email address"><input name="email" type="email" required className={field} /></F>
-          <F label="WhatsApp number"><input name="phone" type="tel" required placeholder="+234…" className={field} /></F>
+          <div className="form-contact grid gap-5 sm:grid-cols-2">
+          <F label="Full name"><input name="name" required autoComplete="name" className={field} /></F>
+          <F label="Email address"><input name="email" type="email" required autoComplete="email" className={field} /></F>
+          <F label="WhatsApp number"><input name="phone" type="tel" required autoComplete="tel" placeholder="+234…" className={field} /></F>
+          </div>
           <F label="Business or brand name"><input name="business" required className={field} /></F>
           <F label="What do you sell?"><input name="sell" required className={field} /></F>
           <Options name="target" label="What target are you working toward?" options={TARGETS} placeholder="Select your next target" />
@@ -47,7 +50,7 @@ function Free() {
           <F label="Anything else I should know? (optional)"><input name="notes" placeholder="One line is enough" className={field} /></F>
           <F label="Website or LinkedIn (optional)"><input name="site" placeholder="https://" className={field} /></F>
           <FormError msg={error} />
-          <button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "BOOK MY FREE REVIEW →"}</button>
+          <Button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "BOOK MY FREE REVIEW →"}</Button>
           {privacy}
         </form>
       )}

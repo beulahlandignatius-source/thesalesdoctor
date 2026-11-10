@@ -3,6 +3,7 @@ import { useState } from "react";
 import { F, FormError, FormShell, Options, StuckPicker, field, privacy, useEnquiry } from "@/components/form-bits";
 import { ExtLink, btnClass } from "@/components/site";
 import { CLINIC_PRICE, CLINIC_TERMS, LINKS, REVENUE, TARGETS, calendlyUrl } from "@/lib/links";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/book/clinic")({
   head: () => ({
@@ -45,9 +46,11 @@ function Clinic() {
           const w = await save(e.currentTarget);
           if (w) { setWho(w); window.scrollTo({ top: 0, behavior: "smooth" }); }
         }}>
-          <F label="Full name"><input name="name" required className={field} /></F>
-          <F label="Email address"><input name="email" type="email" required className={field} /></F>
-          <F label="WhatsApp number"><input name="phone" type="tel" required placeholder="+234…" className={field} /></F>
+          <div className="form-contact grid gap-5 sm:grid-cols-2">
+          <F label="Full name"><input name="name" required autoComplete="name" className={field} /></F>
+          <F label="Email address"><input name="email" type="email" required autoComplete="email" className={field} /></F>
+          <F label="WhatsApp number"><input name="phone" type="tel" required autoComplete="tel" placeholder="+234…" className={field} /></F>
+          </div>
           <F label="Business or brand name"><input name="business" required className={field} /></F>
           <F label="What do you sell, and who do you sell it to?"><input name="sell" required className={field} /></F>
           <Options name="revenue" label="Current monthly revenue" options={REVENUE} placeholder="Select a range" />
@@ -59,7 +62,7 @@ function Clinic() {
             <span className="text-right text-sm"><strong className="font-display text-xl">{CLINIC_PRICE}</strong><br /><span className="opacity-70">{CLINIC_TERMS}</span></span>
           </div>
           <FormError msg={error} />
-          <button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "CONTINUE TO PAYMENT →"}</button>
+          <Button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "CONTINUE TO PAYMENT →"}</Button>
           {privacy}
         </form>
       )}

@@ -4,14 +4,16 @@ import { STUCK } from "@/lib/links";
 import { submitEnquiry } from "@/lib/enquiries.functions";
 import { StackedCards } from "@/components/stacked-cards";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, ClipboardList, Check } from "lucide-react";
+import { CalendarDays, ClipboardList, Check, UserRound, Mail, Phone, Building2, Target, Globe, MessageSquare, BriefcaseBusiness, ChevronDown, LockKeyhole } from "lucide-react";
+import logo from "@/assets/logo-transparent.png";
 
 export const field = "w-full rounded-2xl border border-input bg-card px-4 py-3.5 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
 export function F({ label, children }: { label: string; children: ReactNode }) {
+  const Icon = /email/i.test(label) ? Mail : /name/i.test(label) ? (/business/i.test(label) ? Building2 : UserRound) : /whatsapp/i.test(label) ? Phone : /website|linkedin/i.test(label) ? Globe : /achieve|target/i.test(label) ? Target : /sell|do\?/i.test(label) ? BriefcaseBusiness : MessageSquare;
   return (
-    <label className="block">
-      <span className="mb-1.5 block text-sm font-semibold text-foreground">{label}</span>
+    <label className="form-field block">
+      <span className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-foreground"><Icon aria-hidden="true" className="h-4 w-4 shrink-0 text-primary" />{label}</span>
       {children}
     </label>
   );
@@ -20,10 +22,11 @@ export function F({ label, children }: { label: string; children: ReactNode }) {
 export function Options({ name, label, options, placeholder }: { name: string; label: string; options: string[]; placeholder: string }) {
   return (
     <F label={label}>
-      <select name={name} required defaultValue="" className={field}>
+      <div className="relative"><select name={name} required defaultValue="" className={field + " appearance-none !pr-12"}>
         <option value="" disabled>{placeholder}</option>
         {options.map((o) => <option key={o}>{o}</option>)}
       </select>
+      <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-primary" /></div>
     </F>
   );
 }
@@ -31,16 +34,16 @@ export function Options({ name, label, options, placeholder }: { name: string; l
 export function StuckPicker({ label }: { label: string }) {
   const [sel, setSel] = useState<string[]>([]);
   return (
-    <fieldset>
+    <fieldset className="form-choices">
       <legend className="mb-2 text-sm font-semibold">{label}</legend>
-      <div className="flex flex-wrap gap-2">
+      <div className="grid gap-2 sm:grid-cols-2">
         {STUCK.map((s) => {
           const on = sel.includes(s);
           return (
             <Button variant="outline" type="button" key={s} aria-pressed={on}
               onClick={() => setSel(on ? sel.filter((x) => x !== s) : [...sel, s])}
-              className={`rounded-full border px-3.5 py-2 text-sm transition ${on ? "border-primary bg-primary text-primary-foreground" : "border-input bg-card hover:border-primary"}`}>
-              {s}
+              className={`!h-auto min-h-12 !justify-start !whitespace-normal rounded-xl border px-3.5 py-3 !text-left text-sm transition ${on ? "border-primary bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground" : "border-input bg-card hover:border-primary"}`}>
+              <span className="choice-check" aria-hidden="true">{on && <Check className="h-3 w-3" />}</span><span>{s}</span>
             </Button>
           );
         })}
@@ -66,7 +69,10 @@ export function FormShell({ eyebrow, title, intro, steps, children }: { eyebrow?
           })} /></div>
         </div>
       </div>
-      <div className="form-panel self-start rounded-3xl border border-border bg-card p-6 md:p-9">{children}</div>
+      <div className="form-panel self-start overflow-hidden rounded-3xl border border-border bg-card p-6 md:p-9">
+        <div className="form-brand mb-8 flex items-center gap-5 border-b border-border pb-6"><img src={logo} alt="The Sales Doctor" className="h-16 w-28 object-contain" /><span className="h-px flex-1 bg-border" aria-hidden="true" /><ClipboardList aria-hidden="true" className="h-6 w-6 text-primary" /></div>
+        {children}
+      </div>
     </main>
   );
 }
@@ -107,4 +113,4 @@ export function FormError({ msg }: { msg: string }) {
   return msg ? <p role="alert" className="rounded-md bg-blush p-3 text-sm text-destructive">{msg}</p> : null;
 }
 
-export const privacy = <p className="mt-3 text-center text-xs text-muted-foreground">Your details are only used to prepare for your session.</p>;
+export const privacy = <p className="mt-3 flex items-start justify-center gap-2 text-center text-xs text-muted-foreground"><LockKeyhole aria-hidden="true" className="h-4 w-4 shrink-0" />Your details are only used to prepare for your session.</p>;

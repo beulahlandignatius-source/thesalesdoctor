@@ -37,9 +37,11 @@ function Mentor() {
           e.preventDefault();
           if (await save(e.currentTarget)) { setSent(true); window.scrollTo({ top: 0, behavior: "smooth" }); }
         }}>
-          <F label="Full name"><input name="name" required className={field} /></F>
-          <F label="Email address"><input name="email" type="email" required className={field} /></F>
-          <F label="WhatsApp number"><input name="phone" type="tel" required placeholder="+234…" className={field} /></F>
+          <div className="form-contact grid gap-5 sm:grid-cols-2">
+          <F label="Full name"><input name="name" required autoComplete="name" className={field} /></F>
+          <F label="Email address"><input name="email" type="email" required autoComplete="email" className={field} /></F>
+          <F label="WhatsApp number"><input name="phone" type="tel" required autoComplete="tel" placeholder="+234…" className={field} /></F>
+          </div>
           <F label="What do you currently do?"><input name="role" required placeholder="e.g. coach, consultant, freelancer" className={field} /></F>
           <F label="What are you trying to achieve?"><textarea name="goal" required rows={3} className={field} /></F>
           <F label="Why do you want to be mentored?"><textarea name="why" required rows={3} className={field} /></F>

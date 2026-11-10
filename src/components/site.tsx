@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme";
+import logo from "@/assets/logo-transparent.png";
 
 const NAV = [
   { to: "/", label: "Home", exact: true },
@@ -20,7 +21,7 @@ export function Header() {
     <header className="site-header sticky top-3 z-40 mx-3 mb-6 mt-3 rounded-full border border-border bg-background/90 backdrop-blur md:mx-auto md:max-w-7xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-5">
         <Link to="/" className="flex items-center gap-2 font-display text-sm font-black tracking-[0.2em] text-foreground">
-          <span className="h-3 w-3 bg-primary" aria-hidden="true" />
+          <img src={logo} alt="The Sales Doctor" className="h-9 w-14 shrink-0 object-contain" />
           THE SALES <span className="text-primary">CLINIC</span>
         </Link>
         <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
@@ -53,6 +54,7 @@ export function Footer() {
   return (
     <footer className="overflow-hidden bg-ink text-ink-foreground">
       <div className="mx-auto max-w-7xl px-5 pt-14">
+        <img src={logo} alt="The Sales Doctor" className="mb-8 h-20 w-36 object-contain" />
         <nav aria-label="Footer" className="flex flex-wrap gap-x-8 gap-y-3 border-b border-ink-foreground/15 pb-8 font-display text-sm font-bold uppercase tracking-[0.16em]">
           {NAV.map((n) => (
             <Link key={n.to} to={n.to} className="ulink text-ink-foreground/70 hover:text-ink-foreground">{n.label}</Link>

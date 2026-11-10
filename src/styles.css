@@ -428,3 +428,18 @@ main img:hover { transform: scale(1.015); }
 @media (min-width: 768px) { .mentorship-benefit:nth-child(2), .mentorship-benefit:nth-child(4) { margin-left: 1.25rem; } }
 @media (max-width: 1023px) and (min-width: 768px) { .site-header nav .ulink { margin-inline: .5rem; } .site-header > div > div > a { display: none; } }
 @media (prefers-reduced-motion: reduce) { .mentorship-benefit:hover { transform: none; } }
+
+/* Branded intake forms: quiet surfaces, tactile selection and clear field groups. */
+.form-panel { background: var(--card); box-shadow: var(--shadow-nav); border-top: 4px solid var(--primary); }
+.form-contact { padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+.form-contact > label:last-child { grid-column: 1 / -1; }
+.form-field input, .form-field textarea, .form-field select { background: var(--surface-soft); min-height: 3.5rem; border-color: transparent; transition: border-color .2s, background .2s, box-shadow .2s; }
+.form-field:focus-within > span { color: var(--primary); }
+.form-field input:focus, .form-field textarea:focus, .form-field select:focus { background: var(--card); border-color: var(--primary); }
+.form-choices { padding-block: 1rem; }
+.form-choices legend { line-height: 1.6; padding-top: .5rem; }
+.choice-check { display: inline-flex; align-items: center; justify-content: center; width: 1.1rem; height: 1.1rem; border-radius: .35rem; border: 1px solid currentColor; flex-shrink: 0; }
+.visitor-pages form > button[type=submit] { min-height: 3.5rem; }
+.visitor-pages form label:not(.form-field) > input, .visitor-pages form label:not(.form-field) > textarea, .admin-signin input, .admin-shell form input { background: var(--surface-soft); border-color: var(--border); min-height: 3.5rem; }
+.site-header > div > a { letter-spacing: 0; }
+@media (max-width: 639px) { .site-header > div { padding-inline: .75rem; } .site-header > div > a { gap: .35rem; font-size: .7rem; } .site-header > div > a img { width: 2.75rem; } }
