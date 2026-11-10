@@ -29,8 +29,8 @@ function Clinic() {
           <h2 className="mt-2 text-2xl font-extrabold">Confirm your payment of {CLINIC_PRICE}</h2>
           <p className="mt-2 text-muted-foreground">Choose how you’d like to pay. The payment page opens in a new tab.</p>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <ExtLink href={LINKS.stripe}>PAY IN USD · STRIPE</ExtLink>
-            <ExtLink href={LINKS.flutterwave} variant="dark">PAY IN NGN · FLUTTERWAVE</ExtLink>
+            <ExtLink href={LINKS.stripe} onClick={() => window.__lovableEvents?.track?.("project.payment_started", { provider: "stripe" })}>PAY IN USD · STRIPE</ExtLink>
+            <ExtLink href={LINKS.flutterwave} variant="dark" onClick={() => window.__lovableEvents?.track?.("project.payment_started", { provider: "flutterwave" })}>PAY IN NGN · FLUTTERWAVE</ExtLink>
           </div>
           <div className="mt-8 rounded-lg bg-blush p-5">
             <p className="font-semibold">Paid? Choose your 90-minute slot.</p>

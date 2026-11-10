@@ -51,6 +51,30 @@
         }
       }
     },
+    "project.payment_started": {
+      "event_schema_version": 1,
+      "description": "A visitor clicked a Private Sales Clinic pay button (Stripe USD or Flutterwave NGN).",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "provider"
+        ],
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "stripe",
+              "flutterwave"
+            ]
+          }
+        }
+      }
+    },
     "project.xray_completed": {
       "event_schema_version": 1,
       "description": "A visitor finished the Client X-Ray and their diagnosis was generated.",
