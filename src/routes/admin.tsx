@@ -142,6 +142,55 @@ function Login() {
           {busy ? "Signing in…" : "Sign in"}
         </Button>
       </form>
+      <ForgotPassword initialEmail={email} />
     </Center>
+  );
+}
+
+function ForgotPassword({ initialEmail }: { initialEmail: string }) {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  if (!open)
+    return (
+      <button
+        type="button"
+        onClick={() => { setEmail(initialEmail); setOpen(true); }}
+        className="mt-5 text-sm font-semibold text-primary underline-offset-4 hover:underline"
+      >
+        Forgot password?
+      </button>
+    );
+  const send = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setBusy(true);
+    setErr("");
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setBusy(false);
+    if (error) setErr("Couldn't send the reset email. Please try again in a minute.");
+    else setSent(true);
+  };
+  return (
+    <div className="mt-6 rounded-3xl border border-border bg-card p-5 text-left">
+      {sent ? (
+        <p role="status" className="text-sm text-foreground">
+          If that email belongs to an admin, a reset link is on its way. Open it on this device to set a new password.
+        </p>
+      ) : (
+        <form onSubmit={send} className="space-y-3">
+          <p className="text-sm text-muted-foreground">Enter your admin email and we'll send a reset link.</p>
+          <input type="email" required autoComplete="username" value={email}
+            onChange={(e) => setEmail(e.target.value)} className="field" aria-label="Admin email" />
+          {err && <p role="alert" className="text-sm text-destructive">{err}</p>}
+          <Button type="submit" variant="premium" disabled={busy} className="btn-primary w-full">
+            {busy ? "Sending…" : "Send reset link"}
+          </Button>
+        </form>
+      )}
+    </div>
   );
 }

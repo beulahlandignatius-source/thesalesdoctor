@@ -13,10 +13,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuditRouteImport } from './routes/audit'
 import { Route as MentorshipRouteImport } from './routes/mentorship'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ResultsRouteImport } from './routes/results'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminIdRouteImport } from './routes/admin.$id'
 import { Route as AdminEnquiriesRouteImport } from './routes/admin.enquiries'
+import { Route as AdminPasswordRouteImport } from './routes/admin.password'
 import { Route as AdminXrayRouteImport } from './routes/admin.xray'
 import { Route as BookIndexRouteImport } from './routes/book.index'
 import { Route as BookClinicRouteImport } from './routes/book.clinic'
@@ -44,6 +46,11 @@ const MentorshipRoute = MentorshipRouteImport.update({
   path: '/mentorship',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResultsRoute = ResultsRouteImport.update({
   id: '/results',
   path: '/results',
@@ -62,6 +69,11 @@ const AdminIdRoute = AdminIdRouteImport.update({
 const AdminEnquiriesRoute = AdminEnquiriesRouteImport.update({
   id: '/enquiries',
   path: '/enquiries',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPasswordRoute = AdminPasswordRouteImport.update({
+  id: '/password',
+  path: '/password',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminXrayRoute = AdminXrayRouteImport.update({
@@ -100,9 +112,11 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/audit': typeof AuditRoute
   '/mentorship': typeof MentorshipRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
   '/admin/$id': typeof AdminIdRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/password': typeof AdminPasswordRoute
   '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
@@ -115,9 +129,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/audit': typeof AuditRoute
   '/mentorship': typeof MentorshipRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
   '/admin/$id': typeof AdminIdRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/password': typeof AdminPasswordRoute
   '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
@@ -132,9 +148,11 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/audit': typeof AuditRoute
   '/mentorship': typeof MentorshipRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
   '/admin/$id': typeof AdminIdRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/password': typeof AdminPasswordRoute
   '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
@@ -150,9 +168,11 @@ export interface FileRouteTypes {
     | '/admin'
     | '/audit'
     | '/mentorship'
+    | '/reset-password'
     | '/results'
     | '/admin/$id'
     | '/admin/enquiries'
+    | '/admin/password'
     | '/admin/xray'
     | '/book/clinic'
     | '/book/free'
@@ -165,9 +185,11 @@ export interface FileRouteTypes {
     | '/'
     | '/audit'
     | '/mentorship'
+    | '/reset-password'
     | '/results'
     | '/admin/$id'
     | '/admin/enquiries'
+    | '/admin/password'
     | '/admin/xray'
     | '/book/clinic'
     | '/book/free'
@@ -181,9 +203,11 @@ export interface FileRouteTypes {
     | '/admin'
     | '/audit'
     | '/mentorship'
+    | '/reset-password'
     | '/results'
     | '/admin/$id'
     | '/admin/enquiries'
+    | '/admin/password'
     | '/admin/xray'
     | '/book/clinic'
     | '/book/free'
@@ -198,6 +222,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AuditRoute: typeof AuditRoute
   MentorshipRoute: typeof MentorshipRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ResultsRoute: typeof ResultsRoute
   BookClinicRoute: typeof BookClinicRoute
   BookFreeRoute: typeof BookFreeRoute
@@ -236,6 +261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MentorshipRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/results': {
       id: '/results'
       path: '/results'
@@ -262,6 +294,13 @@ declare module '@tanstack/react-router' {
       path: '/enquiries'
       fullPath: '/admin/enquiries'
       preLoaderRoute: typeof AdminEnquiriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/password': {
+      id: '/admin/password'
+      path: '/password'
+      fullPath: '/admin/password'
+      preLoaderRoute: typeof AdminPasswordRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/xray': {
@@ -312,6 +351,7 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminIdRoute: typeof AdminIdRoute
   AdminEnquiriesRoute: typeof AdminEnquiriesRoute
+  AdminPasswordRoute: typeof AdminPasswordRoute
   AdminXrayRoute: typeof AdminXrayRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -319,6 +359,7 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminIdRoute: AdminIdRoute,
   AdminEnquiriesRoute: AdminEnquiriesRoute,
+  AdminPasswordRoute: AdminPasswordRoute,
   AdminXrayRoute: AdminXrayRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
@@ -330,6 +371,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AuditRoute: AuditRoute,
   MentorshipRoute: MentorshipRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ResultsRoute: ResultsRoute,
   BookClinicRoute: BookClinicRoute,
   BookFreeRoute: BookFreeRoute,

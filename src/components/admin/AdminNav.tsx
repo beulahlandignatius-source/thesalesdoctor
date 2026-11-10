@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { LayoutDashboard, ScanLine, Inbox, ExternalLink, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, ScanLine, Inbox, ExternalLink, LogOut, Menu, X, KeyRound } from "lucide-react";
 
 const items = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
@@ -37,6 +37,7 @@ export function AdminNav({ onSignOut, email }: { onSignOut: () => void; email: s
         </nav>
         <div className="hidden items-center gap-1 md:flex">
           <Link to="/" className={linkCls}><ExternalLink className="h-4 w-4" /> View site</Link>
+          <Link to="/admin/password" className={linkCls}><KeyRound className="h-4 w-4" /> Password</Link>
           <button onClick={onSignOut} className={linkCls}><LogOut className="h-4 w-4" /> Log out</button>
         </div>
         <button className="flex h-11 w-11 items-center justify-center rounded-md md:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
@@ -46,6 +47,7 @@ export function AdminNav({ onSignOut, email }: { onSignOut: () => void; email: s
       {open && (
         <nav className="mx-3 mb-3 rounded-3xl border border-border bg-card px-2 pb-3 pt-2 shadow-lg md:hidden" aria-label="Admin mobile">
           <Link to="/" onClick={() => setOpen(false)} className={linkCls}><ExternalLink className="h-4 w-4" /> View site</Link>
+          <Link to="/admin/password" onClick={() => setOpen(false)} className={linkCls}><KeyRound className="h-4 w-4" /> Change password</Link>
           <button onClick={onSignOut} className={linkCls + " w-full"}><LogOut className="h-4 w-4" /> Log out</button>
           <p className="px-3 pt-2 text-xs text-muted-foreground">{email}</p>
         </nav>
