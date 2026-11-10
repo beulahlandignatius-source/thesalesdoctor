@@ -3,6 +3,7 @@ import { Search, Stethoscope, ClipboardList, Workflow, GraduationCap, ScanLine, 
 import { btnClass, ExtLink } from "@/components/site";
 import { LINKS, CLINIC_PRICE } from "@/lib/links";
 import redSuit from "@/assets/dr-dan-red-suit.jpg";
+import { useMotionFx } from "@/components/motion";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -34,7 +35,8 @@ const PRINCIPLES = [
 ];
 
 function Services() {
-  return <main className="farmora-home overflow-x-clip">
+  useMotionFx();
+  return <main className="farmora-home editorial-motion overflow-x-clip">
     <section className="relative mx-auto grid max-w-6xl gap-10 px-5 pb-16 pt-10 md:grid-cols-[1.3fr_1fr] md:items-center md:pt-16">
       <div aria-hidden className="pointer-events-none absolute -left-32 top-0 h-80 w-80 rounded-full bg-blush opacity-70 blur-3xl" />
       <div className="relative">

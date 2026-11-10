@@ -46,7 +46,7 @@ export function useMotionFx() {
     document.querySelectorAll<HTMLElement>(".farmora-home .proof-number, .farmora-home .hero-stat dt").forEach((el) => { el.dataset["count"] = el.textContent ?? ""; io.observe(el); });
 
     // Staggered scroll reveals for cards and rows.
-    const revealEls = Array.from(document.querySelectorAll<HTMLElement>(".farmora-home .session-question, .farmora-home .who-bento-tile, .farmora-home .mentorship-benefit, .farmora-home .proof-tile, .farmora-home section h2, .farmora-home section .eyebrow"));
+    const revealEls = Array.from(document.querySelectorAll<HTMLElement>(".farmora-home .session-question, .farmora-home .who-bento-tile, .farmora-home .mentorship-benefit, .farmora-home .proof-tile, .farmora-home section h2, .farmora-home section .eyebrow, .editorial-motion .service-card, .editorial-motion .principle-tile, .editorial-motion .about-step, .editorial-motion .about-stat"));
     const rio = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("fx-in"); rio.unobserve(e.target); } }), { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
     revealEls.forEach((el) => { const sib = el.parentElement ? Array.from(el.parentElement.children).indexOf(el) : 0; el.style.setProperty("--fx-delay", `${Math.min(sib, 5) * 90}ms`); el.classList.add("fx-reveal"); rio.observe(el); });
     // Subtle parallax for floating décor.
@@ -56,7 +56,7 @@ export function useMotionFx() {
     if (para.length) window.addEventListener("scroll", onScroll, { passive: true });
 
     const fine = window.matchMedia("(pointer: fine)").matches;
-    const tiles = fine ? Array.from(document.querySelectorAll<HTMLElement>(".farmora-home .proof-tile, .farmora-home .session-question, .farmora-home .mentorship-benefit, .farmora-home .hero-stat")) : [];
+    const tiles = fine ? Array.from(document.querySelectorAll<HTMLElement>(".farmora-home .proof-tile, .farmora-home .session-question, .farmora-home .mentorship-benefit, .farmora-home .hero-stat, .editorial-motion .service-card, .editorial-motion .about-stat")) : [];
     const move = (e: PointerEvent) => { const el = e.currentTarget as HTMLElement; const r = el.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
       el.style.setProperty("--mx", `${x * 100}%`); el.style.setProperty("--my", `${y * 100}%`);
       el.style.transform = `perspective(900px) rotateX(${(0.5 - y) * 6}deg) rotateY(${(x - 0.5) * 8}deg) translateY(-4px)`; };

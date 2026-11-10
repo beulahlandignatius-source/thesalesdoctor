@@ -43,3 +43,4 @@ use the editor.
 - Page editing controls render only in a same-origin page preview embedded in /admin/content for a verified admin; standalone visitor pages apply saved overrides without edit controls or click interception.
 - Client X-Ray mascot guidance is presentation-only: reuse real question/answer and result state, never compute or fabricate diagnoses, and keep scanning effects noninteractive with reduced-motion fallbacks.
 - The visitor mascot companion uses an isolated deterministic guidance adapter and in-memory answers; it does not alter Client X-Ray diagnoses or store conversations, and is excluded from admin and focused assessment screens to avoid obstructing controls.
+- About and Services reuse the shared motion hook with editorial-scoped selectors; keep reduced-motion fallbacks and existing photo framing intact to avoid separate animation systems.

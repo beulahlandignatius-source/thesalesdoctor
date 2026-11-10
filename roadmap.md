@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Animate About and Services while preserving content and photos; compact visitor navigation without scrolling.
 - [x] Add a small contextual mascot companion with accessible open, close and minimise controls.
 - [x] Implement three-question predefined sales guidance, message input, tips and working service/booking actions.
 - [x] Add consistent character states and verify desktop/mobile interactions, reduced motion and existing journeys.

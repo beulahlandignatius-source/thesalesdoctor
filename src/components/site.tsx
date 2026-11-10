@@ -46,9 +46,9 @@ function ClinicDrawer({ onClose }: { onClose: () => void }) {
           <Dialog.Close className="clinic-drawer-close" aria-label="Close menu"><X className="h-5 w-5" /></Dialog.Close>
           <svg viewBox="0 0 300 40" className="clinic-drawer-ecg" aria-hidden="true" preserveAspectRatio="none"><path d="M0 26 H70 L80 26 L88 8 L96 36 L104 18 L112 26 H180 L190 26 L198 4 L206 38 L214 20 L222 26 H300" /></svg>
         </div>
-        <div className="flex-1 overflow-y-auto px-4 pb-4 pt-5">
+        <div className="clinic-drawer-body">
           <p className="clinic-drawer-label">Pages</p>
-          <nav aria-label="Mobile" className="mt-2.5 grid grid-cols-2 gap-2.5">
+          <nav aria-label="Mobile" className="clinic-page-grid">
             {NAV.map((n, i) => {
               const Icon = NAV_ICON[n.to]; const active = isActive(n.to, n.exact);
               return (
@@ -59,7 +59,7 @@ function ClinicDrawer({ onClose }: { onClose: () => void }) {
               );
             })}
           </nav>
-          <p className="clinic-drawer-label mt-6">Quick settings</p>
+          <p className="clinic-drawer-label clinic-settings-label">Quick settings</p>
           <button type="button" onClick={toggle} aria-pressed={dark} style={{ animationDelay: "300ms" }} className={cn("clinic-tile mt-2.5 w-full !min-h-0 !flex-row items-center", dark && "is-active")}>
             <span className="clinic-tile-icon">{dark ? <Moon className="h-[1.1rem] w-[1.1rem]" /> : <Sun className="h-[1.1rem] w-[1.1rem]" />}</span>
             <span className="ml-3 text-left"><span className="block text-[0.95rem] font-semibold">Dark mode</span><span className="block text-xs opacity-70">{dark ? "On" : "Off"}</span></span>
@@ -98,17 +98,17 @@ export function Header() {
           <span className="nav-logo"><img src={logo} alt="The Sales Doctor" className="h-8 w-12 shrink-0 object-contain" /></span>
           <span className="whitespace-nowrap leading-none">THE SALES <span className="text-primary">CLINIC</span>{current && <span className="nav-here md:hidden"><span className="nav-here-dot" aria-hidden="true" />{current.label}</span>}</span>
         </Link>
-        <nav className="nav-track hidden items-center md:flex" aria-label="Main">
+        <nav className="nav-track hidden items-center lg:flex" aria-label="Main">
           {NAV.map((n) => {
             const Icon = NAV_ICON[n.to];
             return <Link key={n.to} to={n.to} activeOptions={{ exact: n.exact }} activeProps={{ className: "is-active" }} className="nav-link"><Icon className="nav-link-icon h-3.5 w-3.5" aria-hidden="true" />{n.label}</Link>;
           })}
         </nav>
         <div className="flex items-center gap-2">
-          <span className="hidden md:inline-flex"><ThemeToggle /></span>
+          <span className="hidden lg:inline-flex"><ThemeToggle /></span>
           <CtaLink to="/book" size="sm" className="nav-cta hidden sm:inline-flex">BOOK A CONSULTATION</CtaLink>
           <Dialog.Root open={open} onOpenChange={setOpen}>
-            <Dialog.Trigger className="nav-burger md:hidden" aria-label="Open menu"><Menu className="h-5 w-5" /></Dialog.Trigger>
+            <Dialog.Trigger className="nav-burger lg:hidden" aria-label="Open menu"><Menu className="h-5 w-5" /></Dialog.Trigger>
             <ClinicDrawer onClose={() => setOpen(false)} />
           </Dialog.Root>
         </div>

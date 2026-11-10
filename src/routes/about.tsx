@@ -3,6 +3,7 @@ import { HeartPulse, Brain, Stethoscope, Rocket, Users, Megaphone, Quote, Linked
 import { btnClass, ExtLink } from "@/components/site";
 import { LINKS } from "@/lib/links";
 import blushJacket from "@/assets/dr-dan-blush-jacket.jpg";
+import { useMotionFx } from "@/components/motion";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -31,7 +32,8 @@ const BUILT = [
 ];
 
 function About() {
-  return <main className="farmora-home overflow-x-clip">
+  useMotionFx();
+  return <main className="farmora-home editorial-motion overflow-x-clip">
     <section className="relative mx-auto grid max-w-6xl gap-10 px-5 pb-16 pt-10 md:grid-cols-[1fr_1.2fr] md:items-center md:pt-16">
       <figure className="about-portrait"><img src={blushJacket} alt="Dr. Dan Odotukpono standing, smiling" className="h-full w-full object-cover object-top" /></figure>
       <div>
