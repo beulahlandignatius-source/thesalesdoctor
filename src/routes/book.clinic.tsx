@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { F, FormError, FormShell, Options, StuckPicker, field, privacy, useEnquiry } from "@/components/form-bits";
-import { ExtLink, btnClass } from "@/components/site";
+import { btnClass } from "@/components/site";
 import { CLINIC_PRICE, CLINIC_TERMS, LINKS, REVENUE, TARGETS, calendlyUrl } from "@/lib/links";
+import { CalendlyEmbed } from "@/components/calendly-embed";
 import { Button } from "@/components/ui/button";
 import { CalendarCheck, Clock, CreditCard, ExternalLink, Landmark, Lock, Receipt, ShieldCheck } from "lucide-react";
 
@@ -79,9 +80,9 @@ function Clinic() {
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-card text-primary"><CalendarCheck className="h-5 w-5" /></span>
             <div className="flex-1">
               <p className="font-semibold">Paid? Choose your 90-minute slot.</p>
-              <ExtLink href={calendlyUrl(who.name, who.email)} variant="outline" className="mt-4 w-full" onClick={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "private_clinic" })}>CHOOSE MY SLOT ON CALENDLY →</ExtLink>
             </div>
           </div>
+          <CalendlyEmbed src={calendlyUrl(who.name, who.email)} onOpen={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "private_clinic" })} />
         </div>
       ) : (
         <form className="space-y-5" onSubmit={async (e) => {

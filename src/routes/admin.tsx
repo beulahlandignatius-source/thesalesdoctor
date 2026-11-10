@@ -5,7 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { backend as supabase } from "@/lib/backend/client";
 import { checkAdmin } from "@/lib/admin.functions";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/logo-white.png";
+import logo from "@/assets/logo-transparent.png";
 import { AdminNav } from "@/components/admin/AdminNav";
 
 export const Route = createFileRoute("/admin")({

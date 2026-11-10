@@ -515,7 +515,7 @@ main img:hover { transform: scale(1.015); }
 .pay-method:hover, .pay-method:focus-visible { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 14px 30px -18px color-mix(in oklab, var(--primary) 55%, transparent); outline: none; }
 .pay-logo { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: .9rem; flex-shrink: 0; }
 .pay-currency { font-size: .7rem; font-weight: 800; letter-spacing: .1em; padding: .25rem .55rem; border-radius: 999px; background: var(--secondary); color: var(--primary); }
-.checkout-next { display: flex; gap: 1rem; padding: 1.25rem; border-radius: 1.5rem; background: var(--blush, var(--secondary)); }
+.checkout-next { display: flex; align-items: center; gap: 1rem; padding: 1.25rem; border-radius: 1.5rem; background: var(--blush, var(--secondary)); }
 
-/* Sales Doctor logo: white mark on a dark tile */
-img[alt="The Sales Doctor"] { background: var(--ink); border-radius: .75rem; padding: .3rem .45rem; box-sizing: content-box; object-fit: contain; }
+/* Sales Doctor logo: original on light, white on dark */
+.dark img[alt="The Sales Doctor"] { filter: brightness(0) invert(1); }

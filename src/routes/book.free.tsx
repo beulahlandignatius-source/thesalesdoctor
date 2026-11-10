@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { F, FormError, FormShell, Options, StuckPicker, field, privacy, useEnquiry } from "@/components/form-bits";
-import { ExtLink, btnClass } from "@/components/site";
+import { btnClass } from "@/components/site";
+import { CalendlyEmbed } from "@/components/calendly-embed";
 import { TARGETS, calendlyUrl } from "@/lib/links";
 import { Button } from "@/components/ui/button";
 
@@ -30,7 +31,7 @@ function Free() {
         <div className="py-8 text-center">
           <h2 className="text-2xl font-extrabold">Now pick your time.</h2>
           <p className="mt-2 text-muted-foreground">Thanks, your details are in. Choose a time that suits you.</p>
-          <ExtLink href={done} className="mt-6" onClick={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "free_review" })}>CHOOSE MY TIME ON CALENDLY →</ExtLink>
+          <CalendlyEmbed src={done} onOpen={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "free_review" })} />
         </div>
       ) : (
         <form className="space-y-5" onSubmit={async (e) => {

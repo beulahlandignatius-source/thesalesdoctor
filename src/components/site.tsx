@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme";
-import logo from "@/assets/logo-white.png";
+import logo from "@/assets/logo-transparent.png";
 
 const NAV = [
   { to: "/", label: "Home", exact: true },
