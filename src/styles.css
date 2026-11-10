@@ -33,6 +33,10 @@
   --color-ink: var(--ink);
   --color-ink-foreground: var(--ink-foreground);
   --color-blush: var(--blush);
+  --color-cream: var(--cream);
+  --color-studio: var(--studio);
+  --color-studio-foreground: var(--studio-foreground);
+  --color-studio-muted: var(--studio-muted);
 }
 
 /* Brand: red #B3261E, ink #1A1414, milk #FAF9F5, pale red #F3E4E1, grey #5C5050 */
@@ -60,6 +64,15 @@
   --ink: oklch(0.2 0.012 20);
   --ink-foreground: oklch(0.982 0.005 95);
   --blush: oklch(0.925 0.022 30);
+  --cream: oklch(0.975 0.008 82);
+  --studio: oklch(0.948 0.009 245);
+  --studio-foreground: oklch(0.21 0.009 245);
+  --studio-muted: oklch(0.44 0.014 245);
+  --report-paper: oklch(1 0 0);
+  --report-ink: oklch(0.21 0.009 245);
+  --report-muted: oklch(0.44 0.014 245);
+  --report-brand: oklch(0.51 0.18 28);
+  --report-gold: oklch(0.65 0.065 75);
 }
 
 @layer base {
@@ -81,4 +94,119 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-primary);
+}
+
+/* Client X-Ray */
+.studio-hero {
+  background: var(--studio);
+}
+.studio-content {
+  padding-top: 90px;
+  min-height: 550px;
+}
+.studio-image {
+  object-position: center;
+}
+.dark .studio-hero .eyebrow {
+  color: var(--studio-foreground);
+}
+@media (max-width: 639px) {
+  .studio-content {
+    padding-top: 235px;
+    min-height: 610px;
+  }
+  .studio-image {
+    height: 270px;
+    object-position: right top;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.75rem;
+  min-height: 3rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  border-radius: 999px;
+  box-shadow: none;
+  transition:
+    box-shadow 0.2s,
+    transform 0.15s,
+    opacity 0.15s;
+  &:hover {
+    background: color-mix(in oklab, var(--primary) 90%, var(--foreground));
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+  &:disabled {
+    opacity: 0.38;
+    box-shadow: none;
+  }
+}
+@utility field {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  background: var(--muted);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  &:focus {
+    border-color: var(--primary);
+    box-shadow: inset 0 0 0 1px var(--primary);
+  }
+}
+@utility answer-card {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  transition: all 0.15s;
+  min-height: 4rem;
+  white-space: normal;
+  justify-content: flex-start;
+  height: auto;
+  font-weight: 500;
+  &:hover {
+    background: var(--muted);
+  }
+  &:active {
+    transform: scale(0.99);
+  }
+}
+@utility answer-card-on {
+  border-color: var(--primary);
+  background: var(--accent);
+}
+@utility animate-splash {
+  animation: splash-in 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes splash-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
