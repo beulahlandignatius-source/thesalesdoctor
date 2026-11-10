@@ -336,6 +336,30 @@ export type Database = {
         }
         Relationships: []
       }
+      site_overrides: {
+        Row: {
+          id: string
+          kind: string
+          original: string
+          replacement: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          kind?: string
+          original: string
+          replacement: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          kind?: string
+          original?: string
+          replacement?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

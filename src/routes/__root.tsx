@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header, Footer } from "../components/site";
 import { ThemeProvider } from "../components/theme";
+import { SiteEditor } from "../components/site-editor";
 
 function NotFoundComponent() {
   return (
@@ -143,7 +144,7 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <ThemeProvider><PublicChrome>
         <Outlet />
-      </PublicChrome></ThemeProvider>
+      </PublicChrome><SiteEditor /></ThemeProvider>
     </QueryClientProvider>
   );
 }

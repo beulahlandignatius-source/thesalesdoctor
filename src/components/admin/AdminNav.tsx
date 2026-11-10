@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { LayoutDashboard, ScanLine, Inbox, ExternalLink, LogOut, Menu, X, KeyRound, Star, Receipt } from "lucide-react";
+import { LayoutDashboard, ScanLine, Inbox, ExternalLink, LogOut, Menu, X, KeyRound, Star, Receipt, PenLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme";
 
@@ -10,6 +10,7 @@ const items = [
   { to: "/admin/xray", label: "Client X-Ray", icon: ScanLine, exact: false },
   { to: "/admin/reviews", label: "Reviews", icon: Star, exact: false },
   { to: "/admin/payments", label: "Payments", icon: Receipt, exact: false },
+  { to: "/admin/content", label: "Content", icon: PenLine, exact: false },
 ] as const;
 
 export function AdminNav({ onSignOut, email }: { onSignOut: () => void; email: string }) {
@@ -31,7 +32,7 @@ export function AdminNav({ onSignOut, email }: { onSignOut: () => void; email: s
         </div>
       </aside>
       {/* One UI-style bottom tab bar on phones */}
-      <nav aria-label="Admin sections" className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-5 gap-1 rounded-[1.75rem] border border-border bg-card/90 p-1.5 shadow-lg backdrop-blur-xl md:hidden" style={{ marginBottom: "env(safe-area-inset-bottom)" }}>
+      <nav aria-label="Admin sections" className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-6 gap-1 rounded-[1.75rem] border border-border bg-card/90 p-1.5 shadow-lg backdrop-blur-xl md:hidden" style={{ marginBottom: "env(safe-area-inset-bottom)" }}>
         {items.map((i) => (
           <Link key={i.to} to={i.to} activeOptions={{ exact: i.exact }} activeProps={{ className: "bg-blush !text-primary" }}
             className="flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-[1.4rem] text-[11px] font-semibold text-muted-foreground transition active:scale-95">

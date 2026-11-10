@@ -10,14 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuditRouteImport } from './routes/audit'
 import { Route as MentorshipRouteImport } from './routes/mentorship'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ResultsRouteImport } from './routes/results'
 import { Route as ReviewsRouteImport } from './routes/reviews'
+import { Route as ServicesRouteImport } from './routes/services'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminIdRouteImport } from './routes/admin.$id'
+import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminEnquiriesRouteImport } from './routes/admin.enquiries'
 import { Route as AdminPasswordRouteImport } from './routes/admin.password'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
@@ -35,6 +38,11 @@ import { Route as ApiPublicPaymentsStripeRouteImport } from './routes/api/public
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -67,6 +75,11 @@ const ReviewsRoute = ReviewsRouteImport.update({
   path: '/reviews',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -75,6 +88,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
 const AdminIdRoute = AdminIdRouteImport.update({
   id: '/$id',
   path: '/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminContentRoute = AdminContentRouteImport.update({
+  id: '/content',
+  path: '/content',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminEnquiriesRoute = AdminEnquiriesRouteImport.update({
@@ -146,13 +164,16 @@ const ApiPublicPaymentsStripeRoute = ApiPublicPaymentsStripeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/audit': typeof AuditRoute
   '/mentorship': typeof MentorshipRoute
   '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
   '/reviews': typeof ReviewsRoute
+  '/services': typeof ServicesRoute
   '/admin/$id': typeof AdminIdRoute
+  '/admin/content': typeof AdminContentRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/password': typeof AdminPasswordRoute
   '/admin/payments': typeof AdminPaymentsRoute
@@ -170,12 +191,15 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/audit': typeof AuditRoute
   '/mentorship': typeof MentorshipRoute
   '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
   '/reviews': typeof ReviewsRoute
+  '/services': typeof ServicesRoute
   '/admin/$id': typeof AdminIdRoute
+  '/admin/content': typeof AdminContentRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/password': typeof AdminPasswordRoute
   '/admin/payments': typeof AdminPaymentsRoute
@@ -194,13 +218,16 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/audit': typeof AuditRoute
   '/mentorship': typeof MentorshipRoute
   '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
   '/reviews': typeof ReviewsRoute
+  '/services': typeof ServicesRoute
   '/admin/$id': typeof AdminIdRoute
+  '/admin/content': typeof AdminContentRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/password': typeof AdminPasswordRoute
   '/admin/payments': typeof AdminPaymentsRoute
@@ -220,13 +247,16 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/admin'
     | '/audit'
     | '/mentorship'
     | '/reset-password'
     | '/results'
     | '/reviews'
+    | '/services'
     | '/admin/$id'
+    | '/admin/content'
     | '/admin/enquiries'
     | '/admin/password'
     | '/admin/payments'
@@ -244,12 +274,15 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/audit'
     | '/mentorship'
     | '/reset-password'
     | '/results'
     | '/reviews'
+    | '/services'
     | '/admin/$id'
+    | '/admin/content'
     | '/admin/enquiries'
     | '/admin/password'
     | '/admin/payments'
@@ -267,13 +300,16 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/admin'
     | '/audit'
     | '/mentorship'
     | '/reset-password'
     | '/results'
     | '/reviews'
+    | '/services'
     | '/admin/$id'
+    | '/admin/content'
     | '/admin/enquiries'
     | '/admin/password'
     | '/admin/payments'
@@ -292,12 +328,14 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
   AuditRoute: typeof AuditRoute
   MentorshipRoute: typeof MentorshipRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResultsRoute: typeof ResultsRoute
   ReviewsRoute: typeof ReviewsRoute
+  ServicesRoute: typeof ServicesRoute
   BookClinicRoute: typeof BookClinicRoute
   BookFreeRoute: typeof BookFreeRoute
   BookScheduleRoute: typeof BookScheduleRoute
@@ -315,6 +353,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -359,6 +404,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
@@ -371,6 +423,13 @@ declare module '@tanstack/react-router' {
       path: '/$id'
       fullPath: '/admin/$id'
       preLoaderRoute: typeof AdminIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/content': {
+      id: '/admin/content'
+      path: '/content'
+      fullPath: '/admin/content'
+      preLoaderRoute: typeof AdminContentRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/enquiries': {
@@ -469,6 +528,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminIdRoute: typeof AdminIdRoute
+  AdminContentRoute: typeof AdminContentRoute
   AdminEnquiriesRoute: typeof AdminEnquiriesRoute
   AdminPasswordRoute: typeof AdminPasswordRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
@@ -479,6 +539,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminIdRoute: AdminIdRoute,
+  AdminContentRoute: AdminContentRoute,
   AdminEnquiriesRoute: AdminEnquiriesRoute,
   AdminPasswordRoute: AdminPasswordRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
@@ -491,12 +552,14 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
   AuditRoute: AuditRoute,
   MentorshipRoute: MentorshipRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ResultsRoute: ResultsRoute,
   ReviewsRoute: ReviewsRoute,
+  ServicesRoute: ServicesRoute,
   BookClinicRoute: BookClinicRoute,
   BookFreeRoute: BookFreeRoute,
   BookScheduleRoute: BookScheduleRoute,

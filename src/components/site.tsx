@@ -3,18 +3,20 @@ import { Linkedin, MessageCircle } from "lucide-react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useEffect, useState, type ReactNode } from "react";
-import { Menu, X, House, CalendarCheck, ScanLine, GraduationCap, HeartPulse, Moon, Sun } from "lucide-react";
+import { Menu, X, House, CalendarCheck, ScanLine, GraduationCap, HeartPulse, Moon, Sun, Briefcase, UserRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle, useThemeState } from "@/components/theme";
 import logo from "@/assets/logo-transparent.png";
 
 const NAV = [
   { to: "/", label: "Home", exact: true },
+  { to: "/services", label: "Services", exact: true },
+  { to: "/about", label: "About", exact: true },
   { to: "/book", label: "Sessions", exact: false },
   { to: "/xray", label: "Client X-Ray", exact: false },
   { to: "/mentorship", label: "Mentorship", exact: true },
 ] as const;
-const NAV_ICON = { "/": House, "/book": CalendarCheck, "/xray": ScanLine, "/mentorship": GraduationCap } as const;
+const NAV_ICON = { "/": House, "/services": Briefcase, "/about": UserRound, "/book": CalendarCheck, "/xray": ScanLine, "/mentorship": GraduationCap } as const;
 
 /** Live clock for the drawer header; renders only after mount so it never mismatches. */
 function useNow() {
@@ -94,7 +96,7 @@ export function Header() {
         <span className="nav-progress" aria-hidden="true" style={{ transform: `scaleX(${progress})` }} />
         <Link to="/" className="flex items-center gap-2.5 font-display text-[13px] font-black tracking-[0.18em] text-foreground">
           <span className="nav-logo"><img src={logo} alt="The Sales Doctor" className="h-8 w-12 shrink-0 object-contain" /></span>
-          <span className="leading-none">THE SALES <span className="text-primary">CLINIC</span>{current && <span className="nav-here md:hidden"><span className="nav-here-dot" aria-hidden="true" />{current.label}</span>}</span>
+          <span className="whitespace-nowrap leading-none">THE SALES <span className="text-primary">CLINIC</span>{current && <span className="nav-here md:hidden"><span className="nav-here-dot" aria-hidden="true" />{current.label}</span>}</span>
         </Link>
         <nav className="nav-track hidden items-center md:flex" aria-label="Main">
           {NAV.map((n) => {
