@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Add Dr. Dan mascot guidance, scanning moments and real-result reveals to Client X-Ray; verify mobile, desktop and the diagnostic journey.
 - [x] Sales Clinic landing rebuild (home, choose session, free review, private clinic, mentorship)
 - [x] Import Client X-Ray (audit, results, PDF report, booking) from "Remix of Thesalesdoctor (04)"
 - [x] Shared nav bar across all pages (mobile + desktop)

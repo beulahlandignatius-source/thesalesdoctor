@@ -15,6 +15,7 @@ import {
 } from "@/lib/result-presentation";
 import { buildDiagnosisReport } from "@/lib/diagnosis-report";
 import { deliverFile } from "@/lib/download";
+import { DiagnosticGuide, DiagnosticSweep } from "@/components/diagnostic-guide";
 
 export const Route = createFileRoute("/results")({
   head: () => ({
@@ -81,6 +82,7 @@ function Results() {
   if (status === "done" && result) return <ResultView r={result} />;
   return (
     <div className="flex min-h-dvh items-center justify-center bg-background px-6">
+      {status === "loading" && <DiagnosticSweep repeat />}
       <div className="max-w-sm text-center">
         <img
           src={logo}
@@ -98,6 +100,7 @@ function Results() {
           </>
         ) : (
           <>
+            <DiagnosticGuide mood="examining" message="Let's see what's happening inside your business." scanning />
             <div className="mx-auto mt-10 h-10 w-10 animate-spin rounded-full border-4 border-muted border-t-primary" />
             <p role="status" className="mt-6 font-display text-2xl text-primary">
               Your X-Ray is being prepared...
@@ -120,14 +123,15 @@ function ResultView({ r }: { r: Result }) {
     severity: r.severity,
   });
   const label = "text-xs font-semibold uppercase text-muted-foreground";
-  const section = "border-t border-border pt-8";
+  const section = "diagnostic-finding border-t border-border pt-8";
   return (
     <div className="results-workspace min-h-dvh bg-background px-6 pb-10 pt-10">
       <div className="mx-auto max-w-3xl space-y-8">
         <img src={logo} alt="The Sales Doctor" className="mx-auto w-28" />
         <p className={`${label} text-center`}>Your client acquisition diagnosis</p>
+        <DiagnosticGuide compact mood="findings" message="Hmm, I've spotted something." />
 
-        <div className="rounded-[2rem] bg-card px-5 py-10 text-center">
+        <div className="diagnostic-result-title rounded-[2rem] bg-card px-5 py-10 text-center">
           <p className={label}>Your biggest problem</p>
           <h1 className="mt-3 break-words font-display text-4xl font-bold uppercase leading-tight text-primary">
             {r.diagnosis_title}
@@ -152,7 +156,7 @@ function ResultView({ r }: { r: Result }) {
           <h2 className={label}>Why we believe this</h2>
           <ul className="mt-3 space-y-3">
             {r.evidence.slice(0, 3).map((e) => (
-              <li key={e} className="flex gap-3 text-foreground">
+              <li key={e} className="diagnostic-evidence flex gap-3 text-foreground">
                 <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                 {e}
               </li>
@@ -177,7 +181,8 @@ function ResultView({ r }: { r: Result }) {
           </section>
         )}
 
-        <section className="mt-4 rounded-[2rem] bg-card p-6">
+        <section className="diagnostic-finding diagnostic-treatment mt-4 rounded-[2rem] bg-card p-6">
+          <DiagnosticGuide compact mood="welcome" message="Let's work on fixing this." />
           <p className={label}>Your next move</p>
           <p className="mt-3 text-foreground">
             The diagnosis tells us where the problem is. It doesn’t tell us everything that needs to

@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import studio from "@/assets/diagnostic-studio.jpg";
 import { ArrowUpRight, Activity, Stethoscope, ScanSearch, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DiagnosticGuide } from "@/components/diagnostic-guide";
 
 export const Route = createFileRoute("/xray/")({
   head: () => ({
@@ -60,6 +61,9 @@ function Index() {
           </div>
         </div>
       </section>
+      <div className="mx-auto max-w-6xl px-6 py-6 sm:px-10">
+        <DiagnosticGuide message="Let's take an X-ray of your business!" scanning />
+      </div>
       <section className="xray-introduction relative mx-auto max-w-6xl bg-background px-6 py-16 text-foreground sm:px-10 sm:py-24">
         <p className="eyebrow flex items-center gap-2"><Activity className="h-4 w-4" /> Diagnosis</p>
         <h2 className="mt-4 max-w-2xl font-display text-[clamp(2rem,5vw,4.25rem)] font-black leading-[0.95] tracking-tight">

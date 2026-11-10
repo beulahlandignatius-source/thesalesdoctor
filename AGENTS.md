@@ -40,3 +40,4 @@ use the editor.
 - Booking and mentorship forms share branded FormShell/F controls and grouped contact fields; keep original input names and submit handlers so presentation changes preserve saved data and onward journeys.
 - Private Sales Clinic paid counts come only from signed provider notifications stored once per provider payment; browser payment clicks are intent, not proof of payment.
 - Admin site editing stores text/photo replacements in site_overrides keyed by the original wording or image address, applied client-side by SiteEditor over the rendered DOM; this makes every page editable without moving copy into the database.
+- Client X-Ray mascot guidance is presentation-only: reuse real question/answer and result state, never compute or fabricate diagnoses, and keep scanning effects noninteractive with reduced-motion fallbacks.

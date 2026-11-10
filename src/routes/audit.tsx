@@ -18,6 +18,8 @@ import {
 } from "@/lib/audit";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { DiagnosticGuide, DiagnosticSweep } from "@/components/diagnostic-guide";
+import { answerMascotMood } from "@/lib/mascot-state";
 
 export const Route = createFileRoute("/audit")({
   head: () => ({
@@ -192,7 +194,8 @@ function Audit() {
     if (e.key === "Enter") { e.preventDefault(); next(); return; }
     if (q && q.type !== "text") {
       const n = e.key.toUpperCase().charCodeAt(0) - 65;
-      if (e.key.length === 1 && n >= 0 && n < q.options.length) pick(q.options[n]!);
+      const option = q.options[n];
+      if (e.key.length === 1 && option !== undefined) pick(option);
     }
   };
   useEffect(() => {
@@ -212,6 +215,7 @@ function Audit() {
 
   return (
     <div className="min-h-dvh bg-background xray-ambient">
+      <DiagnosticSweep />
       <div className="assessment-workspace mx-auto flex min-h-dvh max-w-xl flex-col px-6 pb-32 pt-5 sm:pt-8">
         <header className="xray-bar flex items-center justify-between pr-14">
           <Button
@@ -249,6 +253,10 @@ function Audit() {
           <span className="text-muted-foreground">{remaining === 0 ? "Last one" : `${remaining} to go`}</span>
         </div>
 
+        <div key={`guide-${step}`} className="mt-6">
+          <DiagnosticGuide compact mood={busy ? "examining" : answerMascotMood(q ?? null, answer)} scanning={busy || step === 0 || !!q}
+            message={step === 0 ? "Let's take an X-ray of your business!" : "Let's see what's happening inside your business."} />
+        </div>
         <div
           key={step}
           className="assessment-question mt-10 flex-1 animate-in fade-in slide-in-from-right-4 duration-300 sm:mt-16"
