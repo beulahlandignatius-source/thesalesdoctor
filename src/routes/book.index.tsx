@@ -9,6 +9,8 @@ export const Route = createFileRoute("/book/")({
       { name: "description", content: "Free 25-min Client Acquisition Review or a 90-min Private Sales Clinic with Dr. Dan." },
       { property: "og:title", content: "Choose your session — The Sales Clinic" },
       { property: "og:description", content: "Both start with your goals. The difference is how deep we go." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Book,

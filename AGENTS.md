@@ -33,3 +33,5 @@ use the editor.
 - Visitor forms save via the public submitEnquiry server fn (zod-validated, insert-only with the admin client); clinic_enquiries/audit_* tables have RLS with admin-only reads via is_admin(), so visitors can never read stored data.
 - Admin access = Cloud email/password sign-in plus a row in admin_users; there is no public admin signup.
 - src/lib/backend/* are thin re-exports of the generated Cloud clients/middleware so the imported X-Ray code keeps its imports.
+- Reviews use an insert-only public server function with validation and default pending status; public reads expose only published rows, and authenticated admins moderate through RLS to prevent unapproved content appearing.
+- StackedCards supplies swipe, arrow and dot navigation for steps and reviews; shared presentation keeps the reference interaction consistent without changing photo markup.

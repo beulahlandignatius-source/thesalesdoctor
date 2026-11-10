@@ -11,6 +11,8 @@ export const Route = createFileRoute("/book/free")({
       { name: "description", content: "A focused 25 minutes with Dr. Dan on your goals, what’s working and your biggest opportunity to grow." },
       { property: "og:title", content: "Free Client Acquisition Review — The Sales Clinic" },
       { property: "og:description", content: "A focused 25 minutes on your goals and your biggest opportunity to grow." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Free,

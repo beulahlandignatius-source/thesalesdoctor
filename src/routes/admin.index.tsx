@@ -10,6 +10,8 @@ export const Route = createFileRoute("/admin/")({
       { name: "description", content: "Private overview of Sales Clinic enquiries and Client X-Rays." },
       { property: "og:title", content: "Overview — Sales Admin" },
       { property: "og:description", content: "Private admin overview." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),

@@ -11,6 +11,8 @@ export const Route = createFileRoute("/admin/enquiries")({
       { name: "description", content: "Private list of free review, Private Sales Clinic and mentorship enquiries." },
       { property: "og:title", content: "Sales Clinic enquiries — Sales Admin" },
       { property: "og:description", content: "Private admin list." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),

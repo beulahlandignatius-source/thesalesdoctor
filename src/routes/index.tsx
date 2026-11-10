@@ -1,10 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CtaLink } from "@/components/site";
+import { ClientReviews, reviewsQuery } from "@/components/client-reviews";
+import { StackedCards } from "@/components/stacked-cards";
+import { CalendarDays, ClipboardList, TrendingUp } from "lucide-react";
 import desk from "@/assets/dr-dan-desk.jpg";
 import portrait from "@/assets/dr-dan-portrait.jpg.asset.json";
 import standing from "@/assets/dr-dan-standing.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
+  loader: ({ context }) => context.queryClient.ensureQueryData(reviewsQuery),
   head: () => ({
     meta: [
       { title: "The Sales Clinic — Dr. Dan, The Sales Doctor" },
@@ -73,7 +77,7 @@ function Pulse({ className = "" }: { className?: string }) {
 
 function Index() {
   return (
-    <main className="overflow-x-clip">
+    <main className="farmora-home overflow-x-clip">
       {/* ===== HERO ===== */}
       <section className="relative">
         <div className="grid-paper pointer-events-none absolute inset-0" aria-hidden="true" />
@@ -176,15 +180,12 @@ function Index() {
             From “not sure what’s wrong” to <span className="marker">“I know exactly what to do.”</span>
           </h2>
         </div>
-        <ol className="pipeline relative mt-14 grid gap-10 md:grid-cols-3 md:gap-0">
-          {steps.map(([t, d], i) => (
-            <li key={t} className="relative pl-16 md:pl-0 md:pr-10 md:pt-16">
-              <span className="node absolute left-0 top-0 flex h-11 w-11 items-center justify-center bg-foreground font-display text-lg font-black text-background">{i + 1}</span>
-              <h3 className="text-2xl font-extrabold">{t}</h3>
-              <p className="mt-2 text-muted-foreground">{d}</p>
-            </li>
-          ))}
-        </ol>
+        <div className="mt-14">
+          <StackedCards label="session step" items={steps.map(([t, d], i) => {
+            const Icon = [CalendarDays, ClipboardList, TrendingUp][i] ?? CalendarDays;
+            return <><div className="stack-badge"><Icon className="h-10 w-10" /><span className="stack-number">{i + 1}</span></div><span className="stack-step mt-6">Step {String(i + 1).padStart(2, "0")}</span><h3 className="mt-5 text-2xl font-extrabold">{t}</h3><p className="mt-3 text-base leading-relaxed text-muted-foreground">{d}</p></>;
+          })} />
+        </div>
       </section>
 
       {/* ===== MENTORSHIP — asymmetric magazine spread ===== */}
@@ -241,19 +242,7 @@ function Index() {
             </div>
           ))}
         </div>
-        <div className="mt-16 grid gap-10 md:grid-cols-12">
-          {testimonials.map(([q, n, r], i) => (
-            <figure key={n} className={`flex flex-col ${i === 0 ? "md:col-span-7 md:row-span-2" : "md:col-span-5"}`}>
-              <blockquote className={`font-display font-bold leading-snug tracking-tight ${i === 0 ? "text-3xl md:text-4xl" : "text-xl"}`}>
-                <span className="text-primary">“</span>{(q ?? "").replace(/^“|”$/g, "")}<span className="text-primary">”</span>
-              </blockquote>
-              <figcaption className="mt-5 flex items-center gap-3 text-sm">
-                <span className="h-px w-8 bg-primary" />
-                <span><strong className="font-semibold">{n}</strong> <span className="text-muted-foreground">· {r}</span></span>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
+        <ClientReviews existing={testimonials} />
       </section>
 
       {/* ===== PHILOSOPHY — dark spread ===== */}

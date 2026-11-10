@@ -180,6 +180,36 @@ export type Database = {
         }
         Relationships: []
       }
+      client_reviews: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          name: string
+          rating: number
+          role: string
+          status: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          name: string
+          rating: number
+          role?: string
+          status?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          name?: string
+          rating?: number
+          role?: string
+          status?: string
+        }
+        Relationships: []
+      }
       clinic_enquiries: {
         Row: {
           created_at: string

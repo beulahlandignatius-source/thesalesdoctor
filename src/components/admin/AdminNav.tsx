@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { LayoutDashboard, ScanLine, Inbox, ExternalLink, LogOut, Menu, X, KeyRound } from "lucide-react";
+import { LayoutDashboard, ScanLine, Inbox, ExternalLink, LogOut, Menu, X, KeyRound, Star } from "lucide-react";
 
 const items = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/admin/enquiries", label: "Sales Clinic", icon: Inbox, exact: false },
   { to: "/admin/xray", label: "Client X-Ray", icon: ScanLine, exact: false },
+  { to: "/admin/reviews", label: "Reviews", icon: Star, exact: false },
 ] as const;
 
 export function AdminNav({ onSignOut, email }: { onSignOut: () => void; email: string }) {
@@ -15,7 +16,7 @@ export function AdminNav({ onSignOut, email }: { onSignOut: () => void; email: s
   return (
     <>
       {/* One UI-style bottom tab bar on phones */}
-      <nav aria-label="Admin sections" className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-3 gap-1 rounded-[1.75rem] border border-border bg-card/90 p-1.5 shadow-lg backdrop-blur-xl md:hidden" style={{ marginBottom: "env(safe-area-inset-bottom)" }}>
+      <nav aria-label="Admin sections" className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-4 gap-1 rounded-[1.75rem] border border-border bg-card/90 p-1.5 shadow-lg backdrop-blur-xl md:hidden" style={{ marginBottom: "env(safe-area-inset-bottom)" }}>
         {items.map((i) => (
           <Link key={i.to} to={i.to} activeOptions={{ exact: i.exact }} activeProps={{ className: "bg-blush !text-primary" }}
             className="flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-[1.4rem] text-[11px] font-semibold text-muted-foreground transition active:scale-95">

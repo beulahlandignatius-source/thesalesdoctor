@@ -4,4 +4,7 @@
 - [x] Shared nav bar across all pages (mobile + desktop)
 - [x] Save Sales Clinic form submissions to the backend
 - [x] Admin dashboard covering X-Ray audits and Sales Clinic enquiries, with nav, mobile + desktop
-- [ ] Create the first admin account — waiting on the admin's email address
+- [x] Create the first admin account
+- [x] Match Farmora's visual design without changing existing photos or image layouts
+- [x] Add visitor reviews, stacked review cards, and admin review moderation
+- [x] Verify review submission and publication on mobile and desktop

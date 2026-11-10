@@ -274,3 +274,48 @@ main img:hover { transform: scale(1.015); }
   .pipeline li:last-child .node { background: var(--primary); }
 }
 @media (prefers-reduced-motion: reduce) { .ecg { stroke-dashoffset: 0; animation: none; } .scan { animation: none; } }
+
+/* Farmora reference: floating pill navigation, relaxed typography, stacked glass cards.
+   Brand colours and all photograph containers remain unchanged. */
+:root {
+  --shadow-stack: 0 32px 64px -32px color-mix(in oklab, var(--ink) 30%, transparent);
+  --shadow-nav: 0 10px 44px -14px color-mix(in oklab, var(--ink) 14%, transparent);
+  --stack-glass: color-mix(in oklab, var(--card) 78%, transparent);
+  --stack-border: color-mix(in oklab, var(--card) 75%, var(--border));
+}
+.site-header { box-shadow: var(--shadow-nav); }
+.site-header .ulink { text-transform: none; letter-spacing: 0; font-size: .875rem; font-weight: 600; }
+.farmora-home h1, .farmora-home h2, .farmora-home h3 { letter-spacing: 0; text-transform: none; line-height: 1.12; }
+.farmora-home h1 { font-size: 3rem; font-weight: 800; }
+.farmora-home h2 { font-size: 2.25rem; font-weight: 800; }
+.farmora-home .eyebrow { display: inline-flex; align-items: center; gap: .5rem; border-radius: 999px; padding: .5rem .85rem; background: color-mix(in oklab, var(--primary) 9%, transparent); letter-spacing: 0; }
+.farmora-home .grid-paper { display: none; }
+.farmora-home .funnel-row { border-top-width: 1px; border-color: var(--border); margin-right: 0 !important; }
+.farmora-home .funnel-row > span { font-size: 3rem; }
+.farmora-home .symptom { border-radius: 1.5rem; border: 1px solid color-mix(in oklab, var(--ink-foreground) 18%, transparent); padding: 1.75rem; }
+.farmora-home .symptom::before { display: none; }
+.farmora-home .symptom + .symptom { margin-top: 1rem; }
+.farmora-home .proof-row > p:first-child { font-size: 4rem; letter-spacing: 0; }
+.farmora-home dl { border-width: 1px 0; border-color: var(--border); }
+.farmora-home dl dt { font-size: 1.85rem; letter-spacing: 0; }
+.farmora-home .proof-row { border-color: var(--border); }
+.review-stack { padding-right: 18px; }
+.stack-stage { position: relative; height: 400px; }
+.stack-card { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; overflow: auto; overscroll-behavior: contain; border-radius: 2.25rem; border: 1px solid var(--stack-border); background: var(--stack-glass); padding: 2rem; text-align: center; box-shadow: var(--shadow-stack); backdrop-filter: blur(22px) saturate(140%); transition: transform 520ms cubic-bezier(.22,1,.36,1), opacity 380ms ease; }
+.stack-active { z-index: 3; opacity: 1; transform: none; }
+.stack-next { z-index: 2; opacity: .85; transform: translate(20px,14px) scale(.94) rotate(2deg); pointer-events: none; overflow: hidden; }
+.stack-last { z-index: 1; opacity: .5; transform: translate(32px,28px) scale(.88) rotate(4deg); pointer-events: none; overflow: hidden; }
+.stack-hidden { opacity: 0; transform: translate(-100px,-10px) scale(.9) rotate(-6deg); pointer-events: none; }
+.stack-badge { position: relative; flex-shrink: 0; display: flex; height: 7rem; width: 7rem; align-items: center; justify-content: center; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); box-shadow: var(--shadow-stack); }
+.stack-number { position: absolute; right: -.4rem; bottom: -.4rem; display: flex; width: 2.25rem; height: 2.25rem; align-items: center; justify-content: center; border-radius: 999px; border: 1px solid var(--stack-border); background: var(--card); color: var(--foreground); font-size: .875rem; font-weight: 800; }
+.stack-step { border-radius: 999px; background: var(--blush); padding: .3rem .8rem; color: var(--primary); font-size: .7rem; font-weight: 700; text-transform: uppercase; }
+@media (min-width: 768px) {
+  .farmora-home h1 { font-size: 4.5rem; }
+  .farmora-home h2 { font-size: 3rem; }
+  .farmora-home .proof-row > p:first-child { font-size: 6rem; }
+  .farmora-home dl dt { font-size: 3.5rem; }
+  .farmora-home .symptom + .symptom { margin-top: 0; }
+  .farmora-home .symptom { margin: .5rem; }
+  .stack-stage { height: 460px; }
+}
+@media (prefers-reduced-motion: reduce) { .stack-card { transition: none; } }

@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const NAV = [
   { to: "/", label: "Home", exact: true },
@@ -15,7 +16,7 @@ export function Header() {
   const link = "ulink mx-3 py-2 font-display text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground transition hover:text-foreground";
   const active = { className: "!text-primary" };
   return (
-    <header className="sticky top-0 z-40 border-b-2 border-foreground bg-background/90 backdrop-blur">
+    <header className="site-header sticky top-3 z-40 mx-3 mb-6 mt-3 rounded-full border border-border bg-background/90 backdrop-blur md:mx-auto md:max-w-7xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-5">
         <Link to="/" className="flex items-center gap-2 font-display text-sm font-black tracking-[0.2em] text-foreground">
           <span className="h-3 w-3 bg-primary" aria-hidden="true" />
@@ -28,13 +29,13 @@ export function Header() {
         </nav>
         <div className="flex items-center gap-2">
           <CtaLink to="/book" size="sm" className="hidden sm:inline-flex">BOOK A CONSULTATION</CtaLink>
-          <button className="flex h-11 w-11 items-center justify-center rounded-md md:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
+          <Button variant="outline" size="icon" className="rounded-full md:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          </Button>
         </div>
       </div>
       {open && (
-        <nav className="border-t border-border bg-background px-5 pb-5 pt-2 md:hidden" aria-label="Mobile">
+        <nav className="absolute inset-x-0 top-full mt-3 rounded-3xl border border-border bg-background px-5 pb-5 pt-2 shadow-lg md:hidden" aria-label="Mobile">
           {NAV.map((n) => (
             <Link key={n.to} to={n.to} onClick={() => setOpen(false)} activeOptions={{ exact: n.exact }} activeProps={active}
               className="block border-b border-border/60 py-3.5 font-display text-lg font-bold text-foreground">{n.label}</Link>
@@ -69,7 +70,7 @@ export function Footer() {
 }
 
 const btn = {
-  base: "btn-sweep inline-flex items-center justify-center gap-2 rounded-[2px] font-display active:scale-[0.98] font-extrabold tracking-[0.08em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60",
+  base: "btn-sweep inline-flex min-h-12 items-center justify-center gap-2 rounded-full font-display active:scale-[0.98] font-bold tracking-normal transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60 whitespace-normal text-center",
   primary: "bg-primary text-primary-foreground",
   dark: "bg-ink text-ink-foreground hover:bg-ink/85",
   outline: "border-2 border-foreground text-foreground hover:bg-foreground hover:text-background",

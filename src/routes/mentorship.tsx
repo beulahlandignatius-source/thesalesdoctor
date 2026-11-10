@@ -11,6 +11,8 @@ export const Route = createFileRoute("/mentorship")({
       { name: "description", content: "Work directly with Dr. Dan until winning clients is a skill you own." },
       { property: "og:title", content: "Become Dr. Dan’s mentee — The Sales Clinic" },
       { property: "og:description", content: "Tell me where you are and where you want to go." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Mentor,
