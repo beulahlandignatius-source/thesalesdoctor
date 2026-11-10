@@ -1,9 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { F, FormError, FormShell, Options, StuckPicker, field, privacy, useEnquiry } from "@/components/form-bits";
 import { btnClass } from "@/components/site";
-import { CLINIC_PRICE, CLINIC_TERMS, LINKS, REVENUE, TARGETS, calendlyUrl } from "@/lib/links";
-import { CalendlyEmbed } from "@/components/calendly-embed";
+import { CLINIC_PRICE, CLINIC_TERMS, LINKS, REVENUE, TARGETS } from "@/lib/links";
+import { PaidDialog } from "@/components/paid-dialog";
 import { Button } from "@/components/ui/button";
 import { CalendarCheck, Clock, CreditCard, ExternalLink, Landmark, Lock, Receipt, ShieldCheck } from "lucide-react";
 
@@ -24,6 +24,7 @@ export const Route = createFileRoute("/book/clinic")({
 function Clinic() {
   const [who, setWho] = useState<{ name: string; email: string } | null>(null);
   const { save, busy, error } = useEnquiry("private_clinic");
+  const navigate = useNavigate();
   return (
     <FormShell eyebrow="Private Sales Clinic · 90 minutes" title="Book your Private Sales Clinic"
       intro="A deep working session on your numbers, your process and your target. We don’t just find the gap. We work out how to close it."
@@ -82,7 +83,7 @@ function Clinic() {
               <p className="font-semibold">Paid? Choose your 90-minute slot.</p>
             </div>
           </div>
-          <CalendlyEmbed src={calendlyUrl(who.name, who.email)} onOpen={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "private_clinic" })} />
+          <PaidDialog who={who} onDone={() => navigate({ to: "/book/schedule", search: { session: "clinic", name: who.name, email: who.email } })} />
         </div>
       ) : (
         <form className="space-y-5" onSubmit={async (e) => {

@@ -24,6 +24,7 @@ import { Route as AdminXrayRouteImport } from './routes/admin.xray'
 import { Route as BookIndexRouteImport } from './routes/book.index'
 import { Route as BookClinicRouteImport } from './routes/book.clinic'
 import { Route as BookFreeRouteImport } from './routes/book.free'
+import { Route as BookScheduleRouteImport } from './routes/book.schedule'
 import { Route as XrayIndexRouteImport } from './routes/xray.index'
 import { Route as XrayBookRouteImport } from './routes/xray.book'
 import { Route as ApiPublicPaymentsFlutterwaveRouteImport } from './routes/api/public/payments/flutterwave'
@@ -104,6 +105,11 @@ const BookFreeRoute = BookFreeRouteImport.update({
   path: '/book/free',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BookScheduleRoute = BookScheduleRouteImport.update({
+  id: '/book/schedule',
+  path: '/book/schedule',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const XrayIndexRoute = XrayIndexRouteImport.update({
   id: '/xray/',
   path: '/xray/',
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
+  '/book/schedule': typeof BookScheduleRoute
   '/xray/book': typeof XrayBookRoute
   '/admin/': typeof AdminIndexRoute
   '/book/': typeof BookIndexRoute
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
+  '/book/schedule': typeof BookScheduleRoute
   '/xray/book': typeof XrayBookRoute
   '/admin': typeof AdminIndexRoute
   '/book': typeof BookIndexRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
+  '/book/schedule': typeof BookScheduleRoute
   '/xray/book': typeof XrayBookRoute
   '/admin/': typeof AdminIndexRoute
   '/book/': typeof BookIndexRoute
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/admin/xray'
     | '/book/clinic'
     | '/book/free'
+    | '/book/schedule'
     | '/xray/book'
     | '/admin/'
     | '/book/'
@@ -225,6 +235,7 @@ export interface FileRouteTypes {
     | '/admin/xray'
     | '/book/clinic'
     | '/book/free'
+    | '/book/schedule'
     | '/xray/book'
     | '/admin'
     | '/book'
@@ -246,6 +257,7 @@ export interface FileRouteTypes {
     | '/admin/xray'
     | '/book/clinic'
     | '/book/free'
+    | '/book/schedule'
     | '/xray/book'
     | '/admin/'
     | '/book/'
@@ -263,6 +275,7 @@ export interface RootRouteChildren {
   ResultsRoute: typeof ResultsRoute
   BookClinicRoute: typeof BookClinicRoute
   BookFreeRoute: typeof BookFreeRoute
+  BookScheduleRoute: typeof BookScheduleRoute
   XrayBookRoute: typeof XrayBookRoute
   BookIndexRoute: typeof BookIndexRoute
   XrayIndexRoute: typeof XrayIndexRoute
@@ -377,6 +390,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookFreeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/book/schedule': {
+      id: '/book/schedule'
+      path: '/book/schedule'
+      fullPath: '/book/schedule'
+      preLoaderRoute: typeof BookScheduleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/xray/': {
       id: '/xray/'
       path: '/xray'
@@ -437,6 +457,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResultsRoute: ResultsRoute,
   BookClinicRoute: BookClinicRoute,
   BookFreeRoute: BookFreeRoute,
+  BookScheduleRoute: BookScheduleRoute,
   XrayBookRoute: XrayBookRoute,
   BookIndexRoute: BookIndexRoute,
   XrayIndexRoute: XrayIndexRoute,

@@ -1,9 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { F, FormError, FormShell, Options, StuckPicker, field, privacy, useEnquiry } from "@/components/form-bits";
 import { btnClass } from "@/components/site";
-import { CalendlyEmbed } from "@/components/calendly-embed";
-import { TARGETS, calendlyUrl } from "@/lib/links";
+import { TARGETS } from "@/lib/links";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/book/free")({
@@ -21,23 +19,17 @@ export const Route = createFileRoute("/book/free")({
 });
 
 function Free() {
-  const [done, setDone] = useState<string | null>(null);
+  const navigate = useNavigate();
   const { save, busy, error } = useEnquiry("free_review");
   return (
     <FormShell eyebrow="Free · 25 minutes" title="Book your free Client Acquisition Review"
       intro="A focused 25 minutes on your goals, what’s working, what’s holding you back, and your biggest opportunity to grow."
       steps={["Tell me about your business (about 2 minutes).", "Pick a time that works for you.", "Show up. We’ll find what’s in the way."]}>
-      {done ? (
-        <div className="py-8 text-center">
-          <h2 className="text-2xl font-extrabold">Now pick your time.</h2>
-          <p className="mt-2 text-muted-foreground">Thanks, your details are in. Choose a time that suits you.</p>
-          <CalendlyEmbed src={done} onOpen={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "free_review" })} />
-        </div>
-      ) : (
+      {(
         <form className="space-y-5" onSubmit={async (e) => {
           e.preventDefault();
           const who = await save(e.currentTarget);
-          if (who) { setDone(calendlyUrl(who.name, who.email)); window.scrollTo({ top: 0, behavior: "smooth" }); }
+          if (who) navigate({ to: "/book/schedule", search: { session: "free", name: who.name, email: who.email } });
         }}>
           <div className="form-contact grid gap-5 sm:grid-cols-2">
           <F label="Full name"><input name="name" required autoComplete="name" className={field} /></F>
