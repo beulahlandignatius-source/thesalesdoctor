@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { listAudits } from "@/lib/admin.functions";
 import { SeverityBadge, DIAGNOSIS_OPTIONS, fmtDate } from "@/components/admin/Severity";
 
-export const Route = createFileRoute("/admin/")({
+export const Route = createFileRoute("/admin/xray")({
   head: () => ({
     meta: [
       { title: "Completed X-Rays — Sales Doctor Admin" },
