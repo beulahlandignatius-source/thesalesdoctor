@@ -5,7 +5,15 @@ import { backend as supabase } from "@/lib/backend/client";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/admin/content")({
-  head: () => ({ meta: [{ title: "Site content | Admin, The Sales Clinic" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [
+    { title: "Site content | Admin, The Sales Clinic" },
+    { name: "description", content: "Private website content management for The Sales Clinic." },
+    { property: "og:title", content: "Site content | The Sales Clinic Admin" },
+    { property: "og:description", content: "Manage website wording and photographs in the private Sales Clinic admin area." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex" },
+  ] }),
   component: ContentAdmin,
 });
 

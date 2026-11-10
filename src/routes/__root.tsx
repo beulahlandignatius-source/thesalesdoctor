@@ -16,6 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header, Footer } from "../components/site";
 import { ThemeProvider } from "../components/theme";
 import { SiteEditor } from "../components/site-editor";
+import { SalesCompanion } from "../components/sales-companion";
 
 function NotFoundComponent() {
   return (
@@ -132,6 +133,7 @@ function PublicChrome({ children }: { children: ReactNode }) {
       <Header />
       <div className="visitor-pages">{children}</div>
       {!noFooter && <Footer />}
+      <SalesCompanion />
     </>
   );
 }

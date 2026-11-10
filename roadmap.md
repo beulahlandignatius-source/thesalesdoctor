@@ -1,4 +1,7 @@
 # Roadmap
+- [x] Add a small contextual mascot companion with accessible open, close and minimise controls.
+- [x] Implement three-question predefined sales guidance, message input, tips and working service/booking actions.
+- [x] Add consistent character states and verify desktop/mobile interactions, reduced motion and existing journeys.
 - [x] Add Dr. Dan mascot guidance, scanning moments and real-result reveals to Client X-Ray; verify mobile, desktop and the diagnostic journey.
 - [x] Sales Clinic landing rebuild (home, choose session, free review, private clinic, mentorship)
 - [x] Import Client X-Ray (audit, results, PDF report, booking) from "Remix of Thesalesdoctor (04)"

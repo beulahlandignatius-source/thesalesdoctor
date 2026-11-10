@@ -8,6 +8,7 @@ import { ClientReviews, reviewsQuery } from "@/components/client-reviews";
 import { StackedCards } from "@/components/stacked-cards";
 import { Words, useMotionFx } from "@/components/motion";
 import { JourneyLine } from "@/components/journey-line";
+import { MascotCharacter } from "@/components/mascot-character";
 import { CalendarDays, ClipboardList, TrendingUp, BadgeDollarSign, Users, Globe2, Target, Zap, HeartPulse, Stethoscope, Wrench, Search, Activity, ArrowUpRight } from "lucide-react";
 import desk from "@/assets/dr-dan-desk.jpg";
 import portrait from "@/assets/dr-dan-portrait.jpg.asset.json";
@@ -169,6 +170,7 @@ function Index() {
           <div className="md:col-span-4">
             <p className="eyebrow">Your session</p>
             <h2 className="mt-4 text-5xl font-black uppercase leading-[0.9] tracking-tight md:text-7xl">3 questions we answer</h2>
+            <div className="mt-6 flex items-center gap-3 text-primary"><MascotCharacter state="explaining" /><p className="max-w-40 text-sm font-semibold">Let's find your next step.</p></div>
           </div>
           <ol className="session-questions md:col-span-8">
             {questions.map(([n, t, d], i) => (
