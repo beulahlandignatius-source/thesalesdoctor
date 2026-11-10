@@ -71,7 +71,7 @@ function AdminLayout() {
   return (
     <div className="admin-shell min-h-dvh bg-background">
       <AdminNav onSignOut={signOut} email={session.user.email ?? ""} />
-      <div className="admin-content mx-auto max-w-7xl px-4 pb-32 pt-6 sm:px-6 md:pb-10 md:pt-10">
+      <div className="admin-content mx-auto max-w-7xl px-4 pb-32 pt-6 sm:px-6 lg:pb-10 lg:pt-10">
         <Outlet />
       </div>
     </div>

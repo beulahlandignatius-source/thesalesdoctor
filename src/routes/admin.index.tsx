@@ -39,10 +39,10 @@ function Overview() {
   const reviews = useQuery({ queryKey: ["admin-reviews"], queryFn: () => loadReviews() });
   const { data, isLoading, isError } = overview;
   const top = (
-    <div className="flex flex-wrap items-end justify-between gap-5">
-      <div><p className="eyebrow">The Sales Clinic · Admin</p><h1 className="mt-4 font-display text-4xl font-extrabold">Overview</h1></div>
-      <Button variant="outline" className="rounded-full" disabled={overview.isFetching || reviews.isFetching} onClick={() => { overview.refetch(); reviews.refetch(); }}><RefreshCw className={overview.isFetching ? "animate-spin" : ""} />Refresh</Button>
-      <div className="w-full"><DateRangePicker value={range} onChange={setRange} /><p className="mt-2 text-xs text-muted-foreground">Showing {fmtRange(range)}, compared with {fmtRange(prevR)}.</p></div>
+    <div className="admin-page-heading grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
+      <div className="min-w-0"><p className="eyebrow">The Sales Clinic · Admin</p><h1 className="mt-3 font-display text-4xl font-extrabold">Overview</h1></div>
+      <Button variant="outline" size="icon" className="shrink-0 rounded-lg" aria-label="Refresh dashboard" title="Refresh dashboard" disabled={overview.isFetching || reviews.isFetching} onClick={() => { overview.refetch(); reviews.refetch(); }}><RefreshCw className={overview.isFetching ? "animate-spin" : ""} /></Button>
+      <div className="col-span-2 min-w-0"><DateRangePicker value={range} onChange={setRange} /><p className="mt-2 text-xs text-muted-foreground">Showing {fmtRange(range)}, compared with {fmtRange(prevR)}.</p></div>
     </div>
   );
   if (isLoading) return <div className="space-y-9">{top}<div role="status" className="grid animate-pulse gap-5 sm:grid-cols-2"><div className="h-36 rounded-3xl bg-muted" /><div className="h-36 rounded-3xl bg-muted" /><span className="sr-only">Loading…</span></div></div>;
@@ -66,7 +66,7 @@ function Overview() {
         <div className="grid gap-4 md:grid-cols-2">
           {([["free_review", "Free Client Acquisition Review"], ["private_clinic", "Private Sales Clinic"]] as const).map(([k, label]) => {
             const f = m.funnel[k], pf = p.funnel[k];
-            const headRow = <div className="flex items-center justify-between gap-2 border-b border-border pb-4"><span className="flex items-center gap-2 font-semibold"><CalendarCheck className="h-5 w-5 text-primary" />{label}</span><Link to="/admin/enquiries" search={{ ...range, kind: k }} className="flex min-h-11 items-center gap-1 text-xs font-semibold text-primary">Enquiries <ArrowUpRight className="h-3.5 w-3.5" /></Link></div>;
+            const headRow = <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border pb-4"><span className="flex min-w-0 items-center gap-2 font-semibold"><CalendarCheck className="h-5 w-5 shrink-0 text-primary" />{label}</span><Link to="/admin/enquiries" search={{ ...range, kind: k }} className="flex min-h-11 shrink-0 items-center gap-1 text-xs font-semibold text-primary">Enquiries <ArrowUpRight className="h-3.5 w-3.5" /></Link></div>;
             if (!f.viewed && !f.started && !f.completed) return <div key={k} className="dashboard-distribution">{headRow}<EmptyState icon={CalendarCheck} title="No calendar activity in this period" body="Views, booking starts and completed bookings show here once visitors open the calendar." /></div>;
             return (
               <div key={k} className="dashboard-distribution">

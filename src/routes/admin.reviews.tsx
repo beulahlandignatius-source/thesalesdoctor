@@ -39,7 +39,7 @@ function Reviews() {
     },
   });
   const rows = (data ?? []).filter((r) => !filter || r.status === filter);
-  return <div>
+  return <div className="admin-page admin-review-page">
     <h1 className="text-3xl font-extrabold">Reviews</h1>
     <select aria-label="Review status" className="field mt-6 sm:!w-56" value={filter} onChange={(e) => setFilter(e.target.value)}><option value="pending">Awaiting approval</option><option value="published">Published</option><option value="hidden">Hidden</option><option value="">All reviews</option></select>
     {mutation.isError && <p className="mt-4 text-destructive" role="alert">Couldn’t update the review. Please try again.</p>}

@@ -64,11 +64,11 @@ function AdminList() {
 
   const sel = "field w-full sm:!w-auto !py-2 text-sm min-h-11";
   return (
-    <div>
+    <div className="admin-page">
       <div className="mb-6"><p className="eyebrow">Client X-Ray · Admin</p><h1 className="mt-4 font-display text-4xl font-extrabold">Completed X-Rays</h1></div>
       <div className="mb-6"><DateRangePicker value={range} onChange={(r) => setF(r)} /><p className="mt-2 text-xs text-muted-foreground">Showing {fmtRange(range)}, compared with {fmtRange(previousRange(range))}.</p></div>
       {!isLoading && !isError && <XrayScan rows={inPeriod} prev={prevPeriod} hasAny={!!data?.length} range={range} onDrill={drill} />}
-      <div ref={listRef} className="scroll-mt-24 flex flex-wrap items-center gap-3">
+      <div ref={listRef} className="admin-filter-grid scroll-mt-24">
         <input
           aria-label="Search name or email"
           placeholder="Search name or email"

@@ -58,12 +58,12 @@ function Enquiries() {
 
   const sel = "field !py-2 text-sm min-h-11 sm:!w-auto";
   return (
-    <div>
+    <div className="admin-page">
       <h1 className="mb-6 font-display text-3xl font-extrabold">Sales Clinic enquiries</h1>
       <div className="mb-4"><DateRangePicker value={range ?? readRange({})} onChange={(r) => setF(r)} />
         <div className="range-banner"><span>{range ? <>Showing {fmtRange(range)}</> : "Showing all dates"} · <strong>{rows.length}</strong> {rows.length === 1 ? "enquiry" : "enquiries"}</span>
           {(range || kind || status) && <button type="button" onClick={() => navigate({ search: {}, replace: true })} className="ml-auto inline-flex min-h-10 items-center gap-1 rounded-full px-3 font-semibold text-primary hover:bg-card"><X className="h-4 w-4" />Clear filters</button>}</div></div>
-      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+      <div className="admin-filter-grid">
         <input aria-label="Search" placeholder="Search name, email or WhatsApp" value={q} onChange={(e) => setQ(e.target.value)} className="field !py-2 text-sm sm:!w-72" />
         <select aria-label="Type" value={kind} onChange={(e) => setKind(e.target.value)} className={sel}>
           <option value="">All types</option>
@@ -80,14 +80,14 @@ function Enquiries() {
           : isError ? <p role="alert" className="text-destructive">Couldn’t load enquiries. Please refresh.</p>
           : !rows.length ? <p className="rounded-3xl border border-border bg-card p-10 text-center text-muted-foreground">{data?.length ? "No enquiries match these filters." : "No enquiries yet."}</p>
           : rows.map((r) => (
-            <article key={r.id} className="rounded-3xl border border-border bg-card">
+            <article key={r.id} className="admin-enquiry rounded-3xl border border-border bg-card">
               <div className="flex flex-col gap-3 p-4 md:flex-row md:items-center md:justify-between">
                 <button onClick={() => setOpen(open === r.id ? null : r.id)} className="min-w-0 text-left" aria-expanded={open === r.id}>
                   <p className="font-semibold">{r.name} <span className="ml-2 rounded-full bg-blush px-2.5 py-0.5 text-xs font-semibold text-primary">{KIND_LABEL[r.kind] ?? r.kind}</span></p>
                   <p className="mt-1 break-all text-sm text-muted-foreground">{r.email} · {r.whatsapp}</p>
                   <p className="mt-1 text-xs text-muted-foreground">{fmt(r.created_at)} · {open === r.id ? "Hide details" : "Show details"}</p>
                 </button>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="admin-enquiry-actions">
                   <a href={`https://wa.me/${r.whatsapp.replace(/[^\d]/g, "")}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 text-sm font-semibold hover:border-primary"><WhatsAppIcon className="h-4 w-4 shrink-0" />WhatsApp</a>
                   <a href={`mailto:${r.email}`} className="inline-flex min-h-11 items-center rounded-full border border-border px-4 text-sm font-semibold hover:border-primary">Email</a>
                   <select aria-label={`Status for ${r.name}`} value={r.status} disabled={setStatus.isPending}

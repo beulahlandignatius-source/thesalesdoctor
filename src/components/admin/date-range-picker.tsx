@@ -1,14 +1,16 @@
 import { CalendarRange } from "lucide-react";
-import { PRESETS, matchesPreset, presetRange, type DateRange } from "@/lib/date-range";
+import { PRESETS, matchesPreset, presetRange, type DateRange, type Preset } from "@/lib/date-range";
+import { Button } from "@/components/ui/button";
 
 /** Preset chips plus custom from/to dates. Every admin dashboard uses the same control. */
 export function DateRangePicker({ value, onChange }: { value: DateRange; onChange: (r: DateRange) => void }) {
   const active = matchesPreset(value);
   return (
     <div className="date-range" role="group" aria-label="Date range">
+      <label className="date-range-preset"><span className="sr-only">Period</span><select aria-label="Period" value={active ?? "custom"} onChange={(e) => { if (e.target.value !== "custom") onChange(presetRange(e.target.value as Preset)); }}>{PRESETS.map(([p, label]) => <option key={p} value={p}>{label}</option>)}<option value="custom">Custom dates</option></select></label>
       <div className="date-range-chips">
         {PRESETS.map(([p, label]) => (
-          <button key={p} type="button" aria-pressed={active === p} className="date-chip" onClick={() => onChange(presetRange(p))}>{label}</button>
+          <Button key={p} variant="ghost" type="button" aria-pressed={active === p} className="date-chip" onClick={() => onChange(presetRange(p))}>{label}</Button>
         ))}
       </div>
       <div className="date-range-custom">

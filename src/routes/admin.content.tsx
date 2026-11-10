@@ -35,7 +35,7 @@ function ContentAdmin() {
   };
   const remove = async (id: string) => { await supabase.from("site_overrides").delete().eq("id", id); await load(); };
 
-  return <div className="space-y-8">
+  return <div className="admin-page admin-editor-page space-y-8">
     <header className="flex flex-wrap items-end justify-between gap-4">
       <div><p className="eyebrow">Site content</p><h1 className="mt-2 font-display text-3xl font-black md:text-4xl">Edit your website</h1>
         <p className="mt-2 max-w-xl text-muted-foreground">Choose a page below to edit its wording and photos here. Editing controls never appear on the visitor site.</p></div>
@@ -43,7 +43,7 @@ function ContentAdmin() {
     </header>
 
     <section className="space-y-4">
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="admin-editor-actions">
         <label className="flex items-center gap-2 text-sm font-semibold">Page<select aria-label="Page to edit" value={page} onChange={e => setPage(e.target.value)} className="rounded-lg border border-border bg-background px-3 py-2 text-foreground">{EDIT_PAGES.map(([path, label]) => <option key={path} value={path}>{label}</option>)}</select></label>
         <Button variant="premium" onClick={() => setPreview(!preview)}><PenLine />{preview ? "Close page editor" : "Edit page"}</Button>
       </div>

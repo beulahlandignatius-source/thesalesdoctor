@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Compact mobile/tablet admin navigation, simplify crowded dashboard panels and controls, and verify signed-in pages.
 - [x] Improve mobile X-Ray readability and control spacing; verify the full assessment and results.
 - [x] Verify desktop/mobile navigation through free consultation submission and WhatsApp confirmation with real test enquiries.
 - [x] Add shared fade-and-slide transitions; verify browser back/forward, mobile, reduced motion and preserved navigation.

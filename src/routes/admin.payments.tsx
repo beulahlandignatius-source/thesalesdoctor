@@ -32,7 +32,7 @@ function Payments() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-payment-proofs"] }),
   });
   const rows = (data ?? []).filter((r) => !filter || r.status === filter);
-  return <div>
+  return <div className="admin-page admin-payment-page">
     <h1 className="text-3xl font-extrabold">Payment screenshots</h1>
     <p className="mt-3 flex max-w-2xl gap-2 rounded-2xl bg-secondary p-4 text-sm"><Info className="h-4 w-4 shrink-0 text-primary" />Screenshots are uploaded by visitors and are not proof of payment. Check the payment in Stripe or Flutterwave before marking it verified. Paid clinic counts on the Overview come only from Stripe and Flutterwave directly.</p>
     <select aria-label="Screenshot status" className="field mt-6 sm:!w-56" value={filter} onChange={(e) => setFilter(e.target.value)}><option value="pending">To check</option><option value="verified">Verified by you</option><option value="rejected">Rejected</option><option value="">All</option></select>
