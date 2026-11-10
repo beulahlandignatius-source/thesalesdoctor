@@ -84,7 +84,7 @@ export function useEnquiry(kind: Kind) {
     for (const [k, v] of d.entries()) {
       if (["name", "email", "phone"].includes(k)) continue;
       const val = String(v);
-      if (k === "stuck") (details.stuck = [...((details.stuck as string[]) ?? []), val]);
+      if (k === "stuck") details["stuck"] = [...((details["stuck"] as string[] | undefined) ?? []), val];
       else details[k] = val;
     }
     const who = { name: String(d.get("name")).trim(), email: String(d.get("email")).trim() };
