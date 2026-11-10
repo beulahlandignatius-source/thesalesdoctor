@@ -41,21 +41,21 @@ function Index() {
             <p className="eyebrow flex items-center gap-2">
               <Activity className="h-4 w-4" /> The Sales Doctor
             </p>
-            <h1 className="mt-4 font-display text-[40px] font-bold leading-tight text-studio-foreground sm:text-6xl">
+            <h1 className="mt-3 font-display text-[40px] font-bold leading-tight text-studio-foreground sm:mt-4 sm:text-6xl">
               The Client <span className="whitespace-nowrap">X-Ray</span>
             </h1>
-            <h2 className="mt-4 text-xl font-medium text-studio-foreground sm:text-2xl">
+            <h2 className="mt-3 text-xl font-medium text-studio-foreground sm:mt-4 sm:text-2xl">
               Why Aren't You Getting More Clients?
             </h2>
             <p className="mt-3 max-w-sm text-base leading-relaxed text-studio-muted">
               See exactly what's stopping you from getting consistent clients.
             </p>
-            <Button asChild variant="premium" size="lg" className="mt-7 w-full sm:w-auto">
+            <Button asChild variant="premium" size="lg" className="mt-5 w-full sm:mt-7 sm:w-auto">
               <Link to="/audit">
                 Get my X-Ray <ArrowUpRight className="ml-3 h-5 w-5" />
               </Link>
             </Button>
-            <p className="mt-5 text-xs text-studio-muted">
+            <p className="mt-4 text-xs text-studio-muted sm:mt-5">
               5–8 minutes · Free · Personalized diagnosis
             </p>
           </div>

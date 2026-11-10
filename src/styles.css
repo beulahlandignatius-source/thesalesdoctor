@@ -110,8 +110,8 @@
   background: var(--studio);
 }
 .studio-content {
-  padding-top: 90px;
-  min-height: 550px;
+  padding-top: 64px;
+  min-height: 480px;
 }
 .studio-image {
   object-position: center;
@@ -121,11 +121,11 @@
 }
 @media (max-width: 639px) {
   .studio-content {
-    padding-top: 235px;
-    min-height: 610px;
+    padding-top: 175px;
+    min-height: 0;
   }
   .studio-image {
-    height: 270px;
+    height: 210px;
     object-position: right top;
   }
 }
