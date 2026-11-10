@@ -676,3 +676,9 @@ main img:hover { transform: scale(1.015); }
 .sev-dot { width: 10px; height: 10px; border-radius: 9999px; }
 .sev-LOW { background: var(--border); } .sev-MODERATE { background: var(--blush); } .sev-HIGH { background: color-mix(in oklab, var(--primary) 60%, var(--card)); } .sev-CRITICAL { background: var(--primary); }
 @media (max-width: 639px) { .dash-stats > .dashboard-stat { padding: 1.1rem; } .dash-stats > .dashboard-stat-accent:first-child { grid-column: span 2; } .dash-stats .text-4xl { font-size: 1.9rem; } }
+.hero-pulse { overflow: visible; }
+.hero-pulse path { stroke-linejoin: round; stroke-linecap: round; }
+.hero-pulse-trace { opacity: .22; }
+.hero-pulse-beat { stroke-dasharray: 22 78; animation: hero-beat 2.8s linear infinite; filter: drop-shadow(0 0 6px color-mix(in oklab, var(--primary) 70%, transparent)); }
+@keyframes hero-beat { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .hero-pulse-beat { animation: none; stroke-dasharray: none; } }

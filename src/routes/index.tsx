@@ -87,6 +87,17 @@ function Pulse({ className = "" }: { className?: string }) {
   );
 }
 
+/** Hero life line: many heartbeats, a pulse that runs forever along a faint trace. */
+function HeroPulse({ className = "" }: { className?: string }) {
+  const d = "M0 50 H30 L38 42 L44 50 L50 12 L56 78 L62 36 L68 50 H116 L124 42 L130 50 L136 20 L142 72 L148 40 L154 50 H202 L210 42 L216 50 L222 8 L228 80 L234 34 L240 50 H288 L296 42 L302 50 L308 24 L314 70 L320 42 L326 50 H374 L382 42 L388 50 L394 14 L400 76 L406 38 L412 50 H460 L468 42 L474 50 L480 10 L486 78 L492 36 L498 50 H546 L554 42 L560 50 L566 6 L572 82 L578 32 L584 50 H600";
+  return (
+    <svg viewBox="0 0 600 100" fill="none" aria-hidden="true" className={`hero-pulse ${className}`} preserveAspectRatio="none">
+      <path d={d} className="hero-pulse-trace" stroke="currentColor" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+      <path d={d} className="hero-pulse-beat" stroke="currentColor" strokeWidth="2.75" pathLength={100} vectorEffect="non-scaling-stroke" />
+    </svg>
+  );
+}
+
 function Index() {
   useMotionFx();
   return (
@@ -103,7 +114,7 @@ function Index() {
               <Words text="What would it take to get you to your" />{" "}
               <span className="relative inline text-primary"><Words text="next revenue target?" start={8} /></span>
             </h1>
-            <Pulse className="mt-6 h-12 w-full text-primary md:h-16" />
+            <HeroPulse className="mt-6 h-14 w-full text-primary md:h-20" />
             <div className="mt-6 grid gap-8 md:grid-cols-[1.4fr_1fr] md:items-end">
               <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
                 Whether you’re chasing your first clients or trying to break past your best month yet, we’ll look at your goals, your numbers and how you win clients, and pinpoint exactly what has to change to get you there.
