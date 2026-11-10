@@ -11,12 +11,26 @@ vi.mock("@/components/form-bits", () => ({
 }));
 vi.mock("@/components/site", () => ({
   btnClass: () => "",
-  ExtLink: ({ href, children }: { href: string; children: ReactNode }) => <a href={href}>{children}</a>,
+  ExtLink: ({ href, children, onClick }: { href: string; children: ReactNode; onClick?: () => void }) => <a href={href} onClick={onClick}>{children}</a>,
 }));
 import { Free } from "@/routes/book.free";
 
-afterEach(() => { cleanup(); vi.clearAllMocks(); });
+afterEach(() => { cleanup(); vi.clearAllMocks(); delete window.__lovableEvents; });
 describe("free consultation submission", () => {
+  it("tracks the WhatsApp next step once per click, not on confirmation display", async () => {
+    HTMLElement.prototype.scrollIntoView = vi.fn();
+    const track = vi.fn();
+    window.__lovableEvents = { track };
+    save.mockResolvedValue({ name: "Test client", email: "test@example.com" });
+    const { container } = render(<Free />);
+    const form = container.querySelector("form");
+    if (!form) throw new Error("Form missing");
+    fireEvent.submit(form);
+    const link = await screen.findByRole("link");
+    expect(track).not.toHaveBeenCalled();
+    fireEvent.click(link);
+    expect(track).toHaveBeenCalledExactlyOnceWith("project.consultation_whatsapp_clicked", { session: "free_review" });
+  });
   it("offers the existing WhatsApp destination only after the details save successfully", async () => {
     HTMLElement.prototype.scrollIntoView = vi.fn();
     save.mockResolvedValue({ name: "Test client", email: "test@example.com" });

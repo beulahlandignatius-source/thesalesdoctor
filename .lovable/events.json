@@ -74,6 +74,29 @@
         }
       }
     },
+    "project.consultation_whatsapp_clicked": {
+      "event_schema_version": 1,
+      "description": "A visitor clicked Continue to WhatsApp after successfully saving a free consultation enquiry; this is a handoff, not a confirmed appointment.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "session"
+        ],
+        "properties": {
+          "session": {
+            "type": "string",
+            "enum": [
+              "free_review"
+            ]
+          }
+        }
+      }
+    },
     "project.enquiry_submitted": {
       "event_schema_version": 1,
       "description": "A visitor's free review, clinic or mentorship enquiry was saved.",

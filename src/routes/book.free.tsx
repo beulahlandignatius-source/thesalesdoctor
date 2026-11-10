@@ -38,7 +38,7 @@ export function Free() {
         <h2 ref={confirmation} tabIndex={-1} className="mt-5 font-display text-2xl font-bold outline-none">Your enquiry has been submitted.</h2>
         <p className="mt-3 text-muted-foreground">Your details are saved. Next, message Dr. Dan on WhatsApp to arrange your free 25-minute Client Acquisition Review.</p>
         <p className="mt-3 text-sm text-muted-foreground">Your appointment is not confirmed yet. You’ll agree on a time with Dr. Dan on WhatsApp.</p>
-        <ExtLink href={LINKS.whatsapp} className="mt-6 w-full">Continue to WhatsApp<ArrowUpRight className="h-4 w-4" /></ExtLink>
+        <ExtLink href={LINKS.whatsapp} className="mt-6 w-full" onClick={() => window.__lovableEvents?.track?.("project.consultation_whatsapp_clicked", { session: "free_review" })}>Continue to WhatsApp<ArrowUpRight className="h-4 w-4" /></ExtLink>
       </div> : (
         <form className="space-y-5" onSubmit={async (e) => {
           e.preventDefault();
