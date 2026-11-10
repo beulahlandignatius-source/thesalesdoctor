@@ -124,12 +124,13 @@ function RootShell({ children }: { children: ReactNode }) {
 // Admin pages have their own navigation; every other page gets the site nav and footer.
 function PublicChrome({ children }: { children: ReactNode }) {
   const isAdmin = useRouterState({ select: (s) => s.location.pathname.startsWith("/admin") });
+  const noFooter = useRouterState({ select: (s) => /^\/(xray|audit|results)(\/|$)/.test(s.location.pathname) });
   if (isAdmin) return <>{children}</>;
   return (
     <>
       <Header />
       <div className="visitor-pages">{children}</div>
-      <Footer />
+      {!noFooter && <Footer />}
     </>
   );
 }

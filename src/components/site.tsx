@@ -66,7 +66,7 @@ export function Footer() {
         </p>
         <div className="flex flex-col gap-2 border-t border-ink-foreground/15 py-6 text-sm text-ink-foreground/60 md:flex-row md:justify-between">
           <p>© 2026 The Sales Clinic · Dr. Dan Odotukpono, The Sales Doctor</p>
-          <p>Results shown are past outcomes, not guarantees.</p>
+          <p>Every business is unique. Results shown are real past client outcomes, and yours begin with your first session.</p>
         </div>
       </div>
     </footer>
