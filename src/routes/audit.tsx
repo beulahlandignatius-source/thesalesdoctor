@@ -17,12 +17,12 @@ import {
   type BasicInfo,
 } from "@/lib/audit";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 
 export const Route = createFileRoute("/audit")({
   head: () => ({
     meta: [
-      { title: "Your Assessment — The Client X-Ray" },
+      { title: "Your Assessment | The Client X-Ray" },
       {
         name: "description",
         content:
@@ -202,11 +202,11 @@ function Audit() {
   }, []);
   const pct = Math.round(((step + 1) / TOTAL) * 100);
   const cheer =
-    pct >= 90 ? "Almost there — your X-Ray is nearly ready"
-    : pct >= 75 ? "Final stretch — the picture is getting clear"
-    : pct >= 50 ? "Over halfway — keep going"
-    : pct >= 25 ? "Great momentum — your diagnosis is taking shape"
-    : step >= 1 ? "Nice start — every answer sharpens your X-Ray"
+    pct >= 90 ? "Almost there. Your X-Ray is nearly ready"
+    : pct >= 75 ? "Final stretch. The picture is getting clear"
+    : pct >= 50 ? "Over halfway. Keep going"
+    : pct >= 25 ? "Great momentum. Your diagnosis is taking shape"
+    : step >= 1 ? "Nice start. Every answer sharpens your X-Ray"
     : null;
   const remaining = Math.max(0, TOTAL - step - 1);
 
@@ -296,7 +296,7 @@ function Audit() {
               </div>
               {cheer && (
                 <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary animate-in fade-in duration-500">
-                  <Sparkles className="h-3.5 w-3.5" /> {cheer}
+                  {cheer}
                 </p>
               )}
               <h1
@@ -314,7 +314,7 @@ function Audit() {
               )}
               {OPTIONAL_IDS.has(q.id) && (
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Optional — skip if you'd rather not say.
+                  Optional. Skip if you'd rather not say.
                 </p>
               )}
               {q.type === "text" ? (

@@ -8,7 +8,7 @@ export const Route = createFileRoute("/xray/book")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Book Your Client Acquisition Review — The Sales Doctor" },
+      { title: "Book Your Client Acquisition Review | The Sales Doctor" },
       {
         name: "description",
         content: "Pick a time for your Client Acquisition Review with Dr. Dan.",

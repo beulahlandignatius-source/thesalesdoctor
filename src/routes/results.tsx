@@ -19,7 +19,7 @@ import { deliverFile } from "@/lib/download";
 export const Route = createFileRoute("/results")({
   head: () => ({
     meta: [
-      { title: "Your Results — The Client X-Ray" },
+      { title: "Your Results | The Client X-Ray" },
       { name: "description", content: "Your client acquisition diagnosis from The Sales Doctor." },
       { property: "og:title", content: "Your Client X-Ray Results" },
       {

@@ -3,9 +3,9 @@ import { PasswordForm } from "@/components/admin/PasswordForm";
 
 export const Route = createFileRoute("/admin/password")({
   head: () => ({ meta: [
-    { title: "Change password — Sales Admin" },
+    { title: "Change password | Sales Admin" },
     { name: "description", content: "Securely update your Sales Clinic administrator password." },
-    { property: "og:title", content: "Change password — Sales Admin" },
+    { property: "og:title", content: "Change password | Sales Admin" },
     { property: "og:description", content: "Secure password management for Sales Clinic administrators." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },

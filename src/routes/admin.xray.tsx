@@ -7,9 +7,9 @@ import { SeverityBadge, DIAGNOSIS_OPTIONS, fmtDate } from "@/components/admin/Se
 export const Route = createFileRoute("/admin/xray")({
   head: () => ({
     meta: [
-      { title: "Completed X-Rays — Sales Doctor Admin" },
+      { title: "Completed X-Rays | Sales Doctor Admin" },
       { name: "description", content: "Private review of completed Sales Doctor assessments." },
-      { property: "og:title", content: "Completed X-Rays — Sales Doctor Admin" },
+      { property: "og:title", content: "Completed X-Rays | Sales Doctor Admin" },
       {
         property: "og:description",
         content: "Private review of completed Sales Doctor assessments.",
@@ -124,7 +124,7 @@ function AdminList() {
                     </div>
                     <p className="mt-0.5 truncate text-sm text-muted-foreground">{r.email}</p>
                     <p className="mt-2 text-sm font-medium text-primary">{r.diagnosis_title}</p>
-                    <p className="mt-1 truncate text-sm text-foreground">{r.sells || "—"}</p>
+                    <p className="mt-1 truncate text-sm text-foreground">{r.sells || "-"}</p>
                     <p className="mt-2 text-xs text-muted-foreground">
                       {fmtDate(r.completed_at)} · Booked: {r.booked ? "Yes" : "No"}
                     </p>
@@ -165,7 +165,7 @@ function AdminList() {
                       </td>
                       <td className="px-4 py-3 text-muted-foreground">{r.email}</td>
                       <td className="max-w-[220px] truncate px-4 py-3 text-foreground">
-                        {r.sells || "—"}
+                        {r.sells || "-"}
                       </td>
                       <td className="px-4 py-3 font-medium text-primary">{r.diagnosis_title}</td>
                       <td className="px-4 py-3">

@@ -7,9 +7,9 @@ import { SeverityBadge, fmtDate } from "@/components/admin/Severity";
 export const Route = createFileRoute("/admin/$id")({
   head: () => ({
     meta: [
-      { title: "X-Ray Details — Sales Doctor Admin" },
+      { title: "X-Ray Details | Sales Doctor Admin" },
       { name: "description", content: "Private client assessment details and diagnosis." },
-      { property: "og:title", content: "X-Ray Details — Sales Doctor Admin" },
+      { property: "og:title", content: "X-Ray Details | Sales Doctor Admin" },
       { property: "og:description", content: "Private client assessment details and diagnosis." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -52,7 +52,7 @@ function LeadDetail() {
     );
   const { session: s, answers, result: r } = data;
   const a = Object.fromEntries(answers.map((x) => [x.question_id, x]));
-  const ans = (qid: string) => a[qid]?.answer || "—";
+  const ans = (qid: string) => a[qid]?.answer || "-";
   const scores: [string, number | null | undefined][] = [
     ["Market", r?.market_score],
     ["Positioning", r?.positioning_score],
@@ -108,7 +108,7 @@ function LeadDetail() {
               <div key={k}>
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground">{k}</span>
-                  <span className="font-semibold text-primary">{v == null ? "—" : `${v}/100`}</span>
+                  <span className="font-semibold text-primary">{v == null ? "-" : `${v}/100`}</span>
                 </div>
                 <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-muted">
                   <div className="h-full bg-primary" style={{ width: `${v ?? 0}%` }} />

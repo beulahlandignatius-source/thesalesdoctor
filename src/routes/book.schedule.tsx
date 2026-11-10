@@ -13,9 +13,9 @@ export const Route = createFileRoute("/book/schedule")({
   validateSearch: search,
   head: () => ({
     meta: [
-      { title: "Choose your time — The Sales Clinic" },
+      { title: "Choose your time | The Sales Clinic" },
       { name: "description", content: "Pick a time for your session with Dr. Dan." },
-      { property: "og:title", content: "Choose your time — The Sales Clinic" },
+      { property: "og:title", content: "Choose your time | The Sales Clinic" },
       { property: "og:description", content: "Pick a time for your session with Dr. Dan." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

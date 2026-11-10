@@ -10,9 +10,9 @@ import { Inbox, ScanLine, Star, CalendarCheck, ArrowUpRight, RefreshCw, Clipboar
 export const Route = createFileRoute("/admin/")({
   head: () => ({
     meta: [
-      { title: "Overview — Sales Admin" },
+      { title: "Overview | Sales Admin" },
       { name: "description", content: "Private overview of Sales Clinic enquiries and Client X-Rays." },
-      { property: "og:title", content: "Overview — Sales Admin" },
+      { property: "og:title", content: "Overview | Sales Admin" },
       { property: "og:description", content: "Private admin overview." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -44,7 +44,7 @@ function Overview() {
         <Stat label="Sales Clinic enquiries" n={total} icon={Inbox} to="/admin/enquiries" />
         <Stat label="New, not yet handled" n={data.newOnes} icon={ClipboardList} to="/admin/enquiries" />
         <Stat label="Completed X-Rays" n={data.xrays} icon={ScanLine} to="/admin/xray" />
-        <Stat label="Awaiting review approval" n={pending ?? "—"} icon={Star} to="/admin/reviews" />
+        <Stat label="Awaiting review approval" n={pending ?? "-"} icon={Star} to="/admin/reviews" />
       </div>
       <section>
         <h2 className="mb-5 text-xl font-bold">Bookings this month</h2>
@@ -88,7 +88,7 @@ function Overview() {
           </ul>
         </section>
         <section><div className="mb-5 flex items-center justify-between gap-3"><h2 className="text-xl font-bold">Reviews</h2><Star className="h-5 w-5 text-muted-foreground" /></div><div className="dashboard-review-summary">
-          <CircleCheck className="h-9 w-9 text-primary" strokeWidth={1.5} /><p className="mt-6 text-3xl font-extrabold tabular-nums">{pending ?? "—"}</p><p className="mt-2 text-sm text-muted-foreground">Awaiting approval</p>
+          <CircleCheck className="h-9 w-9 text-primary" strokeWidth={1.5} /><p className="mt-6 text-3xl font-extrabold tabular-nums">{pending ?? "-"}</p><p className="mt-2 text-sm text-muted-foreground">Awaiting approval</p>
           {reviews.isError && <p role="alert" className="mt-3 text-sm text-destructive">Couldn’t load reviews.</p>}
           <Button asChild variant="outline" className="mt-6 w-full rounded-full"><Link to="/admin/reviews">Review submissions <ArrowUpRight /></Link></Button>
         </div></section>

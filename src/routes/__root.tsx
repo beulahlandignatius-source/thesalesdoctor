@@ -84,7 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "The Sales Clinic — Dr. Dan, The Sales Doctor" },
+      { title: "The Sales Clinic | Dr. Dan, The Sales Doctor" },
       { name: "description", content: "Book a consultation with Dr. Dan Odotukpono, The Sales Doctor, and pinpoint what has to change to hit your next revenue target." },
       { name: "author", content: "Dr. Dan Odotukpono" },
       { property: "og:type", content: "website" },

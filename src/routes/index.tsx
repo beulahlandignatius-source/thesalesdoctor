@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CtaLink } from "@/components/site";
 import { ClientReviews, reviewsQuery } from "@/components/client-reviews";
 import { StackedCards } from "@/components/stacked-cards";
-import { CalendarDays, ClipboardList, TrendingUp, BadgeDollarSign, Users, Globe2, Target, Zap } from "lucide-react";
+import { CalendarDays, ClipboardList, TrendingUp, BadgeDollarSign, Users, Globe2, Target, Zap, HeartPulse } from "lucide-react";
 import desk from "@/assets/dr-dan-desk.jpg";
 import portrait from "@/assets/dr-dan-portrait.jpg.asset.json";
 import standing from "@/assets/dr-dan-standing.jpg.asset.json";
@@ -11,9 +11,9 @@ export const Route = createFileRoute("/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(reviewsQuery),
   head: () => ({
     meta: [
-      { title: "The Sales Clinic — Dr. Dan, The Sales Doctor" },
+      { title: "The Sales Clinic | Dr. Dan, The Sales Doctor" },
       { name: "description", content: "What would it take to get you to your next revenue target? Book a free 25-min review or a 90-min Private Sales Clinic with Dr. Dan." },
-      { property: "og:title", content: "The Sales Clinic — Dr. Dan, The Sales Doctor" },
+      { property: "og:title", content: "The Sales Clinic | Dr. Dan, The Sales Doctor" },
       { property: "og:description", content: "Pinpoint exactly what has to change to hit your next revenue target." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -83,7 +83,7 @@ function Index() {
         <div className="grid-paper pointer-events-none absolute inset-0" aria-hidden="true" />
         <div className="relative mx-auto grid max-w-7xl gap-10 px-5 pb-10 pt-8 md:grid-cols-12 md:gap-6 md:pb-16 md:pt-14">
           <div className="md:col-span-7 md:pt-6">
-            <p className="eyebrow flex items-center gap-3"><span className="h-px w-10 bg-primary" />With Dr. Dan Odotukpono, The Sales Doctor</p>
+            <p className="eyebrow flex items-center gap-3"><HeartPulse className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />With Dr. Dan Odotukpono, The Sales Doctor</p>
             <h1 className="mt-6 font-black uppercase leading-[0.88] tracking-[-0.045em] text-[clamp(2.9rem,9.2vw,7.4rem)] md:text-[clamp(3.5rem,6.4vw,6.2rem)]">
               What would it take to get you to your{" "}
               <span className="relative inline text-primary">next revenue target?</span>

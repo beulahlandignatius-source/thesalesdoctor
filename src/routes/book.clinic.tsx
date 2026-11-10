@@ -10,9 +10,9 @@ import { CalendarCheck, Clock, CreditCard, ExternalLink, Landmark, Lock, Receipt
 export const Route = createFileRoute("/book/clinic")({
   head: () => ({
     meta: [
-      { title: "Book your Private Sales Clinic — The Sales Clinic" },
+      { title: "Book your Private Sales Clinic | The Sales Clinic" },
       { name: "description", content: "A 90-minute deep working session with Dr. Dan on your numbers, your process and your target." },
-      { property: "og:title", content: "Private Sales Clinic — The Sales Clinic" },
+      { property: "og:title", content: "Private Sales Clinic | The Sales Clinic" },
       { property: "og:description", content: "We don’t just find the gap. We work out how to close it." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

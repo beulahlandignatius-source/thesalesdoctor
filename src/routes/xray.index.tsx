@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/xray/")({
   head: () => ({
     meta: [
-      { title: "The Client X-Ray — Sales Doctor Client Acquisition Audit" },
+      { title: "The Client X-Ray | Sales Doctor Client Acquisition Audit" },
       {
         name: "description",
         content:
           "A free 5-minute assessment that identifies the biggest problem stopping you from getting consistent clients.",
       },
-      { property: "og:title", content: "The Client X-Ray — Why Aren't You Getting More Clients?" },
+      { property: "og:title", content: "The Client X-Ray | Why Aren't You Getting More Clients?" },
       {
         property: "og:description",
         content: "Free personalized diagnosis by Dr. Dan Odotukpono, The Sales Doctor.",

@@ -8,9 +8,9 @@ import { adminReviews, moderateReview } from "@/lib/reviews.functions";
 
 export const Route = createFileRoute("/admin/reviews")({
   head: () => ({ meta: [
-    { title: "Review approvals — The Sales Clinic Admin" },
+    { title: "Review approvals | The Sales Clinic Admin" },
     { name: "description", content: "Approve or hide submitted Sales Clinic client reviews." },
-    { property: "og:title", content: "Review approvals — The Sales Clinic Admin" },
+    { property: "og:title", content: "Review approvals | The Sales Clinic Admin" },
     { property: "og:description", content: "Private review moderation for The Sales Clinic." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },

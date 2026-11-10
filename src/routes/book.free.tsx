@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/book/free")({
   head: () => ({
     meta: [
-      { title: "Book your free Client Acquisition Review — The Sales Clinic" },
+      { title: "Book your free Client Acquisition Review | The Sales Clinic" },
       { name: "description", content: "A focused 25 minutes with Dr. Dan on your goals, what’s working and your biggest opportunity to grow." },
-      { property: "og:title", content: "Free Client Acquisition Review — The Sales Clinic" },
+      { property: "og:title", content: "Free Client Acquisition Review | The Sales Clinic" },
       { property: "og:description", content: "A focused 25 minutes on your goals and your biggest opportunity to grow." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

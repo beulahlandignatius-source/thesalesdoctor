@@ -6,7 +6,7 @@ const styles: Record<string, string> = {
 };
 
 export function SeverityBadge({ value }: { value: string | null }) {
-  if (!value) return <span className="text-muted-foreground">—</span>;
+  if (!value) return <span className="text-muted-foreground">-</span>;
   return <span className={`inline-block rounded-full px-3 py-0.5 text-xs font-semibold tracking-widest ${styles[value] ?? styles["LOW"]}`}>{value}</span>;
 }
 
@@ -19,4 +19,4 @@ export const DIAGNOSIS_OPTIONS = [
   ["lead_graveyard", "The Lead Graveyard"],
 ] as const;
 
-export const fmtDate = (d: string | null) => (d ? new Date(d).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) : "—");
+export const fmtDate = (d: string | null) => (d ? new Date(d).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) : "-");

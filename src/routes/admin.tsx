@@ -12,9 +12,9 @@ export const Route = createFileRoute("/admin")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Admin Dashboard — The Sales Clinic & Client X-Ray" },
+      { title: "Admin Dashboard | The Sales Clinic & Client X-Ray" },
       { name: "description", content: "Private admin area for reviewing completed Client X-Rays." },
-      { property: "og:title", content: "Admin Dashboard — The Client X-Ray" },
+      { property: "og:title", content: "Admin Dashboard | The Client X-Ray" },
       { property: "og:description", content: "Private admin area." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

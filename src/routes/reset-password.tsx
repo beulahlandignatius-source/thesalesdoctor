@@ -7,9 +7,9 @@ export const Route = createFileRoute("/reset-password")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Reset admin password — The Sales Clinic" },
+      { title: "Reset admin password | The Sales Clinic" },
       { name: "description", content: "Set a new password for your Sales Clinic admin account." },
-      { property: "og:title", content: "Reset admin password — The Sales Clinic" },
+      { property: "og:title", content: "Reset admin password | The Sales Clinic" },
       { property: "og:description", content: "Set a new admin password." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

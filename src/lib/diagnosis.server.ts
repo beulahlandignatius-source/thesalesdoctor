@@ -56,7 +56,7 @@ Rules:
 - evidence: exactly 3 short points, each citing the user's actual answers in plain language (second person, "you").
 - confidence: 0 to 1.
 - secondary_observation: one short sentence about another possible constraint, or null.
-- Be specific, concise and personal — it should feel like an expert actually looked at this business.`;
+- Never use em dashes. Be specific, concise and personal; it should feel like an expert actually looked at this business.`;
 
 export async function runDiagnosis(input: { info: { name: string }; answers: Record<string, string>; scores: Scores }): Promise<AiDiagnosis> {
   const apiKey = process.env["LOVABLE_API_KEY"];
