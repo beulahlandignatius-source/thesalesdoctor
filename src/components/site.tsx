@@ -72,6 +72,6 @@ export function CtaLink({ to, children, variant = "primary", size = "md", classN
   return <Link to={to} className={btnClass(variant, size, className)}>{children}</Link>;
 }
 
-export function ExtLink({ href, children, variant = "primary", className }: { href: string; children: ReactNode; variant?: V; className?: string }) {
-  return <a href={href} target="_blank" rel="noopener noreferrer" className={btnClass(variant, "md", className)}>{children}</a>;
+export function ExtLink({ href, children, variant = "primary", className, onClick }: { href: string; children: ReactNode; variant?: V; className?: string; onClick?: () => void }) {
+  return <a href={href} onClick={onClick} target="_blank" rel="noopener noreferrer" className={btnClass(variant, "md", className)}>{children}</a>;
 }

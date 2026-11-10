@@ -34,7 +34,7 @@ function Clinic() {
           </div>
           <div className="mt-8 rounded-lg bg-blush p-5">
             <p className="font-semibold">Paid? Choose your 90-minute slot.</p>
-            <ExtLink href={calendlyUrl(who.name, who.email)} variant="outline" className="mt-4 w-full">CHOOSE MY SLOT ON CALENDLY →</ExtLink>
+            <ExtLink href={calendlyUrl(who.name, who.email)} variant="outline" className="mt-4 w-full" onClick={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "private_clinic" })}>CHOOSE MY SLOT ON CALENDLY →</ExtLink>
           </div>
         </div>
       ) : (

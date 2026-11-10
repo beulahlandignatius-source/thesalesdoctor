@@ -92,6 +92,7 @@ export function useEnquiry(kind: Kind) {
     setError("");
     try {
       await submitEnquiry({ data: { kind, ...who, whatsapp: String(d.get("phone")).trim(), details } });
+      window.__lovableEvents?.track?.("project.enquiry_submitted", { kind });
       return who;
     } catch {
       setError("Something went wrong saving your details. Please check them and try again.");

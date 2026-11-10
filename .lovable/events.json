@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "events": {
+    "project.consultation_booking_opened": {
+      "event_schema_version": 1,
+      "description": "A visitor clicked through to Calendly to pick a consultation time.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "session"
+        ],
+        "properties": {
+          "session": {
+            "type": "string",
+            "enum": [
+              "free_review",
+              "private_clinic",
+              "xray_followup"
+            ]
+          }
+        }
+      }
+    },
+    "project.enquiry_submitted": {
+      "event_schema_version": 1,
+      "description": "A visitor's free review, clinic or mentorship enquiry was saved.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "free_review",
+              "private_clinic",
+              "mentorship"
+            ]
+          }
+        }
+      }
+    },
+    "project.xray_completed": {
+      "event_schema_version": 1,
+      "description": "A visitor finished the Client X-Ray and their diagnosis was generated.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      }
+    },
+    "project.xray_report_downloaded": {
+      "event_schema_version": 1,
+      "description": "A visitor clicked to download their Client X-Ray PDF report.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      }
+    }
+  }
+}

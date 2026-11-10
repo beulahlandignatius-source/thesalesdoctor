@@ -27,7 +27,7 @@ function Free() {
         <div className="py-8 text-center">
           <h2 className="text-2xl font-extrabold">Now pick your time.</h2>
           <p className="mt-2 text-muted-foreground">Thanks, your details are in. Choose a time that suits you.</p>
-          <ExtLink href={done} className="mt-6">CHOOSE MY TIME ON CALENDLY →</ExtLink>
+          <ExtLink href={done} className="mt-6" onClick={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "free_review" })}>CHOOSE MY TIME ON CALENDLY →</ExtLink>
         </div>
       ) : (
         <form className="space-y-5" onSubmit={async (e) => {
