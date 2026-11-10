@@ -48,6 +48,7 @@ function Reviews() {
         <div className="flex flex-wrap justify-between gap-3"><div><h2 className="font-bold">{r.name}</h2><p className="text-sm text-muted-foreground">{r.role}</p></div><span className="text-sm capitalize text-primary">{r.status}</span></div>
         <div className="mt-4 flex gap-1 text-primary" aria-label={`${r.rating} out of 5 stars`}>{[1,2,3,4,5].map((n) => <Star key={n} className={`h-4 w-4 ${n <= r.rating ? "fill-current" : "opacity-25"}`} />)}</div>
         <p className="mt-4 whitespace-pre-wrap break-words">{r.body}</p>
+        {(r.photoUrl || r.screenshotUrl) && <div className="mt-4 flex flex-wrap gap-3">{r.photoUrl && <a href={r.photoUrl} target="_blank" rel="noreferrer"><img src={r.photoUrl} alt={`Photo from ${r.name}`} className="h-20 w-20 rounded-full object-cover" /></a>}{r.screenshotUrl && <a href={r.screenshotUrl} target="_blank" rel="noreferrer"><img src={r.screenshotUrl} alt={`Screenshot from ${r.name}`} className="h-28 rounded-xl border border-border object-cover" /></a>}</div>}
         <div className="mt-6 flex flex-wrap gap-3"><Button className="rounded-full" disabled={mutation.isPending || r.status === "published"} onClick={() => mutation.mutate({ id: r.id, status: "published" })}><Check />Publish</Button><Button variant="outline" className="rounded-full" disabled={mutation.isPending || r.status === "hidden"} onClick={() => mutation.mutate({ id: r.id, status: "hidden" })}><EyeOff />Hide</Button></div>
       </article>)}
     </div>

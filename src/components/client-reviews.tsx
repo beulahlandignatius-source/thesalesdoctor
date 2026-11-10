@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Star, MessageSquarePlus, Check, Send } from "lucide-react";
+import { Star, MessageSquarePlus, Check, Send, Images } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { StackedCards } from "./stacked-cards";
@@ -19,16 +20,17 @@ export function ClientReviews({ existing }: { existing: string[][] }) {
   const [error, setError] = useState("");
   const save = useServerFn(submitReview);
   const cards = [
-    ...existing.map(([body, name, role]) => ({ body, name, role, rating: null })),
+    ...existing.map(([body, name, role]) => ({ body, name, role, rating: null as number | null, photoUrl: null as string | null })),
     ...data,
   ];
   return <div className="mt-16 grid items-center gap-12 md:grid-cols-2">
     <div>
       <p className="eyebrow">Reviews</p>
       <Button variant="premium" className="mt-6 gap-2" onClick={() => { setDone(false); setError(""); setRating(0); setOpen(true); }}><MessageSquarePlus /> Write a review</Button>
+      <Link to="/reviews" className="ml-3 mt-6 inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-semibold hover:border-primary hover:text-primary"><Images className="h-4 w-4" /> See more</Link>
     </div>
     <StackedCards label="review" items={cards.map((r, i) => <>
-      <div className="stack-badge review-avatar" aria-hidden="true"><span className="font-display text-3xl font-bold">{r.name?.split(" ").map((p) => p[0]).join("").slice(0, 2)}</span><span className="stack-number">{i + 1}</span></div>
+      <div className="stack-badge review-avatar" aria-hidden="true">{r.photoUrl ? <img src={r.photoUrl} alt="" className="h-full w-full rounded-full object-cover" /> : <span className="font-display text-3xl font-bold">{r.name?.split(" ").map((p: string) => p[0]).join("").slice(0, 2)}</span>}<span className="stack-number">{i + 1}</span></div>
       {r.rating !== null && <div className="mt-6 flex justify-center gap-1 text-primary" aria-label={`${r.rating} out of 5 stars`}>{[1,2,3,4,5].map((n) => <Star key={n} className={`h-4 w-4 ${n <= r.rating ? "fill-current" : "opacity-25"}`} />)}</div>}
       <blockquote className="mt-6 whitespace-pre-wrap break-words text-lg font-semibold leading-relaxed">{r.body}</blockquote>
       <p className="mt-auto pt-7 text-sm"><strong className="block">{r.name}</strong><span className="text-muted-foreground">{r.role}</span></p>
@@ -42,15 +44,19 @@ export function ClientReviews({ existing }: { existing: string[][] }) {
           if (!parsed.success) { setError(parsed.error.issues[0]?.message ?? "Please check your review."); return; }
           setBusy(true); setError("");
           try {
-            await save({ data: parsed.data });
+            const photo = await readImage(form.get("photo"));
+            const screenshot = await readImage(form.get("screenshot"));
+            await save({ data: { ...parsed.data, photo, screenshot } });
             window.__lovableEvents?.track?.("project.review_submitted", {});
             setDone(true);
-          } catch { setError("Your review couldn’t be saved. Please try again."); } finally { setBusy(false); }
+          } catch (err) { setError(err instanceof Error && err.message.includes("5MB") ? err.message : "Your review couldn’t be saved. Please try again."); } finally { setBusy(false); }
         }}>
           <fieldset><legend className="text-sm font-semibold">Your rating</legend><div className="mt-2 flex gap-2">{[1,2,3,4,5].map((n) => <Button type="button" key={n} variant="ghost" size="icon" aria-label={`Rate ${n} stars`} aria-pressed={rating === n} onClick={() => setRating(n)} className="text-primary"><Star className={`!h-7 !w-7 ${n <= rating ? "fill-current" : ""}`} /></Button>)}</div></fieldset>
           <label className="block text-sm font-semibold">Name<input name="name" required maxLength={120} className="field mt-2" autoComplete="name" /></label>
           <label className="block text-sm font-semibold">Role or business (optional)<input name="role" maxLength={120} className="field mt-2" /></label>
           <label className="block text-sm font-semibold">Your review<textarea name="body" required minLength={10} maxLength={1500} rows={4} className="field mt-2" /></label>
+          <label className="block text-sm font-semibold">Your photo or headshot (optional)<input type="file" name="photo" accept="image/jpeg,image/png,image/webp" className="field mt-2" /></label>
+          <label className="block text-sm font-semibold">Screenshot of your results (optional)<input type="file" name="screenshot" accept="image/jpeg,image/png,image/webp" className="field mt-2" /></label>
           <div className="hidden" aria-hidden="true"><input name="website" tabIndex={-1} autoComplete="off" /></div>
           <label className="flex gap-3 text-sm"><input type="checkbox" name="consent" required className="mt-1" />I agree to my name and review being published.</label>
           {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
@@ -59,4 +65,12 @@ export function ClientReviews({ existing }: { existing: string[][] }) {
       </DialogContent>
     </Dialog>
   </div>;
+}
+async function readImage(v: FormDataEntryValue | null) {
+  if (!(v instanceof File) || v.size === 0) return null;
+  if (v.size > 5 * 1024 * 1024) throw new Error("Images must be under 5MB.");
+  if (!["image/jpeg", "image/png", "image/webp"].includes(v.type)) throw new Error("Images must be JPG, PNG or WebP under 5MB.");
+  const buf = new Uint8Array(await v.arrayBuffer());
+  let bin = ""; for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode(...buf.subarray(i, i + 0x8000));
+  return { base64: btoa(bin), contentType: v.type as "image/jpeg" | "image/png" | "image/webp" };
 }

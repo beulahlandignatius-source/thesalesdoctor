@@ -15,6 +15,7 @@ import { Route as AuditRouteImport } from './routes/audit'
 import { Route as MentorshipRouteImport } from './routes/mentorship'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ResultsRouteImport } from './routes/results'
+import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminIdRouteImport } from './routes/admin.$id'
 import { Route as AdminEnquiriesRouteImport } from './routes/admin.enquiries'
@@ -59,6 +60,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const ResultsRoute = ResultsRouteImport.update({
   id: '/results',
   path: '/results',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsRoute = ReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -145,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/mentorship': typeof MentorshipRoute
   '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
+  '/reviews': typeof ReviewsRoute
   '/admin/$id': typeof AdminIdRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/password': typeof AdminPasswordRoute
@@ -167,6 +174,7 @@ export interface FileRoutesByTo {
   '/mentorship': typeof MentorshipRoute
   '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
+  '/reviews': typeof ReviewsRoute
   '/admin/$id': typeof AdminIdRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/password': typeof AdminPasswordRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/mentorship': typeof MentorshipRoute
   '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
+  '/reviews': typeof ReviewsRoute
   '/admin/$id': typeof AdminIdRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/password': typeof AdminPasswordRoute
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
     | '/mentorship'
     | '/reset-password'
     | '/results'
+    | '/reviews'
     | '/admin/$id'
     | '/admin/enquiries'
     | '/admin/password'
@@ -238,6 +248,7 @@ export interface FileRouteTypes {
     | '/mentorship'
     | '/reset-password'
     | '/results'
+    | '/reviews'
     | '/admin/$id'
     | '/admin/enquiries'
     | '/admin/password'
@@ -261,6 +272,7 @@ export interface FileRouteTypes {
     | '/mentorship'
     | '/reset-password'
     | '/results'
+    | '/reviews'
     | '/admin/$id'
     | '/admin/enquiries'
     | '/admin/password'
@@ -285,6 +297,7 @@ export interface RootRouteChildren {
   MentorshipRoute: typeof MentorshipRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResultsRoute: typeof ResultsRoute
+  ReviewsRoute: typeof ReviewsRoute
   BookClinicRoute: typeof BookClinicRoute
   BookFreeRoute: typeof BookFreeRoute
   BookScheduleRoute: typeof BookScheduleRoute
@@ -337,6 +350,13 @@ declare module '@tanstack/react-router' {
       path: '/results'
       fullPath: '/results'
       preLoaderRoute: typeof ResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews': {
+      id: '/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof ReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -476,6 +496,7 @@ const rootRouteChildren: RootRouteChildren = {
   MentorshipRoute: MentorshipRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ResultsRoute: ResultsRoute,
+  ReviewsRoute: ReviewsRoute,
   BookClinicRoute: BookClinicRoute,
   BookFreeRoute: BookFreeRoute,
   BookScheduleRoute: BookScheduleRoute,

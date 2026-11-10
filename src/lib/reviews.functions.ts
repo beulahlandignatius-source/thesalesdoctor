@@ -2,13 +2,24 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { reviewSchema } from "./reviews";
+import { reviewSubmitSchema } from "./reviews";
 
 export const submitReview = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => reviewSchema.parse(input))
+  .inputValidator((input: unknown) => reviewSubmitSchema.parse(input))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("client_reviews").insert({ name: data.name, role: data.role, rating: data.rating, body: data.body, status: "pending" });
+    const upload = async (f: { base64: string; contentType: string } | null, kind: string) => {
+      if (!f) return null;
+      const bytes = Uint8Array.from(atob(f.base64), (c) => c.charCodeAt(0));
+      if (bytes.length > 5 * 1024 * 1024) throw new Error("Images must be under 5MB.");
+      const path = `${kind}/${crypto.randomUUID()}.${f.contentType.split("/")[1]}`;
+      const { error } = await supabaseAdmin.storage.from("review-media").upload(path, bytes, { contentType: f.contentType });
+      if (error) throw new Error("Your image couldn’t be uploaded.");
+      return path;
+    };
+    const photo_path = await upload(data.photo, "photos");
+    const screenshot_path = await upload(data.screenshot, "screenshots");
+    const { error } = await supabaseAdmin.from("client_reviews").insert({ name: data.name, role: data.role, rating: data.rating, body: data.body, status: "pending", photo_path, screenshot_path });
     if (error) throw new Error("Your review couldn’t be saved. Please try again.");
     return { ok: true };
   });
@@ -23,9 +34,9 @@ export const publicReviews = createServerFn({ method: "GET" }).handler(async () 
     headers.set("apikey", key);
     return fetch(input, { ...init, headers });
   } } });
-  const { data, error } = await sb.from("client_reviews").select("id,name,role,rating,body").eq("status", "published").order("created_at", { ascending: false }).limit(100);
+  const { data, error } = await sb.from("client_reviews").select("id,name,role,rating,body,photo_path,screenshot_path").eq("status", "published").order("created_at", { ascending: false }).limit(100);
   if (error) throw new Error("Reviews are unavailable.");
-  return data as Array<{ id: string; name: string; role: string; rating: number; body: string }>;
+  return signMedia(data ?? []);
 });
 
 export const adminReviews = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
@@ -33,7 +44,7 @@ export const adminReviews = createServerFn({ method: "POST" }).middleware([requi
   if (authError || !allowed) throw new Error("Forbidden");
   const { data, error } = await context.supabase.from("client_reviews").select("*").order("created_at", { ascending: false }).limit(1000);
   if (error) throw new Error("Couldn’t load reviews.");
-  return data;
+  return signMedia(data ?? []);
 });
 
 export const moderateReview = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
@@ -45,3 +56,13 @@ export const moderateReview = createServerFn({ method: "POST" }).middleware([req
     if (error) throw new Error("Couldn’t update this review.");
     return { ok: true };
   });
+async function signMedia<T extends { photo_path: string | null; screenshot_path: string | null }>(rows: T[]) {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const paths = rows.flatMap((r) => [r.photo_path, r.screenshot_path]).filter((p): p is string => !!p);
+  const urls = new Map<string, string>();
+  if (paths.length) {
+    const { data } = await supabaseAdmin.storage.from("review-media").createSignedUrls(paths, 3600);
+    for (const d of data ?? []) if (d.path && d.signedUrl) urls.set(d.path, d.signedUrl);
+  }
+  return rows.map(({ photo_path, screenshot_path, ...r }) => ({ ...r, photoUrl: photo_path ? urls.get(photo_path) ?? null : null, screenshotUrl: screenshot_path ? urls.get(screenshot_path) ?? null : null }));
+}

@@ -8,4 +8,6 @@ export const reviewSchema = z.object({
   consent: z.literal(true, { message: "Please agree to publish your review" }),
   website: z.string().max(0).default(""),
 });
-export type PublicReview = { id: string; name: string; role: string; rating: number; body: string };
+const mediaFile = z.object({ base64: z.string().max(7_000_000), contentType: z.enum(["image/jpeg", "image/png", "image/webp"]) }).nullable().default(null);
+export const reviewSubmitSchema = reviewSchema.extend({ photo: mediaFile, screenshot: mediaFile });
+export type PublicReview = { id: string; name: string; role: string; rating: number; body: string; photoUrl: string | null; screenshotUrl: string | null };

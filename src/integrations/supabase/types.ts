@@ -207,8 +207,10 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          photo_path: string | null
           rating: number
           role: string
+          screenshot_path: string | null
           status: string
         }
         Insert: {
@@ -216,8 +218,10 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
+          photo_path?: string | null
           rating: number
           role?: string
+          screenshot_path?: string | null
           status?: string
         }
         Update: {
@@ -225,8 +229,10 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+          photo_path?: string | null
           rating?: number
           role?: string
+          screenshot_path?: string | null
           status?: string
         }
         Relationships: []

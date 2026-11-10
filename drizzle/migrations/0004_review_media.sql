@@ -1,0 +1,1 @@
+ALTER TABLE public.client_reviews ADD COLUMN IF NOT EXISTS photo_path text, ADD COLUMN IF NOT EXISTS screenshot_path text;
