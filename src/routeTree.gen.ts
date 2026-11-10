@@ -10,33 +10,74 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MentorshipRouteImport } from './routes/mentorship'
+import { Route as BookIndexRouteImport } from './routes/book.index'
+import { Route as BookClinicRouteImport } from './routes/book.clinic'
+import { Route as BookFreeRouteImport } from './routes/book.free'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MentorshipRoute = MentorshipRouteImport.update({
+  id: '/mentorship',
+  path: '/mentorship',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookIndexRoute = BookIndexRouteImport.update({
+  id: '/book/',
+  path: '/book/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookClinicRoute = BookClinicRouteImport.update({
+  id: '/book/clinic',
+  path: '/book/clinic',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookFreeRoute = BookFreeRouteImport.update({
+  id: '/book/free',
+  path: '/book/free',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/mentorship': typeof MentorshipRoute
+  '/book/clinic': typeof BookClinicRoute
+  '/book/free': typeof BookFreeRoute
+  '/book/': typeof BookIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/mentorship': typeof MentorshipRoute
+  '/book/clinic': typeof BookClinicRoute
+  '/book/free': typeof BookFreeRoute
+  '/book': typeof BookIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/mentorship': typeof MentorshipRoute
+  '/book/clinic': typeof BookClinicRoute
+  '/book/free': typeof BookFreeRoute
+  '/book/': typeof BookIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/mentorship' | '/book/clinic' | '/book/free' | '/book/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/mentorship' | '/book/clinic' | '/book/free' | '/book'
+  id:
+    '__root__' | '/' | '/mentorship' | '/book/clinic' | '/book/free' | '/book/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MentorshipRoute: typeof MentorshipRoute
+  BookClinicRoute: typeof BookClinicRoute
+  BookFreeRoute: typeof BookFreeRoute
+  BookIndexRoute: typeof BookIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +89,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mentorship': {
+      id: '/mentorship'
+      path: '/mentorship'
+      fullPath: '/mentorship'
+      preLoaderRoute: typeof MentorshipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book/': {
+      id: '/book/'
+      path: '/book'
+      fullPath: '/book/'
+      preLoaderRoute: typeof BookIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book/clinic': {
+      id: '/book/clinic'
+      path: '/book/clinic'
+      fullPath: '/book/clinic'
+      preLoaderRoute: typeof BookClinicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book/free': {
+      id: '/book/free'
+      path: '/book/free'
+      fullPath: '/book/free'
+      preLoaderRoute: typeof BookFreeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MentorshipRoute: MentorshipRoute,
+  BookClinicRoute: BookClinicRoute,
+  BookFreeRoute: BookFreeRoute,
+  BookIndexRoute: BookIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
