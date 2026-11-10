@@ -1,7 +1,8 @@
+import type React from "react";
 import { useState } from "react";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Star, MessageSquarePlus, Check, Send, Images } from "lucide-react";
+import { Star, MessageSquarePlus, Check, Send, Images, Camera, ImagePlus, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -37,7 +38,7 @@ export function ClientReviews({ existing }: { existing: string[][] }) {
     </>)} />
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-h-[90dvh] overflow-y-auto rounded-3xl">
-        <DialogHeader><DialogTitle>{done ? "Thank you for your review" : "Write a review"}</DialogTitle><DialogDescription>{done ? "Your review has been saved and is awaiting approval." : "Share your experience with The Sales Clinic."}</DialogDescription></DialogHeader>
+        <DialogHeader><DialogTitle>{done ? "Thank you for your review" : "Write a review"}</DialogTitle><DialogDescription>{done ? "Your review has been saved and is awaiting approval." : "Worked with Dr. Dan? Share your honest feedback in under 2 minutes."}</DialogDescription></DialogHeader>
         {done ? <div className="py-8 text-center"><Check className="mx-auto h-12 w-12 text-primary" /><Button className="mt-6 rounded-full" onClick={() => setOpen(false)}>Done</Button></div> : <form className="space-y-4" onSubmit={async (e) => {
           e.preventDefault(); const form = new FormData(e.currentTarget);
           const parsed = reviewSchema.safeParse({ name: form.get("name"), role: form.get("role"), body: form.get("body"), rating, consent: form.get("consent") === "on", website: form.get("website") ?? "" });
@@ -53,10 +54,13 @@ export function ClientReviews({ existing }: { existing: string[][] }) {
         }}>
           <fieldset><legend className="text-sm font-semibold">Your rating</legend><div className="mt-2 flex gap-2">{[1,2,3,4,5].map((n) => <Button type="button" key={n} variant="ghost" size="icon" aria-label={`Rate ${n} stars`} aria-pressed={rating === n} onClick={() => setRating(n)} className="text-primary"><Star className={`!h-7 !w-7 ${n <= rating ? "fill-current" : ""}`} /></Button>)}</div></fieldset>
           <label className="block text-sm font-semibold">Name<input name="name" required maxLength={120} className="field mt-2" autoComplete="name" /></label>
-          <label className="block text-sm font-semibold">Role or business (optional)<input name="role" maxLength={120} className="field mt-2" /></label>
-          <label className="block text-sm font-semibold">Your review<textarea name="body" required minLength={10} maxLength={1500} rows={4} className="field mt-2" /></label>
-          <label className="block text-sm font-semibold">Your photo or headshot (optional)<input type="file" name="photo" accept="image/jpeg,image/png,image/webp" className="field mt-2" /></label>
-          <label className="block text-sm font-semibold">Screenshot of your results (optional)<input type="file" name="screenshot" accept="image/jpeg,image/png,image/webp" className="field mt-2" /></label>
+          <label className="block text-sm font-semibold">Role or business (optional)<input name="role" maxLength={120} className="field mt-2" placeholder="e.g. Founder, brand studio" /></label>
+          <label className="block text-sm font-semibold">Your review<textarea name="body" required minLength={10} maxLength={1500} rows={4} className="field mt-2" placeholder="What changed for you after working with Dr. Dan?" /></label>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <UploadTile name="photo" label="Your headshot" hint="Optional. Shown beside your review" icon={<Camera className="h-6 w-6" />} round />
+            <UploadTile name="screenshot" label="Results screenshot" hint="Optional. A win, message or result" icon={<ImagePlus className="h-6 w-6" />} />
+          </div>
+          <p className="text-xs text-muted-foreground">JPG, PNG or WebP, up to 5MB each.</p>
           <div className="hidden" aria-hidden="true"><input name="website" tabIndex={-1} autoComplete="off" /></div>
           <label className="flex gap-3 text-sm"><input type="checkbox" name="consent" required className="mt-1" />I agree to my name and review being published.</label>
           {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
@@ -73,4 +77,15 @@ async function readImage(v: FormDataEntryValue | null) {
   const buf = new Uint8Array(await v.arrayBuffer());
   let bin = ""; for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode(...buf.subarray(i, i + 0x8000));
   return { base64: btoa(bin), contentType: v.type as "image/jpeg" | "image/png" | "image/webp" };
+}
+
+function UploadTile({ name, label, hint, icon, round }: { name: string; label: string; hint: string; icon: React.ReactNode; round?: boolean }) {
+  const [preview, setPreview] = useState<string | null>(null);
+  return <label className="relative flex cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-border bg-muted/40 p-4 text-center transition hover:border-primary">
+    {preview ? <img src={preview} alt="" className={`h-20 object-cover ${round ? "w-20 rounded-full" : "w-full rounded-xl"}`} /> : <span className="grid h-12 w-12 place-items-center rounded-full bg-primary/10 text-primary">{icon}</span>}
+    <span className="text-sm font-semibold">{label}</span>
+    <span className="text-xs text-muted-foreground">{preview ? "Tap to change" : hint}</span>
+    {preview && <button type="button" aria-label={`Remove ${label}`} className="absolute right-2 top-2 rounded-full bg-background p-1" onClick={(e) => { e.preventDefault(); const input = e.currentTarget.parentElement?.querySelector("input"); if (input) input.value = ""; setPreview(null); }}><X className="h-4 w-4" /></button>}
+    <input type="file" name={name} accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => { const f = e.target.files?.[0]; setPreview(f ? URL.createObjectURL(f) : null); }} />
+  </label>;
 }
