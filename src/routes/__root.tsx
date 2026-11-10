@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -96,7 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
   }),
   shellComponent: RootShell,
@@ -119,15 +120,28 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+// Admin pages have their own navigation; every other page gets the site nav and footer.
+function PublicChrome({ children }: { children: ReactNode }) {
+  const isAdmin = useRouterState({ select: (s) => s.location.pathname.startsWith("/admin") });
+  if (isAdmin) return <>{children}</>;
+  return (
+    <>
+      <Header />
+      {children}
+      <Footer />
+    </>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Header />
-      <Outlet />
-      <Footer />
+      <PublicChrome>
+        <Outlet />
+      </PublicChrome>
     </QueryClientProvider>
   );
 }
