@@ -26,6 +26,8 @@ import { Route as BookClinicRouteImport } from './routes/book.clinic'
 import { Route as BookFreeRouteImport } from './routes/book.free'
 import { Route as XrayIndexRouteImport } from './routes/xray.index'
 import { Route as XrayBookRouteImport } from './routes/xray.book'
+import { Route as ApiPublicPaymentsFlutterwaveRouteImport } from './routes/api/public/payments/flutterwave'
+import { Route as ApiPublicPaymentsStripeRouteImport } from './routes/api/public/payments/stripe'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -112,6 +114,17 @@ const XrayBookRoute = XrayBookRouteImport.update({
   path: '/xray/book',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicPaymentsFlutterwaveRoute =
+  ApiPublicPaymentsFlutterwaveRouteImport.update({
+    id: '/api/public/payments/flutterwave',
+    path: '/api/public/payments/flutterwave',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicPaymentsStripeRoute = ApiPublicPaymentsStripeRouteImport.update({
+  id: '/api/public/payments/stripe',
+  path: '/api/public/payments/stripe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -131,6 +144,8 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/book/': typeof BookIndexRoute
   '/xray/': typeof XrayIndexRoute
+  '/api/public/payments/flutterwave': typeof ApiPublicPaymentsFlutterwaveRoute
+  '/api/public/payments/stripe': typeof ApiPublicPaymentsStripeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -149,6 +164,8 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/book': typeof BookIndexRoute
   '/xray': typeof XrayIndexRoute
+  '/api/public/payments/flutterwave': typeof ApiPublicPaymentsFlutterwaveRoute
+  '/api/public/payments/stripe': typeof ApiPublicPaymentsStripeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -169,6 +186,8 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/book/': typeof BookIndexRoute
   '/xray/': typeof XrayIndexRoute
+  '/api/public/payments/flutterwave': typeof ApiPublicPaymentsFlutterwaveRoute
+  '/api/public/payments/stripe': typeof ApiPublicPaymentsStripeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -190,6 +209,8 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/book/'
     | '/xray/'
+    | '/api/public/payments/flutterwave'
+    | '/api/public/payments/stripe'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -208,6 +229,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/book'
     | '/xray'
+    | '/api/public/payments/flutterwave'
+    | '/api/public/payments/stripe'
   id:
     | '__root__'
     | '/'
@@ -227,6 +250,8 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/book/'
     | '/xray/'
+    | '/api/public/payments/flutterwave'
+    | '/api/public/payments/stripe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -241,6 +266,8 @@ export interface RootRouteChildren {
   XrayBookRoute: typeof XrayBookRoute
   BookIndexRoute: typeof BookIndexRoute
   XrayIndexRoute: typeof XrayIndexRoute
+  ApiPublicPaymentsFlutterwaveRoute: typeof ApiPublicPaymentsFlutterwaveRoute
+  ApiPublicPaymentsStripeRoute: typeof ApiPublicPaymentsStripeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -364,6 +391,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof XrayBookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/payments/flutterwave': {
+      id: '/api/public/payments/flutterwave'
+      path: '/api/public/payments/flutterwave'
+      fullPath: '/api/public/payments/flutterwave'
+      preLoaderRoute: typeof ApiPublicPaymentsFlutterwaveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/payments/stripe': {
+      id: '/api/public/payments/stripe'
+      path: '/api/public/payments/stripe'
+      fullPath: '/api/public/payments/stripe'
+      preLoaderRoute: typeof ApiPublicPaymentsStripeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -399,6 +440,8 @@ const rootRouteChildren: RootRouteChildren = {
   XrayBookRoute: XrayBookRoute,
   BookIndexRoute: BookIndexRoute,
   XrayIndexRoute: XrayIndexRoute,
+  ApiPublicPaymentsFlutterwaveRoute: ApiPublicPaymentsFlutterwaveRoute,
+  ApiPublicPaymentsStripeRoute: ApiPublicPaymentsStripeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

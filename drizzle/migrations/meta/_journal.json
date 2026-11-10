@@ -8,6 +8,13 @@
       "when": 1794331744060,
       "tag": "0000_client_reviews_with_moderation",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794334153422,
+      "tag": "0001_confirmed_clinic_payments",
+      "breakpoints": true
     }
   ]
 }

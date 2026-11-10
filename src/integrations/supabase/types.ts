@@ -243,6 +243,36 @@ export type Database = {
         }
         Relationships: []
       }
+      clinic_payments: {
+        Row: {
+          amount_minor: number
+          created_at: string
+          currency: string
+          id: string
+          paid_at: string
+          provider: string
+          provider_payment_id: string
+        }
+        Insert: {
+          amount_minor: number
+          created_at?: string
+          currency: string
+          id?: string
+          paid_at: string
+          provider: string
+          provider_payment_id: string
+        }
+        Update: {
+          amount_minor?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          paid_at?: string
+          provider?: string
+          provider_payment_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

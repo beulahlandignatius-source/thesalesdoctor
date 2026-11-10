@@ -38,3 +38,4 @@ use the editor.
 - Visitor and admin layout wrappers scope shared visual tokens; dashboard summaries use existing protected reads and never substitute demo counts for live data.
 - A shared ThemeProvider owns the document dark class and browser-stored theme preference; visitor and admin navigation reuse ThemeToggle so every page shares one theme.
 - Booking and mentorship forms share branded FormShell/F controls and grouped contact fields; keep original input names and submit handlers so presentation changes preserve saved data and onward journeys.
+- Private Sales Clinic paid counts come only from signed provider notifications stored once per provider payment; browser payment clicks are intent, not proof of payment.

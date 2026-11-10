@@ -5,7 +5,7 @@ import { KIND_LABEL, fmt } from "@/components/admin/enquiry-labels";
 import { adminReviews } from "@/lib/reviews.functions";
 import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
-import { Inbox, ScanLine, Star, CalendarCheck, ArrowUpRight, RefreshCw, ClipboardList, Users, CircleCheck } from "lucide-react";
+import { Inbox, ScanLine, Star, CalendarCheck, ArrowUpRight, RefreshCw, ClipboardList, Users, CircleCheck, CreditCard } from "lucide-react";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({
@@ -39,9 +39,10 @@ function Overview() {
         <div><p className="eyebrow">The Sales Clinic · Admin</p><h1 className="mt-4 font-display text-4xl font-extrabold">Overview</h1></div>
         <Button variant="outline" className="rounded-full" disabled={overview.isFetching || reviews.isFetching} onClick={() => { overview.refetch(); reviews.refetch(); }}><RefreshCw className={overview.isFetching ? "animate-spin" : ""} />Refresh</Button>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        <Stat label={`Paid Private Clinics this month · Stripe ${data.stripePaid} · Flutterwave ${data.flutterwavePaid}`} n={data.stripePaid + data.flutterwavePaid} icon={CreditCard} to="/admin/enquiries" accent />
         <Stat label="Sales Clinic enquiries" n={total} icon={Inbox} to="/admin/enquiries" />
-        <Stat label="New, not yet handled" n={data.newOnes} icon={ClipboardList} to="/admin/enquiries" accent />
+        <Stat label="New, not yet handled" n={data.newOnes} icon={ClipboardList} to="/admin/enquiries" />
         <Stat label="Completed X-Rays" n={data.xrays} icon={ScanLine} to="/admin/xray" />
         <Stat label="Awaiting review approval" n={pending ?? "—"} icon={Star} to="/admin/reviews" />
       </div>

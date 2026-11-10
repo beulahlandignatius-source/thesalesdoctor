@@ -59,18 +59,23 @@ export const adminOverview = createServerFn({ method: "POST" })
     await assertAdmin(context);
     const sb = context.supabase;
     const count = async (q: any) => (await q).count ?? 0;
-    const [free, clinic, mentor, newOnes, xrays, booked] = await Promise.all([
+    const now = new Date();
+    const month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString();
+    const paid = (provider: string) => count(sb.from("clinic_payments").select("id", { count: "exact", head: true }).eq("provider", provider).gte("paid_at", month));
+    const [free, clinic, mentor, newOnes, xrays, booked, stripePaid, flutterwavePaid] = await Promise.all([
       count(sb.from("clinic_enquiries").select("id", { count: "exact", head: true }).eq("kind", "free_review")),
       count(sb.from("clinic_enquiries").select("id", { count: "exact", head: true }).eq("kind", "private_clinic")),
       count(sb.from("clinic_enquiries").select("id", { count: "exact", head: true }).eq("kind", "mentorship")),
       count(sb.from("clinic_enquiries").select("id", { count: "exact", head: true }).eq("status", "new")),
       count(sb.from("audit_sessions").select("id", { count: "exact", head: true }).not("completed_at", "is", null)),
       count(sb.from("audit_sessions").select("id", { count: "exact", head: true }).eq("booked", true)),
+      paid("stripe"),
+      paid("flutterwave"),
     ]);
     const { data: recent } = await sb
       .from("clinic_enquiries")
       .select("id, kind, name, status, created_at")
       .order("created_at", { ascending: false })
       .limit(5);
-    return { free, clinic, mentor, newOnes, xrays, booked, recent: recent ?? [] };
+    return { free, clinic, mentor, newOnes, xrays, booked, stripePaid, flutterwavePaid, recent: recent ?? [] };
   });
