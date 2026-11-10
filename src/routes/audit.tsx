@@ -201,7 +201,14 @@ function Audit() {
     return () => window.removeEventListener("keydown", h);
   }, []);
   const pct = Math.round(((step + 1) / TOTAL) * 100);
-  const cheer = pct >= 90 ? "Almost there — your X-Ray is nearly ready" : pct >= 50 ? "Over halfway — keep going" : null;
+  const cheer =
+    pct >= 90 ? "Almost there — your X-Ray is nearly ready"
+    : pct >= 75 ? "Final stretch — the picture is getting clear"
+    : pct >= 50 ? "Over halfway — keep going"
+    : pct >= 25 ? "Great momentum — your diagnosis is taking shape"
+    : step >= 1 ? "Nice start — every answer sharpens your X-Ray"
+    : null;
+  const remaining = Math.max(0, TOTAL - step - 1);
 
   return (
     <div className="min-h-dvh bg-background xray-ambient">
@@ -230,12 +237,16 @@ function Audit() {
           aria-valuemax={TOTAL}
           aria-valuenow={step + 1}
           aria-valuetext={`Step ${step + 1} of ${TOTAL}`}
-          className="mt-5 h-1 w-full overflow-hidden rounded-full bg-muted"
+          className="mt-5 h-2 w-full overflow-hidden rounded-full bg-muted"
         >
           <div
             className="xray-progress h-full rounded-full bg-primary transition-all duration-700 ease-out"
             style={{ width: `${((step + 1) / TOTAL) * 100}%` }}
           />
+        </div>
+        <div className="mt-3 flex items-center justify-between text-xs font-semibold">
+          <span className="inline-flex items-center gap-1.5 text-primary"><span className="xray-pulse-dot" />{pct}% scanned</span>
+          <span className="text-muted-foreground">{remaining === 0 ? "Last one" : `${remaining} to go`}</span>
         </div>
 
         <div
@@ -249,7 +260,7 @@ function Audit() {
                 id="question-heading"
                 ref={heading}
                 tabIndex={-1}
-                className="mt-3 font-display text-3xl font-bold text-foreground"
+                className="xray-question mt-3 font-display text-foreground"
               >
                 Tell us about you
               </h1>
@@ -281,8 +292,7 @@ function Audit() {
           ) : (
             <>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-secondary px-3 py-1 text-xs font-bold text-primary">{q.section}</span>
-                <span className="text-xs font-semibold text-muted-foreground">Question {step} of {QUESTIONS.length}</span>
+                <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">{q.section}</span>
               </div>
               {cheer && (
                 <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary animate-in fade-in duration-500">
@@ -293,8 +303,10 @@ function Audit() {
                 id="question-heading"
                 ref={heading}
                 tabIndex={-1}
-                className="mt-4 font-display text-2xl font-semibold leading-snug text-foreground"
+                className="xray-question mt-4 font-display text-foreground"
               >
+                <span aria-hidden="true" className="xray-qnum">{String(step).padStart(2, "0")}</span>
+                <span className="sr-only">Question {step} of {QUESTIONS.length}. </span>
                 {q.text}
               </h1>
               {multi && (
@@ -335,11 +347,12 @@ function Audit() {
                       >
                         <span
                           aria-hidden="true"
-                          className={`flex h-7 w-7 shrink-0 items-center justify-center text-xs font-bold transition-all duration-200 ${multi ? "rounded-lg" : "rounded-full"} border-2 ${on ? "scale-110 border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground"}`}
+                          className={`flex h-9 w-9 shrink-0 items-center justify-center text-xs font-bold transition-all duration-200 ${multi ? "rounded-lg" : "rounded-full"} border-2 ${on ? "scale-110 border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground"}`}
                         >
                           {on ? <Check className="h-4 w-4 animate-in zoom-in duration-200" /> : String.fromCharCode(65 + oi)}
                         </span>
-                        <span className="flex-1">{o}</span>
+                        <span className="flex-1 text-left text-base font-medium leading-snug">{o}</span>
+                        <ArrowRight aria-hidden="true" className="xray-option-arrow h-4 w-4 shrink-0 text-primary" />
                       </Button>
                     );
                   })}
