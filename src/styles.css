@@ -624,3 +624,29 @@ main img:hover { transform: scale(1.015); }
 .review-stack .stack-next > *, .review-stack .stack-last > * { opacity: 0; transition: opacity .3s; }
 @media (min-width: 768px) { .nav-burger, .nav-sheet { display: none; } }
 .review-stack .stack-card { border: 1.5px solid color-mix(in oklab, var(--primary) 28%, var(--border)); }
+
+/* ===== Philosophy ===== */
+.philo-glow { position: absolute; right: -10%; top: 10%; width: 60vw; height: 60vw; max-width: 760px; max-height: 760px; border-radius: 9999px; background: radial-gradient(circle, color-mix(in oklab, var(--primary) 35%, transparent), transparent 65%); pointer-events: none; }
+.philo-ring { position: absolute; left: 50%; bottom: 8%; width: 82%; aspect-ratio: 1; translate: -50% 0; border-radius: 9999px; border: 1.5px dashed color-mix(in oklab, var(--primary) 45%, transparent); animation: spin 60s linear infinite; pointer-events: none; }
+.philo-lead { border-left: 3px solid var(--primary); padding-left: 1.1rem; }
+.philo-steps { display: grid; gap: .75rem; }
+.philo-step { position: relative; display: grid; grid-template-columns: auto auto 1fr; align-items: center; gap: .9rem; padding: 1rem 1.25rem; border-radius: 1.5rem .5rem 1.5rem 1.5rem; border: 1px solid color-mix(in oklab, var(--ink-foreground) 14%, transparent); background: color-mix(in oklab, var(--ink-foreground) 5%, transparent); transition: transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s, background .35s; }
+.philo-step:hover { transform: translateX(8px); border-color: color-mix(in oklab, var(--primary) 60%, transparent); }
+.philo-step-1 { opacity: .7; } .philo-step-2 { opacity: .85; margin-left: 1rem; }
+.philo-step-3 { margin-left: 2rem; background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); box-shadow: 0 20px 50px -18px color-mix(in oklab, var(--primary) 80%, transparent); }
+.philo-icon { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 9999px; background: color-mix(in oklab, var(--primary) 22%, transparent); color: var(--primary); }
+.philo-step-3 .philo-icon { background: var(--primary-foreground); color: var(--primary); }
+.philo-num { font-family: var(--font-display); font-size: .75rem; font-weight: 800; letter-spacing: .15em; opacity: .6; }
+@media (max-width: 767px) { .philo-step-2 { margin-left: .5rem; } .philo-step-3 { margin-left: 1rem; } }
+
+/* ===== Closing call ===== */
+.close-card { border-radius: 2.75rem 1rem 2.75rem 2.75rem; box-shadow: 0 40px 90px -40px color-mix(in oklab, var(--primary) 85%, transparent); }
+.close-pulse { color: color-mix(in oklab, var(--primary-foreground) 22%, transparent); }
+.close-blob { position: absolute; border-radius: 9999px; pointer-events: none; animation: drift 16s ease-in-out infinite alternate; }
+.close-blob-1 { right: -6rem; top: -6rem; width: 22rem; height: 22rem; background: color-mix(in oklab, var(--primary-foreground) 12%, transparent); }
+.close-blob-2 { left: 30%; bottom: -9rem; width: 18rem; height: 18rem; background: color-mix(in oklab, var(--ink) 25%, transparent); animation-duration: 20s; }
+.close-badge { display: inline-flex; align-items: center; gap: .5rem; padding: .45rem .9rem; border-radius: 9999px; background: color-mix(in oklab, var(--primary-foreground) 16%, transparent); font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.close-panel { padding: 1.5rem; border-radius: 1.75rem; background: color-mix(in oklab, var(--ink) 22%, transparent); border: 1px solid color-mix(in oklab, var(--primary-foreground) 20%, transparent); backdrop-filter: blur(10px); }
+.close-option { display: flex; align-items: center; gap: .6rem; padding: .8rem 1rem; border-radius: 1rem; background: color-mix(in oklab, var(--primary-foreground) 10%, transparent); font-size: .9rem; font-weight: 600; transition: background .25s, transform .25s; }
+.close-option:hover { background: color-mix(in oklab, var(--primary-foreground) 20%, transparent); transform: translateX(4px); }
+@media (prefers-reduced-motion: reduce) { .philo-ring, .close-blob { animation: none; } }

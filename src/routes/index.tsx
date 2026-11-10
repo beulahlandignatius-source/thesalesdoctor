@@ -1,10 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { CtaLink } from "@/components/site";
 import { ClientReviews, reviewsQuery } from "@/components/client-reviews";
 import { StackedCards } from "@/components/stacked-cards";
 import { Words, useMotionFx } from "@/components/motion";
 import { JourneyLine } from "@/components/journey-line";
-import { CalendarDays, ClipboardList, TrendingUp, BadgeDollarSign, Users, Globe2, Target, Zap, HeartPulse } from "lucide-react";
+import { CalendarDays, ClipboardList, TrendingUp, BadgeDollarSign, Users, Globe2, Target, Zap, HeartPulse, Stethoscope, Wrench, Search, Activity, ArrowUpRight } from "lucide-react";
 import desk from "@/assets/dr-dan-desk.jpg";
 import portrait from "@/assets/dr-dan-portrait.jpg.asset.json";
 import standing from "@/assets/dr-dan-standing.jpg.asset.json";
@@ -269,33 +269,50 @@ function Index() {
         <ClientReviews existing={testimonials} />
       </section>
 
-      {/* ===== PHILOSOPHY — dark spread ===== */}
-      <section className="relative overflow-hidden bg-ink text-ink-foreground">
-        <div className="mx-auto grid max-w-7xl items-end gap-12 px-5 pt-20 md:grid-cols-12 md:pt-28">
+      {/* ===== PHILOSOPHY: diagnose, fix, build ===== */}
+      <section className="philo relative overflow-hidden bg-ink text-ink-foreground">
+        <span className="philo-glow" aria-hidden="true" />
+        <div className="relative mx-auto grid max-w-7xl items-end gap-12 px-5 pt-20 md:grid-cols-12 md:pt-28">
           <div className="pb-0 md:col-span-7 md:pb-28">
             <p className="eyebrow">The Sales Doctor philosophy</p>
-            <h2 className="mt-4 text-[clamp(2.2rem,5.5vw,4.75rem)] font-black leading-[0.92] tracking-tight">The best doctors don’t want you to need them forever.</h2>
-            <p className="mt-6 max-w-xl text-lg text-ink-foreground/70">I’ve watched good businesses stall and die because they couldn’t win clients consistently. My job isn’t to make you dependent on me. It’s to help you build the systems, skills and confidence to win clients without me.</p>
-            <ul className="mt-10 font-display text-3xl font-black uppercase leading-[1.05] tracking-tight md:text-5xl">
-              <li className="text-ink-foreground/35">Diagnose the problem.</li>
-              <li className="text-ink-foreground/65">Fix the system.</li>
-              <li className="text-primary">Build the capability.</li>
-            </ul>
+            <h2 className="mt-5 text-[clamp(2.2rem,5.5vw,4.75rem)] font-black leading-[0.95] tracking-tight">The best doctors don’t want you to need them <span className="text-primary">forever.</span></h2>
+            <p className="philo-lead mt-7 max-w-xl text-lg text-ink-foreground/75">I’ve watched good businesses stall and die because they couldn’t win clients consistently. My job isn’t to make you dependent on me. It’s to help you build the systems, skills and confidence to win clients without me.</p>
+            <ol className="philo-steps mt-10">
+              {([["Diagnose the problem.", Stethoscope], ["Fix the system.", Wrench], ["Build the capability.", TrendingUp]] as const).map(([t, Icon], i) => (
+                <li key={t} className={`philo-step philo-step-${i + 1}`}>
+                  <span className="philo-icon"><Icon className="h-5 w-5" aria-hidden="true" /></span>
+                  <span className="philo-num">0{i + 1}</span>
+                  <span className="font-display text-xl font-black md:text-3xl">{t}</span>
+                </li>
+              ))}
+            </ol>
           </div>
           <div className="relative md:col-span-5">
+            <span className="philo-ring" aria-hidden="true" />
             <Pulse className="absolute inset-x-0 top-1/3 h-20 w-full text-primary/60" />
             <img src={standing.url} alt="Dr. Dan holding up a stethoscope" className="relative mx-auto max-h-[620px] object-contain object-bottom" />
           </div>
         </div>
       </section>
 
-      {/* ===== CLOSE ===== */}
-      <section className="bg-primary text-primary-foreground">
-        <div className="mx-auto grid max-w-7xl gap-8 px-5 py-20 md:grid-cols-12 md:items-end md:py-24">
-          <h2 className="text-[clamp(2.4rem,6.5vw,5.75rem)] font-black uppercase leading-[0.88] tracking-[-0.04em] md:col-span-8">Your next target is one conversation away.</h2>
-          <div className="md:col-span-4">
-            <p className="text-lg opacity-90">Start free, or go deep. Either way, you leave knowing what to do next.</p>
-            <CtaLink to="/book" variant="light" className="mt-6 w-full">BOOK A CONSULTATION →</CtaLink>
+      {/* ===== CLOSE: final call ===== */}
+      <section className="close-wrap px-3 py-16 md:px-5 md:py-24">
+        <div className="close-card relative mx-auto max-w-7xl overflow-hidden bg-primary text-primary-foreground">
+          <Pulse className="close-pulse pointer-events-none absolute inset-x-0 bottom-10 h-24 w-full" />
+          <span className="close-blob close-blob-1" aria-hidden="true" /><span className="close-blob close-blob-2" aria-hidden="true" />
+          <div className="relative grid gap-10 px-6 py-14 md:grid-cols-12 md:items-end md:px-14 md:py-20">
+            <div className="md:col-span-7">
+              <span className="close-badge"><HeartPulse className="h-4 w-4" aria-hidden="true" /> The Sales Clinic</span>
+              <h2 className="mt-6 text-[clamp(2.4rem,6.5vw,5.75rem)] font-black uppercase leading-[0.9] tracking-[-0.04em]">Your next target is one conversation away.</h2>
+            </div>
+            <div className="close-panel md:col-span-5">
+              <p className="text-lg">Start free, or go deep. Either way, you leave knowing what to do next.</p>
+              <div className="mt-5 grid gap-2">
+                <Link to="/book/free" className="close-option"><Search className="h-4 w-4 shrink-0" aria-hidden="true" /> Free 25-min Client Acquisition Review<ArrowUpRight className="ml-auto h-4 w-4 shrink-0" aria-hidden="true" /></Link>
+                <Link to="/book/clinic" className="close-option"><Activity className="h-4 w-4 shrink-0" aria-hidden="true" /> 90-min Private Sales Clinic<ArrowUpRight className="ml-auto h-4 w-4 shrink-0" aria-hidden="true" /></Link>
+              </div>
+              <CtaLink to="/book" variant="light" className="mt-6 w-full">BOOK A CONSULTATION →</CtaLink>
+            </div>
           </div>
         </div>
       </section>
