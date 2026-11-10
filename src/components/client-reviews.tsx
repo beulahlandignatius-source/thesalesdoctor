@@ -24,7 +24,7 @@ export function ClientReviews({ existing }: { existing: string[][] }) {
     ...existing.map(([body, name, role]) => ({ body, name, role, rating: null as number | null, photoUrl: null as string | null })),
     ...data,
   ];
-  return <div className="mt-16 grid items-center gap-10 md:grid-cols-2 md:gap-12">
+  return <div className="mt-16 grid items-center gap-12 md:grid-cols-2">
     <div className="reviews-intro">
       <p className="eyebrow">Reviews</p>
       <div className="mt-6 flex flex-wrap gap-3"><Button variant="premium" className="gap-2" onClick={() => { setDone(false); setError(""); setRating(0); setOpen(true); }}><MessageSquarePlus /> Write a review</Button>
@@ -33,7 +33,7 @@ export function ClientReviews({ existing }: { existing: string[][] }) {
     <StackedCards label="review" items={cards.map((r, i) => <>
       <div className="stack-badge review-avatar" aria-hidden="true">{r.photoUrl ? <img src={r.photoUrl} alt="" className="h-full w-full rounded-full object-cover" /> : <span className="font-display text-3xl font-bold">{r.name?.split(" ").map((p: string) => p[0]).join("").slice(0, 2)}</span>}<span className="stack-number">{i + 1}</span></div>
       {r.rating !== null && <div className="mt-6 flex justify-center gap-1 text-primary" aria-label={`${r.rating} out of 5 stars`}>{[1,2,3,4,5].map((n) => <Star key={n} className={`h-4 w-4 ${n <= r.rating ? "fill-current" : "opacity-25"}`} />)}</div>}
-      <blockquote className="review-quote mt-6 whitespace-pre-wrap break-words text-base font-semibold md:text-lg leading-relaxed">{r.body}</blockquote>
+      <blockquote className="mt-6 whitespace-pre-wrap break-words text-lg font-semibold leading-relaxed">{r.body}</blockquote>
       <p className="mt-auto pt-7 text-sm"><strong className="block">{r.name}</strong><span className="text-muted-foreground">{r.role}</span></p>
     </>)} />
     <Dialog open={open} onOpenChange={setOpen}>

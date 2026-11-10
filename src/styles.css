@@ -621,15 +621,6 @@ main img:hover { transform: scale(1.015); }
 .fx-reveal.fx-in { opacity: 1; translate: 0 0; }
 [data-parallax] { will-change: translate; }
 
-/* ===== Reviews on phones ===== */
-@media (max-width: 767px) {
-  .reviews-intro { text-align: center; }
-  .reviews-intro .flex { justify-content: center; }
-  .review-stack { padding-right: 12px; max-width: 100%; }
-  .review-stack .stack-stage { height: 440px; }
-  .review-stack .stack-card { padding: 1.5rem 1.25rem; border-radius: 1.75rem; }
-  .review-stack .stack-badge { height: 5rem; width: 5rem; }
-  .review-stack .stack-next { transform: translate(10px,10px) scale(.95) rotate(1.5deg); }
-  .review-stack .stack-last { transform: translate(16px,20px) scale(.9) rotate(3deg); }
-}
+/* Back cards show only their glass edge, so the stack never looks crowded. */
+.review-stack .stack-next > *, .review-stack .stack-last > * { opacity: 0; transition: opacity .3s; }
 @media (min-width: 768px) { .nav-burger, .nav-sheet { display: none; } }
