@@ -122,8 +122,8 @@ function ResultView({ r }: { r: Result }) {
   const label = "text-xs font-semibold uppercase text-muted-foreground";
   const section = "border-t border-border pt-8";
   return (
-    <div className="min-h-dvh bg-background px-6 pb-10 pt-20">
-      <div className="mx-auto max-w-xl space-y-8">
+    <div className="results-workspace min-h-dvh bg-background px-6 pb-10 pt-10">
+      <div className="mx-auto max-w-3xl space-y-8">
         <img src={logo} alt="The Sales Doctor" className="mx-auto w-28" />
         <p className={`${label} text-center`}>Your client acquisition diagnosis</p>
 

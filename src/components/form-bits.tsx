@@ -2,8 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { STUCK } from "@/lib/links";
 import { submitEnquiry } from "@/lib/enquiries.functions";
+import { StackedCards } from "@/components/stacked-cards";
+import { Button } from "@/components/ui/button";
+import { CalendarDays, ClipboardList, Check } from "lucide-react";
 
-export const field = "w-full rounded-md border border-input bg-card px-4 py-3 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+export const field = "w-full rounded-2xl border border-input bg-card px-4 py-3.5 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
 export function F({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -34,11 +37,11 @@ export function StuckPicker({ label }: { label: string }) {
         {STUCK.map((s) => {
           const on = sel.includes(s);
           return (
-            <button type="button" key={s} aria-pressed={on}
+            <Button variant="outline" type="button" key={s} aria-pressed={on}
               onClick={() => setSel(on ? sel.filter((x) => x !== s) : [...sel, s])}
               className={`rounded-full border px-3.5 py-2 text-sm transition ${on ? "border-primary bg-primary text-primary-foreground" : "border-input bg-card hover:border-primary"}`}>
               {s}
-            </button>
+            </Button>
           );
         })}
       </div>
@@ -49,25 +52,21 @@ export function StuckPicker({ label }: { label: string }) {
 
 export function FormShell({ eyebrow, title, intro, steps, children }: { eyebrow?: string; title: string; intro: string; steps: string[]; children: ReactNode }) {
   return (
-    <main className="mx-auto grid max-w-6xl gap-10 px-5 py-10 md:grid-cols-[1fr_1.3fr] md:py-16">
+    <main className="booking-shell mx-auto grid max-w-6xl gap-10 px-5 py-10 md:grid-cols-[1fr_1.3fr] md:gap-16 md:py-16">
       <div>
         <Link to="/" className="text-sm font-semibold text-muted-foreground hover:text-primary">← Back to The Sales Clinic</Link>
         {eyebrow && <p className="eyebrow mt-8">{eyebrow}</p>}
         <h1 className="mt-3 text-4xl font-extrabold leading-tight md:text-5xl">{title}</h1>
         <p className="mt-4 text-lg text-muted-foreground">{intro}</p>
-        <div className="mt-8 rounded-lg bg-blush p-6">
+        <div className="mt-10">
           <p className="eyebrow">What happens next</p>
-          <ol className="mt-4 space-y-3">
-            {steps.map((s, i) => (
-              <li key={s} className="flex gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary font-display text-sm font-bold text-primary-foreground">{i + 1}</span>
-                <span className="pt-0.5">{s}</span>
-              </li>
-            ))}
-          </ol>
+          <div className="mt-7"><StackedCards label="booking step" items={steps.map((s, i) => {
+            const Icon = [ClipboardList, CalendarDays, Check][i] ?? Check;
+            return <><div className="stack-badge"><Icon className="h-10 w-10" /><span className="stack-number">{i + 1}</span></div><span className="stack-step mt-6">Step {String(i + 1).padStart(2, "0")}</span><p className="mt-6 text-xl font-semibold leading-relaxed">{s}</p></>;
+          })} /></div>
         </div>
       </div>
-      <div className="rounded-xl border border-border bg-card p-6 shadow-sm md:p-8">{children}</div>
+      <div className="form-panel self-start rounded-3xl border border-border bg-card p-6 md:p-9">{children}</div>
     </main>
   );
 }

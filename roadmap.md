@@ -8,3 +8,6 @@
 - [x] Match Farmora's visual design without changing existing photos or image layouts
 - [x] Add visitor reviews, stacked review cards, and admin review moderation
 - [x] Verify review submission and publication on mobile and desktop
+- [x] Extend Farmora presentation to booking, mentorship, X-Ray, results and account pages
+- [x] Upgrade admin navigation and overview with real-data summaries and review queue
+- [x] Check all pages and signed-in admin navigation on phone and desktop

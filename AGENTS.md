@@ -35,3 +35,4 @@ use the editor.
 - src/lib/backend/* are thin re-exports of the generated Cloud clients/middleware so the imported X-Ray code keeps its imports.
 - Reviews use an insert-only public server function with validation and default pending status; public reads expose only published rows, and authenticated admins moderate through RLS to prevent unapproved content appearing.
 - StackedCards supplies swipe, arrow and dot navigation for steps and reviews; shared presentation keeps the reference interaction consistent without changing photo markup.
+- Visitor and admin layout wrappers scope shared visual tokens; dashboard summaries use existing protected reads and never substitute demo counts for live data.

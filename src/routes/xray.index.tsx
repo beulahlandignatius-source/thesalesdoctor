@@ -60,7 +60,7 @@ function Index() {
           </div>
         </div>
       </section>
-      <section className="mx-3 my-3 grid gap-7 rounded-[2rem] bg-card px-6 py-10 sm:mx-auto sm:my-8 sm:max-w-6xl sm:grid-cols-2 sm:gap-16 sm:px-10 sm:py-16">
+      <section className="xray-introduction mx-auto my-3 grid max-w-6xl gap-7 px-6 py-12 sm:my-8 sm:grid-cols-2 sm:gap-16 sm:px-10 sm:py-16">
         <div>
           <div className="mb-5 h-1.5 w-10 rounded-full bg-primary" />
           <h2 className="max-w-md font-display text-3xl font-semibold leading-snug text-foreground">

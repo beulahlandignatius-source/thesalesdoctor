@@ -69,9 +69,9 @@ function AdminLayout() {
     );
 
   return (
-    <div className="min-h-dvh bg-background">
+    <div className="admin-shell min-h-dvh bg-background">
       <AdminNav onSignOut={signOut} email={session.user.email ?? ""} />
-      <div className="mx-auto max-w-6xl px-4 pb-32 pt-6 sm:px-5 md:pb-10 md:pt-8">
+      <div className="admin-content mx-auto max-w-7xl px-4 pb-32 pt-6 sm:px-6 md:pb-10 md:pt-10">
         <Outlet />
       </div>
     </div>
@@ -80,7 +80,7 @@ function AdminLayout() {
 
 function Center({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-background px-6">
+    <div className="admin-signin flex min-h-dvh items-center justify-center bg-background px-6 py-12">
       <div className="w-full max-w-sm text-center">
         <img src={logo} alt="The Sales Doctor" className="mx-auto mb-8 w-28" />
         {children}

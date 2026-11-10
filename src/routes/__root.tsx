@@ -127,7 +127,7 @@ function PublicChrome({ children }: { children: ReactNode }) {
   return (
     <>
       <Header />
-      {children}
+      <div className="visitor-pages">{children}</div>
       <Footer />
     </>
   );

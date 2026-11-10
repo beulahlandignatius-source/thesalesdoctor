@@ -205,7 +205,7 @@ function Audit() {
 
   return (
     <div className="min-h-dvh bg-background xray-ambient">
-      <div className="mx-auto flex min-h-dvh max-w-xl flex-col px-6 pb-32 pt-5 sm:pt-8">
+      <div className="assessment-workspace mx-auto flex min-h-dvh max-w-xl flex-col px-6 pb-32 pt-5 sm:pt-8">
         <header className="xray-bar flex items-center justify-between pr-14">
           <Button
             onClick={back}
@@ -240,7 +240,7 @@ function Audit() {
 
         <div
           key={step}
-          className="mt-10 flex-1 animate-in fade-in slide-in-from-right-4 duration-300 sm:mt-16"
+          className="assessment-question mt-10 flex-1 animate-in fade-in slide-in-from-right-4 duration-300 sm:mt-16"
         >
           {!q ? (
             <>
