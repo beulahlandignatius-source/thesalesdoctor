@@ -431,6 +431,24 @@ main img:hover { transform: scale(1.015); }
 
 /* Branded intake forms: quiet surfaces, tactile selection and clear field groups. */
 .proof-bento { display: grid; gap: 1rem; }
+.hero-stats { gap: .5rem; padding-inline: 1.25rem; }
+.farmora-home .hero-stats { border: 0; background: none; }
+.hero-stat { position: relative; overflow: hidden; padding: 1.1rem .9rem; border-radius: 1.5rem .5rem 1.5rem 1.5rem; transition: transform .3s; }
+.hero-stat:hover { transform: translateY(-3px); }
+.hero-stat dd { opacity: .8; line-height: 1.35; }
+.hero-stat-1 { background: var(--primary); color: var(--primary-foreground); }
+.hero-stat-2 { background: var(--blush); color: var(--foreground); }
+.hero-stat-3 { background: var(--ink); color: var(--ink-foreground); }
+.farmora-home .hero-stat-1 dt { color: inherit !important; }
+.session-questions { display: grid; gap: 1rem; }
+.session-question { padding: 1.5rem; border-radius: 2rem .75rem 2rem 2rem; background: var(--surface-soft); border: 1px solid var(--border); transition: transform .3s, box-shadow .3s; }
+.session-question:hover { transform: translateY(-3px); box-shadow: var(--shadow-nav); }
+.session-question-3 { background: var(--ink); color: var(--ink-foreground); border-color: var(--ink); }
+.session-question-3 p { color: color-mix(in oklab, var(--ink-foreground) 70%, transparent) !important; }
+.farmora-home .session-number { display: flex; width: 3.5rem; height: 3.5rem; align-items: center; justify-content: center; border-radius: 1.1rem; background: var(--primary); color: var(--primary-foreground); font-size: 1.1rem; padding: 0; }
+.review-avatar { background: radial-gradient(circle at 30% 25%, color-mix(in oklab, var(--primary) 70%, var(--card)), var(--primary)); box-shadow: 0 0 0 6px var(--blush), var(--shadow-stack); }
+@media (min-width: 768px) { .hero-stats { gap: 1rem; } .hero-stat { padding: 2rem; } .session-question { padding: 2rem; } .session-question-2 { margin-left: 2rem; } .session-question-3 { margin-left: 4rem; } }
+@media (prefers-reduced-motion: reduce) { .hero-stat:hover, .session-question:hover { transform: none; } }
 .proof-tile { position: relative; overflow: hidden; display: flex; min-height: 17rem; flex-direction: column; justify-content: space-between; padding: 1.75rem; border-radius: 2rem .75rem 2rem 2rem; transition: transform .3s cubic-bezier(.2,.7,.2,1); }
 .proof-tile:hover { transform: translateY(-4px); }
 .proof-tile::after { content: ""; position: absolute; right: -3rem; bottom: -3rem; width: 10rem; height: 10rem; border-radius: 42% 58% 45% 55%; background: currentColor; opacity: .07; }

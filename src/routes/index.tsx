@@ -118,11 +118,11 @@ function Index() {
         </div>
 
         {/* stats ledger */}
-        <dl className="relative mx-auto mt-6 grid max-w-7xl grid-cols-3 border-y-2 border-foreground">
+        <dl className="hero-stats relative mx-auto mt-6 grid max-w-7xl grid-cols-3">
           {stats.map(([n, l], i) => (
-            <div key={n} className={`px-3 py-5 md:px-8 md:py-8 ${i ? "border-l border-foreground/20" : ""}`}>
-              <dt className="font-display text-[clamp(1.6rem,6vw,4.5rem)] font-black leading-none tracking-tight">{n}</dt>
-              <dd className="mt-2 text-[11px] uppercase tracking-[0.14em] text-muted-foreground md:text-xs">{l}</dd>
+            <div key={n} className={`hero-stat hero-stat-${i + 1}`}>
+              <dt className="font-display text-[clamp(1.6rem,6vw,4.5rem)] font-black leading-none">{n}</dt>
+              <dd className="mt-2 text-[11px] md:text-sm">{l}</dd>
             </div>
           ))}
         </dl>
@@ -135,10 +135,10 @@ function Index() {
             <p className="eyebrow">Your session</p>
             <h2 className="mt-4 text-5xl font-black uppercase leading-[0.9] tracking-tight md:text-7xl">3 questions we answer</h2>
           </div>
-          <ol className="md:col-span-8">
+          <ol className="session-questions md:col-span-8">
             {questions.map(([n, t, d], i) => (
-              <li key={n} className="funnel-row group grid grid-cols-[auto_1fr] items-baseline gap-5 border-t-2 border-foreground py-7 md:gap-10" style={{ marginRight: `${i * 8}%` }}>
-                <span className="font-display text-6xl font-black leading-none text-primary/25 transition-colors group-hover:text-primary md:text-8xl">{n}</span>
+              <li key={n} className={`session-question session-question-${i + 1} group grid grid-cols-[auto_1fr] items-start gap-5 md:gap-8`}>
+                <span className="session-number font-display font-black">{n}</span>
                 <div>
                   <h3 className="text-2xl font-extrabold md:text-3xl">{t}</h3>
                   <p className="mt-2 max-w-md text-muted-foreground">{d}</p>

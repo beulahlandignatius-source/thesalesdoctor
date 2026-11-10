@@ -28,7 +28,7 @@ export function ClientReviews({ existing }: { existing: string[][] }) {
       <Button variant="premium" className="mt-6 gap-2" onClick={() => { setDone(false); setError(""); setRating(0); setOpen(true); }}><MessageSquarePlus /> Write a review</Button>
     </div>
     <StackedCards label="review" items={cards.map((r, i) => <>
-      <div className="stack-badge"><span className="font-display text-3xl font-bold">{r.name?.slice(0, 1)}</span><span className="stack-number">{i + 1}</span></div>
+      <div className="stack-badge review-avatar" aria-hidden="true"><span className="font-display text-3xl font-bold">{r.name?.split(" ").map((p) => p[0]).join("").slice(0, 2)}</span><span className="stack-number">{i + 1}</span></div>
       {r.rating !== null && <div className="mt-6 flex justify-center gap-1 text-primary" aria-label={`${r.rating} out of 5 stars`}>{[1,2,3,4,5].map((n) => <Star key={n} className={`h-4 w-4 ${n <= r.rating ? "fill-current" : "opacity-25"}`} />)}</div>}
       <blockquote className="mt-6 whitespace-pre-wrap break-words text-lg font-semibold leading-relaxed">{r.body}</blockquote>
       <p className="mt-auto pt-7 text-sm"><strong className="block">{r.name}</strong><span className="text-muted-foreground">{r.role}</span></p>
