@@ -6,12 +6,13 @@ import { backend as supabase } from "@/lib/backend/client";
 import { checkAdmin } from "@/lib/admin.functions";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo-transparent.png";
+import { AdminNav } from "@/components/admin/AdminNav";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Admin Dashboard — The Client X-Ray" },
+      { title: "Admin Dashboard — The Sales Clinic & Client X-Ray" },
       { name: "description", content: "Private admin area for reviewing completed Client X-Rays." },
       { property: "og:title", content: "Admin Dashboard — The Client X-Ray" },
       { property: "og:description", content: "Private admin area." },
@@ -69,28 +70,7 @@ function AdminLayout() {
 
   return (
     <div className="min-h-dvh bg-background">
-      <header className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-5 py-4 pr-16">
-          <Link to="/admin" className="flex items-center gap-3">
-            <img src={logo} alt="The Sales Doctor" className="w-14" />
-            <div>
-              <p className="font-display text-base sm:text-lg font-semibold uppercase tracking-wide text-primary">
-                The Client X-Ray
-              </p>
-              <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                Admin Dashboard
-              </p>
-            </div>
-          </Link>
-          <Button
-            variant="ghost"
-            onClick={signOut}
-            className="text-sm text-muted-foreground hover:text-primary"
-          >
-            Log out
-          </Button>
-        </div>
-      </header>
+      <AdminNav onSignOut={signOut} email={session.user.email ?? ""} />
       <div className="mx-auto max-w-6xl px-5 py-8">
         <Outlet />
       </div>
@@ -125,7 +105,7 @@ function Login() {
   return (
     <Center>
       <h1 className="font-display text-2xl font-semibold uppercase text-primary">
-        The Client X-Ray
+        The Sales Clinic
       </h1>
       <p className="mt-1 text-xs uppercase tracking-[0.18em] text-muted-foreground">
         Admin sign in

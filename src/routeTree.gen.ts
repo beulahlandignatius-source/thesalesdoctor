@@ -14,8 +14,8 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuditRouteImport } from './routes/audit'
 import { Route as MentorshipRouteImport } from './routes/mentorship'
 import { Route as ResultsRouteImport } from './routes/results'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminIdRouteImport } from './routes/admin.$id'
+import { Route as AdminXrayRouteImport } from './routes/admin.xray'
 import { Route as BookIndexRouteImport } from './routes/book.index'
 import { Route as BookClinicRouteImport } from './routes/book.clinic'
 import { Route as BookFreeRouteImport } from './routes/book.free'
@@ -47,14 +47,14 @@ const ResultsRoute = ResultsRouteImport.update({
   path: '/results',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AdminIdRoute = AdminIdRouteImport.update({
   id: '/$id',
   path: '/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminXrayRoute = AdminXrayRouteImport.update({
+  id: '/xray',
+  path: '/xray',
   getParentRoute: () => AdminRoute,
 } as any)
 const BookIndexRoute = BookIndexRouteImport.update({
@@ -90,23 +90,24 @@ export interface FileRoutesByFullPath {
   '/mentorship': typeof MentorshipRoute
   '/results': typeof ResultsRoute
   '/admin/$id': typeof AdminIdRoute
+  '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
   '/xray/book': typeof XrayBookRoute
-  '/admin/': typeof AdminIndexRoute
   '/book/': typeof BookIndexRoute
   '/xray/': typeof XrayIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/audit': typeof AuditRoute
   '/mentorship': typeof MentorshipRoute
   '/results': typeof ResultsRoute
   '/admin/$id': typeof AdminIdRoute
+  '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
   '/xray/book': typeof XrayBookRoute
-  '/admin': typeof AdminIndexRoute
   '/book': typeof BookIndexRoute
   '/xray': typeof XrayIndexRoute
 }
@@ -118,10 +119,10 @@ export interface FileRoutesById {
   '/mentorship': typeof MentorshipRoute
   '/results': typeof ResultsRoute
   '/admin/$id': typeof AdminIdRoute
+  '/admin/xray': typeof AdminXrayRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
   '/xray/book': typeof XrayBookRoute
-  '/admin/': typeof AdminIndexRoute
   '/book/': typeof BookIndexRoute
   '/xray/': typeof XrayIndexRoute
 }
@@ -134,23 +135,24 @@ export interface FileRouteTypes {
     | '/mentorship'
     | '/results'
     | '/admin/$id'
+    | '/admin/xray'
     | '/book/clinic'
     | '/book/free'
     | '/xray/book'
-    | '/admin/'
     | '/book/'
     | '/xray/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/audit'
     | '/mentorship'
     | '/results'
     | '/admin/$id'
+    | '/admin/xray'
     | '/book/clinic'
     | '/book/free'
     | '/xray/book'
-    | '/admin'
     | '/book'
     | '/xray'
   id:
@@ -161,10 +163,10 @@ export interface FileRouteTypes {
     | '/mentorship'
     | '/results'
     | '/admin/$id'
+    | '/admin/xray'
     | '/book/clinic'
     | '/book/free'
     | '/xray/book'
-    | '/admin/'
     | '/book/'
     | '/xray/'
   fileRoutesById: FileRoutesById
@@ -219,18 +221,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResultsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/': {
-      id: '/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/admin/$id': {
       id: '/admin/$id'
       path: '/$id'
       fullPath: '/admin/$id'
       preLoaderRoute: typeof AdminIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/xray': {
+      id: '/admin/xray'
+      path: '/xray'
+      fullPath: '/admin/xray'
+      preLoaderRoute: typeof AdminXrayRouteImport
       parentRoute: typeof AdminRoute
     }
     '/book/': {
@@ -273,12 +275,12 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminIdRoute: typeof AdminIdRoute
-  AdminIndexRoute: typeof AdminIndexRoute
+  AdminXrayRoute: typeof AdminXrayRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminIdRoute: AdminIdRoute,
-  AdminIndexRoute: AdminIndexRoute,
+  AdminXrayRoute: AdminXrayRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

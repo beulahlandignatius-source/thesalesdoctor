@@ -67,7 +67,7 @@ function LeadDetail() {
 
   return (
     <div className="space-y-6">
-      <Link to="/admin" className="text-sm text-muted-foreground hover:text-primary">
+      <Link to="/admin/xray" className="text-sm text-muted-foreground hover:text-primary">
         ← All X-Rays
       </Link>
       <div>
