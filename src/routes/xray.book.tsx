@@ -4,7 +4,7 @@ import logo from "@/assets/logo-transparent.png";
 import { loadState } from "@/lib/audit";
 import { buildBookingUrl } from "@/lib/booking";
 
-export const Route = createFileRoute("/book")({
+export const Route = createFileRoute("/xray/book")({
   ssr: false,
   head: () => ({
     meta: [

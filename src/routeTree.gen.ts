@@ -10,20 +10,52 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuditRouteImport } from './routes/audit'
 import { Route as MentorshipRouteImport } from './routes/mentorship'
+import { Route as ResultsRouteImport } from './routes/results'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminIdRouteImport } from './routes/admin.$id'
 import { Route as BookIndexRouteImport } from './routes/book.index'
 import { Route as BookClinicRouteImport } from './routes/book.clinic'
 import { Route as BookFreeRouteImport } from './routes/book.free'
+import { Route as XrayIndexRouteImport } from './routes/xray.index'
+import { Route as XrayBookRouteImport } from './routes/xray.book'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuditRoute = AuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MentorshipRoute = MentorshipRouteImport.update({
   id: '/mentorship',
   path: '/mentorship',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsRoute = ResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminIdRoute = AdminIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminRoute,
 } as any)
 const BookIndexRoute = BookIndexRouteImport.update({
   id: '/book/',
@@ -40,44 +72,114 @@ const BookFreeRoute = BookFreeRouteImport.update({
   path: '/book/free',
   getParentRoute: () => rootRouteImport,
 } as any)
+const XrayIndexRoute = XrayIndexRouteImport.update({
+  id: '/xray/',
+  path: '/xray/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const XrayBookRoute = XrayBookRouteImport.update({
+  id: '/xray/book',
+  path: '/xray/book',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/audit': typeof AuditRoute
   '/mentorship': typeof MentorshipRoute
+  '/results': typeof ResultsRoute
+  '/admin/$id': typeof AdminIdRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
+  '/xray/book': typeof XrayBookRoute
+  '/admin/': typeof AdminIndexRoute
   '/book/': typeof BookIndexRoute
+  '/xray/': typeof XrayIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/audit': typeof AuditRoute
   '/mentorship': typeof MentorshipRoute
+  '/results': typeof ResultsRoute
+  '/admin/$id': typeof AdminIdRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
+  '/xray/book': typeof XrayBookRoute
+  '/admin': typeof AdminIndexRoute
   '/book': typeof BookIndexRoute
+  '/xray': typeof XrayIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/audit': typeof AuditRoute
   '/mentorship': typeof MentorshipRoute
+  '/results': typeof ResultsRoute
+  '/admin/$id': typeof AdminIdRoute
   '/book/clinic': typeof BookClinicRoute
   '/book/free': typeof BookFreeRoute
+  '/xray/book': typeof XrayBookRoute
+  '/admin/': typeof AdminIndexRoute
   '/book/': typeof BookIndexRoute
+  '/xray/': typeof XrayIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/mentorship' | '/book/clinic' | '/book/free' | '/book/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/audit'
+    | '/mentorship'
+    | '/results'
+    | '/admin/$id'
+    | '/book/clinic'
+    | '/book/free'
+    | '/xray/book'
+    | '/admin/'
+    | '/book/'
+    | '/xray/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/mentorship' | '/book/clinic' | '/book/free' | '/book'
+  to:
+    | '/'
+    | '/audit'
+    | '/mentorship'
+    | '/results'
+    | '/admin/$id'
+    | '/book/clinic'
+    | '/book/free'
+    | '/xray/book'
+    | '/admin'
+    | '/book'
+    | '/xray'
   id:
-    '__root__' | '/' | '/mentorship' | '/book/clinic' | '/book/free' | '/book/'
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/audit'
+    | '/mentorship'
+    | '/results'
+    | '/admin/$id'
+    | '/book/clinic'
+    | '/book/free'
+    | '/xray/book'
+    | '/admin/'
+    | '/book/'
+    | '/xray/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  AuditRoute: typeof AuditRoute
   MentorshipRoute: typeof MentorshipRoute
+  ResultsRoute: typeof ResultsRoute
   BookClinicRoute: typeof BookClinicRoute
   BookFreeRoute: typeof BookFreeRoute
+  XrayBookRoute: typeof XrayBookRoute
   BookIndexRoute: typeof BookIndexRoute
+  XrayIndexRoute: typeof XrayIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -89,12 +191,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/audit': {
+      id: '/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mentorship': {
       id: '/mentorship'
       path: '/mentorship'
       fullPath: '/mentorship'
       preLoaderRoute: typeof MentorshipRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/results': {
+      id: '/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof ResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/$id': {
+      id: '/admin/$id'
+      path: '/$id'
+      fullPath: '/admin/$id'
+      preLoaderRoute: typeof AdminIdRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/book/': {
       id: '/book/'
@@ -117,15 +254,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookFreeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/xray/': {
+      id: '/xray/'
+      path: '/xray'
+      fullPath: '/xray/'
+      preLoaderRoute: typeof XrayIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/xray/book': {
+      id: '/xray/book'
+      path: '/xray/book'
+      fullPath: '/xray/book'
+      preLoaderRoute: typeof XrayBookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminIdRoute: typeof AdminIdRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIdRoute: AdminIdRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AuditRoute: AuditRoute,
   MentorshipRoute: MentorshipRoute,
+  ResultsRoute: ResultsRoute,
   BookClinicRoute: BookClinicRoute,
   BookFreeRoute: BookFreeRoute,
+  XrayBookRoute: XrayBookRoute,
   BookIndexRoute: BookIndexRoute,
+  XrayIndexRoute: XrayIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

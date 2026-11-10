@@ -4,7 +4,7 @@ import studio from "@/assets/diagnostic-studio.jpg";
 import { ArrowUpRight, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/xray/")({
   head: () => ({
     meta: [
       { title: "The Client X-Ray — Sales Doctor Client Acquisition Audit" },
