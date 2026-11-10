@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { F, FormError, FormShell, Options, StuckPicker, field, privacy, useEnquiry } from "@/components/form-bits";
 import { ExtLink, btnClass } from "@/components/site";
 import { CLINIC_PRICE, CLINIC_TERMS, LINKS, REVENUE, TARGETS, calendlyUrl } from "@/lib/links";
@@ -9,6 +10,8 @@ export const Route = createFileRoute("/book/clinic")({
     meta: [
       { title: "Book your Private Sales Clinic — The Sales Clinic" },
       { name: "description", content: "A 90-minute deep working session with Dr. Dan on your numbers, your process and your target." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { property: "og:title", content: "Private Sales Clinic — The Sales Clinic" },
       { property: "og:description", content: "We don’t just find the gap. We work out how to close it." },
     ],
@@ -32,13 +35,13 @@ function Clinic() {
             <ExtLink href={LINKS.stripe} onClick={() => window.__lovableEvents?.track?.("project.payment_started", { provider: "stripe" })}>PAY IN USD · STRIPE</ExtLink>
             <ExtLink href={LINKS.flutterwave} variant="dark" onClick={() => window.__lovableEvents?.track?.("project.payment_started", { provider: "flutterwave" })}>PAY IN NGN · FLUTTERWAVE</ExtLink>
           </div>
-          <div className="mt-8 rounded-lg bg-blush p-5">
+          <div className="mt-8 border-t border-border pt-6">
             <p className="font-semibold">Paid? Choose your 90-minute slot.</p>
             <ExtLink href={calendlyUrl(who.name, who.email)} variant="outline" className="mt-4 w-full" onClick={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "private_clinic" })}>CHOOSE MY SLOT ON CALENDLY →</ExtLink>
           </div>
         </div>
       ) : (
-        <form className="space-y-5" onSubmit={async (e) => {
+        <form className="space-y-7" onSubmit={async (e) => {
           e.preventDefault();
           const w = await save(e.currentTarget);
           if (w) { setWho(w); window.scrollTo({ top: 0, behavior: "smooth" }); }
@@ -52,12 +55,12 @@ function Clinic() {
           <Options name="target" label="Your next target" options={TARGETS} placeholder="Select your next target" />
           <StuckPicker label="What would you like to work through? (choose as many as apply)" />
           <F label="Anything else I should know? (optional)"><input name="notes" placeholder="One line is enough" className={field} /></F>
-          <div className="flex items-center justify-between rounded-lg bg-ink p-4 text-ink-foreground">
+          <div className="flex flex-col items-start gap-3 rounded-md bg-ink p-5 text-ink-foreground sm:flex-row sm:justify-between">
             <span className="font-semibold">Private Sales Clinic · 90 min</span>
-            <span className="text-right text-sm"><strong className="font-display text-xl">{CLINIC_PRICE}</strong><br /><span className="opacity-70">{CLINIC_TERMS}</span></span>
+            <span className="text-sm sm:text-right"><strong className="font-display text-xl">{CLINIC_PRICE}</strong><br /><span className="opacity-70">{CLINIC_TERMS}</span></span>
           </div>
           <FormError msg={error} />
-          <button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "CONTINUE TO PAYMENT →"}</button>
+          <Button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "CONTINUE TO PAYMENT →"}</Button>
           {privacy}
         </form>
       )}

@@ -8,6 +8,8 @@ export const Route = createFileRoute("/admin/")({
     meta: [
       { title: "Overview — Sales Admin" },
       { name: "description", content: "Private overview of Sales Clinic enquiries and Client X-Rays." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { property: "og:title", content: "Overview — Sales Admin" },
       { property: "og:description", content: "Private admin overview." },
       { name: "robots", content: "noindex" },
