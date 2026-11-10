@@ -115,21 +115,29 @@ export function Header() {
 
 export function Footer() {
   return (
-    <footer className="overflow-hidden bg-ink text-ink-foreground">
-      <div className="mx-auto max-w-7xl px-5 pt-14">
-        <img src={logo} alt="The Sales Doctor" className="mb-8 h-20 w-36 object-contain" />
-        <nav aria-label="Footer" className="flex flex-wrap gap-x-8 gap-y-3 border-b border-ink-foreground/15 pb-8 font-display text-sm font-bold uppercase tracking-[0.16em]">
-          {NAV.map((n) => (
-            <Link key={n.to} to={n.to} className="ulink text-ink-foreground/70 hover:text-ink-foreground">{n.label}</Link>
-          ))}
-          <Link to="/book" className="ulink text-primary">Book a consultation →</Link>
-        </nav>
-        <p aria-hidden="true" className="select-none pt-8 font-display font-black uppercase leading-[0.8] tracking-[-0.05em] text-[clamp(3.2rem,15vw,13rem)]">
+    <footer className="site-footer">
+      <div className="site-footer-card">
+        <span className="footer-glow" aria-hidden="true" />
+        <div className="relative grid gap-10 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-5">
+            <span className="footer-logo"><img src={logo} alt="The Sales Doctor" className="h-16 w-28 object-contain" /></span>
+            <svg viewBox="0 0 300 40" className="footer-ecg mt-6" aria-hidden="true" preserveAspectRatio="none"><path d="M0 26 H60 L70 26 L78 8 L86 36 L94 18 L102 26 H160 L170 26 L178 4 L186 38 L194 20 L202 26 H300" className="footer-ecg-trace" /><path d="M0 26 H60 L70 26 L78 8 L86 36 L94 18 L102 26 H160 L170 26 L178 4 L186 38 L194 20 L202 26 H300" className="footer-ecg-beat" pathLength={100} /></svg>
+            <Link to="/book" className={btnClass("primary", "md", "mt-6")}>Book a consultation →</Link>
+          </div>
+          <nav aria-label="Footer" className="grid grid-cols-2 gap-2.5 md:col-span-7">
+            {NAV.map((n, i) => {
+              const Icon = NAV_ICON[n.to];
+              return <Link key={n.to} to={n.to} className="footer-tile"><span className="flex items-center justify-between"><span className="footer-tile-icon"><Icon className="h-4 w-4" aria-hidden="true" /></span><span className="footer-tile-num">0{i + 1}</span></span><span className="mt-6 flex items-center justify-between font-display text-sm font-bold uppercase tracking-[0.12em]">{n.label}<span className="footer-tile-arrow" aria-hidden="true">→</span></span></Link>;
+            })}
+          </nav>
+        </div>
+        <p aria-hidden="true" className="footer-wordmark relative select-none pt-12 font-display font-black uppercase leading-[0.8] tracking-[-0.05em] text-[clamp(3rem,14vw,12rem)]">
           The Sales <span className="text-primary">Clinic</span>
         </p>
-        <div className="flex flex-col gap-2 border-t border-ink-foreground/15 py-6 text-sm text-ink-foreground/60 md:flex-row md:justify-between">
+        <div className="relative mt-8 flex flex-col gap-3 border-t border-ink-foreground/15 pt-6 text-sm text-ink-foreground/60 md:flex-row md:items-center md:justify-between">
           <p>© 2026 The Sales Clinic · Dr. Dan Odotukpono, The Sales Doctor</p>
-          <p>Every business is unique. Results shown are real past client outcomes, and yours begin with your first session.</p>
+          <p className="md:max-w-md md:text-right">Every business is unique. Results shown are real past client outcomes, and yours begin with your first session.</p>
+          <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="footer-top" aria-label="Back to top">↑</button>
         </div>
       </div>
     </footer>

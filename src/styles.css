@@ -768,3 +768,24 @@ main img:hover { transform: scale(1.015); }
 @keyframes stat-text { from { opacity: 0; transform: translateY(12px); filter: blur(4px); } }
 @media (prefers-reduced-motion: reduce) { .hero-stat, .hero-stat dt, .hero-stat dd, .hero-stat::after { animation: none !important; opacity: 1; transform: none; } }
 @media (max-width: 639px) { .hero-stat { padding: 1rem .75rem; } .farmora-home .hero-stat dt { font-size: clamp(1.15rem, 5.6vw, 1.6rem) !important; } }
+/* Footer */
+.site-footer { padding: 0 .75rem .75rem; background: var(--background); }
+.site-footer-card { position: relative; overflow: hidden; margin: 0 auto; max-width: 80rem; border-radius: 2.5rem 2.5rem 2.5rem .75rem; background: var(--ink); color: var(--ink-foreground); padding: 3rem 1.25rem 1.5rem; }
+@media (min-width: 768px) { .site-footer-card { padding: 4rem 3rem 2rem; } }
+.footer-glow { position: absolute; right: -10rem; top: -10rem; width: 28rem; height: 28rem; border-radius: 999px; background: radial-gradient(circle, color-mix(in oklab, var(--primary) 45%, transparent), transparent 70%); animation: footer-drift 12s ease-in-out infinite alternate; pointer-events: none; }
+@keyframes footer-drift { to { transform: translate(-4rem, 3rem) scale(1.1); } }
+.footer-logo { display: inline-flex; border-radius: 1.25rem; background: var(--background); padding: .5rem .9rem; }
+.footer-ecg { width: 100%; max-width: 20rem; height: 2rem; fill: none; stroke: var(--primary); stroke-width: 2; stroke-linejoin: round; }
+.footer-ecg-trace { opacity: .25; } .footer-ecg-beat { stroke-dasharray: 25 75; animation: hero-beat 2.6s linear infinite; }
+.footer-tile { display: flex; flex-direction: column; justify-content: space-between; border-radius: 1.4rem 1.4rem 1.4rem .5rem; padding: 1rem; background: color-mix(in oklab, var(--ink-foreground) 7%, transparent); border: 1px solid color-mix(in oklab, var(--ink-foreground) 10%, transparent); color: var(--ink-foreground); transition: background .25s, transform .25s, border-color .25s; }
+.footer-tile:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-3px); }
+.footer-tile-icon { display: flex; width: 2.1rem; height: 2.1rem; align-items: center; justify-content: center; border-radius: 999px; background: color-mix(in oklab, var(--ink-foreground) 12%, transparent); }
+.footer-tile-num { font-family: var(--font-display, Archivo); font-size: .7rem; font-weight: 800; opacity: .45; }
+.footer-tile-arrow { transition: transform .25s; }
+.footer-tile:hover .footer-tile-arrow { transform: translateX(4px); }
+.footer-wordmark { background: linear-gradient(180deg, var(--ink-foreground) 40%, color-mix(in oklab, var(--ink-foreground) 15%, transparent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.footer-wordmark .text-primary { -webkit-text-fill-color: var(--primary); }
+.footer-top { display: inline-flex; flex-shrink: 0; width: 2.75rem; height: 2.75rem; align-items: center; justify-content: center; align-self: flex-start; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); font-weight: 700; transition: transform .25s; }
+.footer-top:hover { transform: translateY(-3px); }
+@media (min-width: 768px) { .footer-top { align-self: center; } }
+@media (prefers-reduced-motion: reduce) { .footer-glow, .footer-ecg-beat { animation: none; } }
