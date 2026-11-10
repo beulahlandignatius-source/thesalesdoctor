@@ -7,6 +7,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ENQUIRY_STATUSES, listEnquiries, updateEnquiryStatus } from "@/lib/enquiries.functions";
 import { DETAIL_LABEL, KIND_LABEL, fmt } from "@/components/admin/enquiry-labels";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/admin/enquiries")({
   head: () => ({
@@ -20,16 +22,17 @@ export const Route = createFileRoute("/admin/enquiries")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  validateSearch: (s: Record<string, unknown>): { from?: string | undefined; to?: string | undefined; kind?: string | undefined; status?: string | undefined } => {
+  validateSearch: (s: Record<string, unknown>): { from?: string | undefined; to?: string | undefined; kind?: string | undefined; status?: string | undefined; record?: string | undefined } => {
     const g = (k: string) => (typeof s[k] === "string" && s[k] ? (s[k] as string) : undefined);
-    return { from: g("from"), to: g("to"), kind: g("kind"), status: g("status") };
+    return { from: g("from"), to: g("to"), kind: g("kind"), status: g("status"), record: z.string().uuid().safeParse(s["record"]).success ? String(s["record"]) : undefined };
   },
   component: Enquiries,
 });
 
 function Enquiries() {
   const qc = useQueryClient();
-  const { data, isLoading, isError } = useQuery({ queryKey: ["admin-enquiries"], queryFn: () => listEnquiries() });
+  const search = Route.useSearch();
+  const { data, isLoading, isError } = useQuery({ queryKey: ["admin-enquiries", search.record], queryFn: () => listEnquiries({ data: { record: search.record } }) });
   const setStatus = useMutation({
     mutationFn: (v: { id: string; status: (typeof ENQUIRY_STATUSES)[number] }) => updateEnquiryStatus({ data: v }),
     onSuccess: () => {
@@ -38,7 +41,6 @@ function Enquiries() {
     },
   });
   const [q, setQ] = useState("");
-  const search = Route.useSearch();
   const navigate = useNavigate({ from: "/admin/enquiries" });
   const kind = search.kind ?? "", status = search.status ?? "";
   const range = search.from && search.to ? readRange(search) : null;
@@ -49,17 +51,19 @@ function Enquiries() {
 
   const rows = useMemo(() => (data ?? []).filter((r) => {
     const t = q.trim().toLowerCase();
+    if (search.record) return r.id === search.record;
     if (t && !`${r.name} ${r.email} ${r.whatsapp}`.toLowerCase().includes(t)) return false;
     if (kind && r.kind !== kind) return false;
     if (status && r.status !== status) return false;
     if (range && !inRange(r.created_at, range)) return false;
     return true;
-  }), [data, q, kind, status, range?.from, range?.to]);
+  }), [data, q, kind, status, range?.from, range?.to, search.record]);
 
   const sel = "field !py-2 text-sm min-h-11 sm:!w-auto";
   return (
     <div className="admin-page">
       <h1 className="mb-6 font-display text-3xl font-extrabold">Sales Clinic enquiries</h1>
+      {search.record && <Button variant="outline" className="mb-4" onClick={() => navigate({ search: {} })}><X />Show all enquiries</Button>}
       <div className="mb-4"><DateRangePicker value={range ?? readRange({})} onChange={(r) => setF(r)} />
         <div className="range-banner"><span>{range ? <>Showing {fmtRange(range)}</> : "Showing all dates"} · <strong>{rows.length}</strong> {rows.length === 1 ? "enquiry" : "enquiries"}</span>
           {(range || kind || status) && <button type="button" onClick={() => navigate({ search: {}, replace: true })} className="ml-auto inline-flex min-h-10 items-center gap-1 rounded-full px-3 font-semibold text-primary hover:bg-card"><X className="h-4 w-4" />Clear filters</button>}</div></div>
@@ -82,10 +86,10 @@ function Enquiries() {
           : rows.map((r) => (
             <article key={r.id} className="admin-enquiry rounded-3xl border border-border bg-card">
               <div className="flex flex-col gap-3 p-4 md:flex-row md:items-center md:justify-between">
-                <button onClick={() => setOpen(open === r.id ? null : r.id)} className="min-w-0 text-left" aria-expanded={open === r.id}>
+                <button onClick={() => setOpen((open ?? search.record) === r.id ? "" : r.id)} className="min-w-0 text-left" aria-expanded={(open ?? search.record) === r.id}>
                   <p className="font-semibold">{r.name} <span className="ml-2 rounded-full bg-blush px-2.5 py-0.5 text-xs font-semibold text-primary">{KIND_LABEL[r.kind] ?? r.kind}</span></p>
                   <p className="mt-1 break-all text-sm text-muted-foreground">{r.email} · {r.whatsapp}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{fmt(r.created_at)} · {open === r.id ? "Hide details" : "Show details"}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{fmt(r.created_at)} · {(open ?? search.record) === r.id ? "Hide details" : "Show details"}</p>
                 </button>
                 <div className="admin-enquiry-actions">
                   <a href={`https://wa.me/${r.whatsapp.replace(/[^\d]/g, "")}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 text-sm font-semibold hover:border-primary"><WhatsAppIcon className="h-4 w-4 shrink-0" />WhatsApp</a>
@@ -97,7 +101,7 @@ function Enquiries() {
                   </select>
                 </div>
               </div>
-              {open === r.id && (
+              {(open ?? search.record) === r.id && (
                 <dl className="grid gap-4 border-t border-border p-4 sm:grid-cols-2">
                   {Object.entries(r.details).filter(([, v]) => (Array.isArray(v) ? v.length : v)).map(([k, v]) => (
                     <div key={k}>

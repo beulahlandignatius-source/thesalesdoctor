@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Add global admin search across enquiries, confirmed payments, payment screenshots and reviews; verify real enquiry navigation on desktop and mobile (payment/review tables currently have no matching records).
 - [x] Compact mobile/tablet admin navigation, simplify crowded dashboard panels and controls, and verify signed-in pages.
 - [x] Improve mobile X-Ray readability and control spacing; verify the full assessment and results.
 - [x] Verify desktop/mobile navigation through free consultation submission and WhatsApp confirmation with real test enquiries.

@@ -32,11 +32,14 @@ async function assertAdmin(ctx: { supabase: any; userId: string }) {
 
 export const listEnquiries = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
+  .inputValidator((d: unknown) => z.object({ record: z.string().uuid().optional() }).parse(d ?? {}))
+  .handler(async ({ context, data: input }) => {
     await assertAdmin(context);
-    const { data, error } = await context.supabase
+    let query = context.supabase
       .from("clinic_enquiries")
-      .select("id, kind, name, email, whatsapp, details, status, created_at")
+      .select("id, kind, name, email, whatsapp, details, status, created_at");
+    if (input.record) query = query.eq("id", input.record);
+    const { data, error } = await query
       .order("created_at", { ascending: false })
       .limit(1000);
     if (error) throw new Error("Could not load enquiries");

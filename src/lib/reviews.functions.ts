@@ -39,10 +39,14 @@ export const publicReviews = createServerFn({ method: "GET" }).handler(async () 
   return signMedia(data ?? []);
 });
 
-export const adminReviews = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
+export const adminReviews = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => z.object({ record: z.string().uuid().optional() }).parse(d ?? {}))
+  .handler(async ({ context, data: input }) => {
   const { data: allowed, error: authError } = await context.supabase.rpc("is_admin", { _user_id: context.userId });
   if (authError || !allowed) throw new Error("Forbidden");
-  const { data, error } = await context.supabase.from("client_reviews").select("*").order("created_at", { ascending: false }).limit(1000);
+  let query = context.supabase.from("client_reviews").select("*");
+  if (input.record) query = query.eq("id", input.record);
+  const { data, error } = await query.order("created_at", { ascending: false }).limit(1000);
   if (error) throw new Error("Couldn’t load reviews.");
   return signMedia(data ?? []);
 });

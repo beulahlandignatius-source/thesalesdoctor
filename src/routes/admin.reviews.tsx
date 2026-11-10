@@ -1,10 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { Star, Check, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { adminReviews, moderateReview } from "@/lib/reviews.functions";
+import { z } from "zod";
 
 export const Route = createFileRoute("/admin/reviews")({
   head: () => ({ meta: [
@@ -16,15 +17,17 @@ export const Route = createFileRoute("/admin/reviews")({
     { name: "twitter:card", content: "summary" },
     { name: "robots", content: "noindex" },
   ] }),
+  validateSearch: (s: Record<string, unknown>): { record?: string | undefined } => ({ record: z.string().uuid().safeParse(s["record"]).success ? String(s["record"]) : undefined }),
   component: Reviews,
 });
 
 function Reviews() {
+  const { record } = Route.useSearch();
   const [filter, setFilter] = useState("pending");
   const qc = useQueryClient();
   const load = useServerFn(adminReviews);
   const update = useServerFn(moderateReview);
-  const { data, isPending, isError } = useQuery({ queryKey: ["admin-reviews"], queryFn: () => load() });
+  const { data, isPending, isError } = useQuery({ queryKey: ["admin-reviews", record], queryFn: () => load({ data: { record } }) });
   const mutation = useMutation({
     mutationFn: (data: { id: string; status: "published" | "hidden" }) => update({ data }),
     onSuccess: (_result, variables) => {
@@ -38,10 +41,10 @@ function Reviews() {
       qc.invalidateQueries({ queryKey: ["public-reviews"] });
     },
   });
-  const rows = (data ?? []).filter((r) => !filter || r.status === filter);
+  const rows = (data ?? []).filter((r) => record ? r.id === record : !filter || r.status === filter);
   return <div className="admin-page admin-review-page">
     <h1 className="text-3xl font-extrabold">Reviews</h1>
-    <select aria-label="Review status" className="field mt-6 sm:!w-56" value={filter} onChange={(e) => setFilter(e.target.value)}><option value="pending">Awaiting approval</option><option value="published">Published</option><option value="hidden">Hidden</option><option value="">All reviews</option></select>
+    {record ? <Button variant="outline" className="mt-4" asChild><Link to="/admin/reviews" search={{}}>Show all reviews</Link></Button> : <select aria-label="Review status" className="field mt-6 sm:!w-56" value={filter} onChange={(e) => setFilter(e.target.value)}><option value="pending">Awaiting approval</option><option value="published">Published</option><option value="hidden">Hidden</option><option value="">All reviews</option></select>}
     {mutation.isError && <p className="mt-4 text-destructive" role="alert">Couldn’t update the review. Please try again.</p>}
     <div className="mt-6 space-y-4">
       {isPending ? <p role="status">Loading reviews…</p> : isError ? <p role="alert">Couldn’t load reviews. Please refresh.</p> : rows.length === 0 ? <p className="py-8 text-muted-foreground">No reviews in this view.</p> : rows.map((r) => <article key={r.id} className="rounded-3xl border border-border bg-card p-6">

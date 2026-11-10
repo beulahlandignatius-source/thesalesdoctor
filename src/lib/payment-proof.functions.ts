@@ -37,10 +37,13 @@ async function assertAdmin(ctx: { supabase: any; userId: string }) {
 /** Admin: list uploaded screenshots with short-lived view links. Uploads are NOT confirmed payments. */
 export const listPaymentProofs = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
+  .inputValidator((d: unknown) => z.object({ record: z.string().uuid().optional() }).parse(d ?? {}))
+  .handler(async ({ context, data: input }) => {
     await assertAdmin(context);
-    const { data, error } = await context.supabase.from("payment_proofs")
-      .select("id, name, email, provider, file_path, content_type, status, reviewed_at, created_at")
+    let query = context.supabase.from("payment_proofs")
+      .select("id, name, email, provider, file_path, content_type, status, reviewed_at, created_at");
+    if (input.record) query = query.eq("id", input.record);
+    const { data, error } = await query
       .order("created_at", { ascending: false }).limit(200);
     if (error) throw new Error("Could not load payment screenshots");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");

@@ -47,3 +47,4 @@ use the editor.
 - Shared PageTransition animates committed route content without keys, exit waits or transformed containers; browser history indexes supply direction, and page-transition.ts centralizes timing for future design documentation.
 - Use the shared WhatsAppIcon brand mark for WhatsApp contact actions and fields; ExtLink adds it for WhatsApp destinations so repeated links stay consistent.
 - Admin navigation below the desktop sidebar breakpoint uses three primary tabs and one accessible More dialog for secondary sections and account actions; keep dashboard layout adjustments scoped to the admin shell.
+- Global admin search uses authenticated, admin-checked RLS queries with literal-text matching; record links fetch by ID independently of list limits/status filters, and provider-confirmed payments remain distinct from uploaded screenshots.

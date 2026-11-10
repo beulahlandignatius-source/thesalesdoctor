@@ -4,6 +4,7 @@ import { LayoutDashboard, ScanLine, Inbox, ExternalLink, LogOut, Menu, KeyRound,
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { GlobalSearch } from "./GlobalSearch";
 
 const items = [
   { to: "/admin", label: "Overview", short: "Overview", icon: LayoutDashboard, exact: true },
@@ -26,7 +27,8 @@ export function AdminNav({ onSignOut, email }: { onSignOut: () => void; email: s
     <>
       <aside className="admin-sidebar hidden lg:flex">
         <Link to="/admin" className="px-3 font-display text-lg font-extrabold">THE SALES <span className="text-primary">CLINIC</span></Link>
-        <p className="mb-8 mt-2 px-3 text-xs text-muted-foreground">Admin workspace</p>
+        <p className="mb-4 mt-2 px-3 text-xs text-muted-foreground">Admin workspace</p>
+        <div className="mb-4"><GlobalSearch /></div>
         <nav aria-label="Admin sidebar" className="space-y-1">{items.map((i) => <Link key={i.to} to={i.to} activeOptions={{ exact: i.exact }} activeProps={active} className={linkCls}><i.icon className="h-5 w-5 shrink-0" />{i.label}</Link>)}</nav>
         <div className="mt-auto space-y-1 border-t border-border pt-4">
           <ThemeToggle />
@@ -39,7 +41,7 @@ export function AdminNav({ onSignOut, email }: { onSignOut: () => void; email: s
       <header className="admin-topbar sticky top-0 z-40 border-b border-border bg-background lg:hidden">
         <div className="admin-mobile-heading grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5">
           <Link to="/admin" className="min-w-0 font-display text-sm font-extrabold">SALES <span className="text-primary">ADMIN</span><span className="mt-0.5 block truncate font-sans text-xs font-normal text-muted-foreground">{current?.label ?? (pathname === "/admin/password" ? "Account" : "X-Ray details")}</span></Link>
-          <div className="flex shrink-0 items-center gap-1"><ThemeToggle /><Button variant="ghost" size="icon" aria-label="Open admin menu" aria-haspopup="dialog" onClick={() => setOpen(true)}><Menu /></Button></div>
+          <div className="flex shrink-0 items-center gap-1"><GlobalSearch /><ThemeToggle /><Button variant="ghost" size="icon" aria-label="Open admin menu" aria-haspopup="dialog" onClick={() => setOpen(true)}><Menu /></Button></div>
         </div>
       </header>
       <nav aria-label="Admin sections" className="admin-bottom-nav lg:hidden">
