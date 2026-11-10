@@ -17,6 +17,7 @@ import { Header, Footer } from "../components/site";
 import { ThemeProvider } from "../components/theme";
 import { SiteEditor } from "../components/site-editor";
 import { SalesCompanion } from "../components/sales-companion";
+import { PageTransition } from "../components/page-transition";
 
 function NotFoundComponent() {
   return (
@@ -145,7 +146,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <ThemeProvider><PublicChrome>
-        <Outlet />
+        <PageTransition><Outlet /></PageTransition>
       </PublicChrome><SiteEditor /></ThemeProvider>
     </QueryClientProvider>
   );
