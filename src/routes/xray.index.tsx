@@ -60,38 +60,30 @@ function Index() {
           </div>
         </div>
       </section>
-      <section className="xray-introduction relative mx-3 my-3 overflow-hidden rounded-[2rem] bg-ink px-6 py-14 text-ink-foreground sm:mx-6 sm:my-6 sm:rounded-[2.5rem] sm:px-12 sm:py-20">
-        <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-primary/30 blur-3xl" />
-        <svg aria-hidden="true" viewBox="0 0 600 60" className="pointer-events-none absolute inset-x-0 bottom-6 h-12 w-full text-primary/40" fill="none" stroke="currentColor" strokeWidth="2"><path d="M0 30h200l15-22 20 44 18-36 12 14h335" /></svg>
-        <div className="relative mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-end">
-          <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-ink-foreground/20 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-primary"><Activity className="h-3.5 w-3.5" /> Diagnosis</p>
-            <h2 className="mt-6 max-w-xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl">
-              This isn't a generic <span className="text-primary">marketing quiz.</span>
-            </h2>
-            <p className="mt-6 inline-flex items-center gap-3 text-sm text-ink-foreground/70">
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground"><Stethoscope className="h-4 w-4" /></span>
-              Built by Dr. Dan Odotukpono, The Sales Doctor.
-            </p>
-          </div>
-          <div className="space-y-4">
-            <div className="rounded-3xl rounded-tr-md bg-ink-foreground/[0.06] p-6 ring-1 ring-ink-foreground/10 transition hover:-translate-y-1 hover:ring-primary/50">
-              <ScanSearch className="h-6 w-6 text-primary" />
-              <p className="mt-4 text-base leading-relaxed text-ink-foreground/85">
-                A free 5-minute assessment that examines how you attract, convert and follow up with
-                potential clients, then identifies the biggest problem holding you back.
-              </p>
-            </div>
-            <div className="rounded-3xl rounded-bl-md bg-primary p-6 text-primary-foreground transition hover:-translate-y-1">
-              <Target className="h-6 w-6" />
-              <p className="mt-4 text-base font-semibold leading-relaxed">
-                Your answers are analyzed to identify the biggest weakness in your client acquisition
-                process.
-              </p>
-            </div>
-          </div>
+      <section className="xray-introduction relative mx-auto max-w-6xl bg-background px-6 py-16 text-foreground sm:px-10 sm:py-24">
+        <p className="eyebrow flex items-center gap-2"><Activity className="h-4 w-4" /> Diagnosis</p>
+        <h2 className="mt-4 max-w-2xl font-display text-[clamp(2rem,5vw,4.25rem)] font-black leading-[0.95] tracking-tight">
+          This isn't a generic <span className="text-primary">marketing quiz.</span>
+        </h2>
+        <div className="proof-bento mt-12">
+          <article className="proof-tile proof-tile-1">
+            <div className="flex items-center justify-between"><span className="proof-icon"><ScanSearch aria-hidden="true" className="h-6 w-6" /></span><Pulse /></div>
+            <p className="mt-10 font-display text-2xl font-bold leading-snug sm:text-3xl">A free 5-minute assessment that examines how you attract, convert and follow up with potential clients, then identifies the biggest problem holding you back.</p>
+          </article>
+          <article className="proof-tile proof-tile-2">
+            <div className="flex items-center justify-between"><span className="proof-icon"><Target aria-hidden="true" className="h-6 w-6" /></span><Pulse /></div>
+            <p className="proof-label !max-w-none font-semibold">Your answers are analyzed to identify the biggest weakness in your client acquisition process.</p>
+          </article>
+          <article className="proof-tile proof-tile-3">
+            <div className="flex items-center justify-between"><span className="proof-icon"><Stethoscope aria-hidden="true" className="h-6 w-6" /></span><Pulse /></div>
+            <p className="proof-label !max-w-none font-semibold">Built by Dr. Dan Odotukpono, The Sales Doctor.</p>
+          </article>
         </div>
       </section>
     </div>
   );
+}
+
+function Pulse() {
+  return <svg viewBox="0 0 600 80" fill="none" aria-hidden="true" className="h-8 w-28 opacity-70" preserveAspectRatio="none"><path className="ecg" d="M0 60 H150 L170 60 L185 20 L200 72 L215 44 L230 60 H330 L345 54 L360 30 L380 66 L395 50 C450 44 520 22 600 4" stroke="currentColor" strokeWidth="2.5" /></svg>;
 }
