@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "events": {
+    "project.xray_completed": {
+      "event_schema_version": 1,
+      "description": "A visitor finished the Client X-Ray and their diagnosis was generated.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      }
+    },
+    "project.xray_report_downloaded": {
+      "event_schema_version": 1,
+      "description": "A visitor clicked to download their Client X-Ray PDF report.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      }
+    }
+  }
+}
