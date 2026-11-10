@@ -46,6 +46,24 @@ function Overview() {
         <Stat label="Completed X-Rays" n={data.xrays} icon={ScanLine} to="/admin/xray" />
         <Stat label="Awaiting review approval" n={pending ?? "—"} icon={Star} to="/admin/reviews" />
       </div>
+      <section>
+        <h2 className="mb-5 text-xl font-bold">Bookings this month</h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          {([["free_review", "Free Client Acquisition Review"], ["private_clinic", "Private Sales Clinic"]] as const).map(([k, label]) => {
+            const f = data.funnel[k] ?? { viewed: 0, started: 0, completed: 0 };
+            return (
+              <div key={k} className="dashboard-distribution">
+                <div className="flex items-center gap-2 border-b border-border pb-4"><CalendarCheck className="h-5 w-5 text-primary" /><span className="font-semibold">{label}</span></div>
+                <dl className="mt-5 grid grid-cols-3 gap-3 text-center">
+                  {([["Calendar views", f["viewed"]], ["Booking starts", f["started"]], ["Completed", f["completed"]]] as const).map(([l, n]) => (
+                    <div key={l}><dd className="font-display text-3xl font-extrabold tabular-nums">{n}</dd><dt className="mt-1 text-xs text-muted-foreground">{l}</dt></div>
+                  ))}
+                </dl>
+              </div>
+            );
+          })}
+        </div>
+      </section>
       <div className="grid gap-8 xl:grid-cols-[1.4fr_1fr]">
         <section className="min-w-0">
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-bold">Sales Clinic</h2><Link to="/admin/enquiries" className="flex min-h-11 items-center gap-2 text-sm font-semibold text-primary">See all enquiries <ArrowUpRight className="h-4 w-4" /></Link></div>

@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { CalendarCheck } from "lucide-react";
+import { logBookingStep } from "@/lib/booking-funnel.functions";
 
-export function CalendlyEmbed({ src, onOpen, onBooked }: { src: string; onOpen?: () => void; onBooked?: () => void }) {
+type Session = "free_review" | "private_clinic";
+const log = (session: Session, step: "viewed" | "started" | "completed") => { logBookingStep({ data: { session, step } }).catch(() => {}); };
+
+export function CalendlyEmbed({ src, session, onOpen, onBooked }: { src: string; session: Session; onOpen?: () => void; onBooked?: () => void }) {
   const [loaded, setLoaded] = useState(false);
   const [booked, setBooked] = useState(false);
   const [frameSrc, setFrameSrc] = useState<string | null>(null);
@@ -14,7 +18,8 @@ export function CalendlyEmbed({ src, onOpen, onBooked }: { src: string; onOpen?:
     setFrameSrc(url.toString());
     const onMsg = (e: MessageEvent) => {
       if (typeof e.origin === "string" && !e.origin.endsWith("calendly.com")) return;
-      if (e.data?.event === "calendly.event_scheduled") { setBooked(true); onBooked?.(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+      if (e.data?.event === "calendly.date_and_time_selected") { window.__lovableEvents?.track?.("project.booking_started", { session }); log(session, "started"); }
+      if (e.data?.event === "calendly.event_scheduled") { window.__lovableEvents?.track?.("project.booking_completed", { session }); log(session, "completed"); setBooked(true); onBooked?.(); window.scrollTo({ top: 0, behavior: "smooth" }); }
     };
     window.addEventListener("message", onMsg);
     return () => window.removeEventListener("message", onMsg);
@@ -39,7 +44,7 @@ export function CalendlyEmbed({ src, onOpen, onBooked }: { src: string; onOpen?:
             <div className="h-10 w-10 animate-spin rounded-full border-4 border-muted border-t-primary" />
           </div>
         )}
-        {frameSrc && <iframe title="Book with Dr. Dan" src={frameSrc} onLoad={() => { setLoaded(true); onOpen?.(); }} className="h-[1000px] w-full md:h-[720px]" />}
+        {frameSrc && <iframe title="Book with Dr. Dan" src={frameSrc} onLoad={() => { if (!loaded) { log(session, "viewed"); onOpen?.(); } setLoaded(true); }} className="h-[1000px] w-full md:h-[720px]" />}
       </div>
       <p className="mt-3 text-center text-sm text-muted-foreground">
         Calendar not loading?{" "}

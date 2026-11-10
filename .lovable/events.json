@@ -1,6 +1,54 @@
 {
   "schema_version": 1,
   "events": {
+    "project.booking_completed": {
+      "event_schema_version": 1,
+      "description": "A visitor finished booking a session in the Calendly calendar on a booking page.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "session"
+        ],
+        "properties": {
+          "session": {
+            "type": "string",
+            "enum": [
+              "free_review",
+              "private_clinic"
+            ]
+          }
+        }
+      }
+    },
+    "project.booking_started": {
+      "event_schema_version": 1,
+      "description": "A visitor picked a date and time in the Calendly calendar on a booking page.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "session"
+        ],
+        "properties": {
+          "session": {
+            "type": "string",
+            "enum": [
+              "free_review",
+              "private_clinic"
+            ]
+          }
+        }
+      }
+    },
     "project.consultation_booking_opened": {
       "event_schema_version": 1,
       "description": "A visitor clicked through to Calendly to pick a consultation time.",

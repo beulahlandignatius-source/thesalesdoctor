@@ -35,7 +35,7 @@ function Schedule() {
         <h1 className="mt-3 text-4xl font-extrabold">{clinic ? "Paid? Choose your 90-minute slot." : "Now pick your time."}</h1>
         <p className="mt-2 text-muted-foreground">Choose a time that suits you.</p>
       </div>
-      <CalendlyEmbed src={calendlyUrl(name, email)} onOpen={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: clinic ? "private_clinic" : "free_review" })} />
+      <CalendlyEmbed session={clinic ? "private_clinic" : "free_review"} src={calendlyUrl(name, email)} onOpen={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: clinic ? "private_clinic" : "free_review" })} />
     </main>
   );
 }

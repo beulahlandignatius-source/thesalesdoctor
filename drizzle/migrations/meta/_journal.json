@@ -15,6 +15,13 @@
       "when": 1794334153422,
       "tag": "0001_confirmed_clinic_payments",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794337229386,
+      "tag": "0002_booking_funnel_events",
+      "breakpoints": true
     }
   ]
 }

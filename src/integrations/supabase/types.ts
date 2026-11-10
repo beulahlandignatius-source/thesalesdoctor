@@ -180,6 +180,27 @@ export type Database = {
         }
         Relationships: []
       }
+      booking_funnel_events: {
+        Row: {
+          created_at: string
+          id: string
+          session: string
+          step: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          session: string
+          step: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          session?: string
+          step?: string
+        }
+        Relationships: []
+      }
       client_reviews: {
         Row: {
           body: string

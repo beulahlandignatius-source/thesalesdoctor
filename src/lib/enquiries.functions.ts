@@ -72,10 +72,13 @@ export const adminOverview = createServerFn({ method: "POST" })
       paid("stripe"),
       paid("flutterwave"),
     ]);
+    const { data: funnelRows } = await sb.from("booking_funnel_events").select("session, step").gte("created_at", month).limit(10000);
+    const funnel = { free_review: { viewed: 0, started: 0, completed: 0 }, private_clinic: { viewed: 0, started: 0, completed: 0 } } as Record<string, Record<string, number>>;
+    for (const r of funnelRows ?? []) if (funnel[r.session] && r.step in funnel[r.session]!) funnel[r.session]![r.step]!++;
     const { data: recent } = await sb
       .from("clinic_enquiries")
       .select("id, kind, name, status, created_at")
       .order("created_at", { ascending: false })
       .limit(5);
-    return { free, clinic, mentor, newOnes, xrays, booked, stripePaid, flutterwavePaid, recent: recent ?? [] };
+    return { free, clinic, mentor, newOnes, xrays, booked, stripePaid, flutterwavePaid, funnel, recent: recent ?? [] };
   });
