@@ -4,6 +4,7 @@ import { F, FormError, FormShell, Options, StuckPicker, field, privacy, useEnqui
 import { ExtLink, btnClass } from "@/components/site";
 import { CLINIC_PRICE, CLINIC_TERMS, LINKS, REVENUE, TARGETS, calendlyUrl } from "@/lib/links";
 import { Button } from "@/components/ui/button";
+import { CalendarCheck, Clock, CreditCard, ExternalLink, Landmark, Lock, Receipt, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/book/clinic")({
   head: () => ({
@@ -27,17 +28,59 @@ function Clinic() {
       intro="A deep working session on your numbers, your process and your target. We don’t just find the gap. We work out how to close it."
       steps={["Share your goals and where you are now.", "Confirm payment and choose your 90-minute slot.", "We work through it together. You leave with a plan."]}>
       {who ? (
-        <div>
-          <p className="eyebrow">Step 2 of 3</p>
-          <h2 className="mt-2 text-2xl font-extrabold">Confirm your payment of {CLINIC_PRICE}</h2>
-          <p className="mt-2 text-muted-foreground">Choose how you’d like to pay. The payment page opens in a new tab.</p>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <ExtLink href={LINKS.stripe} onClick={() => window.__lovableEvents?.track?.("project.payment_started", { provider: "stripe" })}>PAY IN USD · STRIPE</ExtLink>
-            <ExtLink href={LINKS.flutterwave} variant="dark" onClick={() => window.__lovableEvents?.track?.("project.payment_started", { provider: "flutterwave" })}>PAY IN NGN · FLUTTERWAVE</ExtLink>
+        <div className="checkout">
+          <div className="flex items-center justify-between gap-3">
+            <p className="eyebrow">Step 2 of 3</p>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-primary"><ShieldCheck className="h-3.5 w-3.5" /> Secure checkout</span>
           </div>
-          <div className="mt-8 rounded-lg bg-blush p-5">
-            <p className="font-semibold">Paid? Choose your 90-minute slot.</p>
-            <ExtLink href={calendlyUrl(who.name, who.email)} variant="outline" className="mt-4 w-full" onClick={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "private_clinic" })}>CHOOSE MY SLOT ON CALENDLY →</ExtLink>
+          <h2 className="mt-3 text-2xl font-extrabold md:text-3xl">Confirm your payment of {CLINIC_PRICE}</h2>
+          <p className="mt-2 text-muted-foreground">Choose how you’d like to pay. The payment page opens in a new tab.</p>
+
+          {/* Order summary — receipt style */}
+          <div className="checkout-receipt mt-6">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Order summary</p>
+                <p className="mt-2 font-display text-lg font-extrabold">Private Sales Clinic</p>
+                <p className="mt-1 inline-flex items-center gap-1.5 text-sm text-muted-foreground"><Clock className="h-3.5 w-3.5" /> 90 min · with Dr. Dan</p>
+              </div>
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary text-primary-foreground"><Receipt className="h-5 w-5" /></span>
+            </div>
+            <div className="checkout-perforation" aria-hidden="true" />
+            <dl className="space-y-2 text-sm">
+              <div className="flex justify-between"><dt className="text-muted-foreground">Billed to</dt><dd className="max-w-[60%] truncate font-medium">{who.name}</dd></div>
+              <div className="flex justify-between"><dt className="text-muted-foreground">Email</dt><dd className="max-w-[60%] truncate font-medium">{who.email}</dd></div>
+            </dl>
+            <div className="mt-4 flex items-end justify-between border-t border-dashed border-border pt-4">
+              <span className="font-semibold">Total</span>
+              <span className="text-right"><strong className="font-display text-3xl font-black">{CLINIC_PRICE}</strong><br /><span className="text-xs text-muted-foreground">{CLINIC_TERMS}</span></span>
+            </div>
+          </div>
+
+          {/* Payment methods */}
+          <p className="mt-8 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Payment method</p>
+          <div className="mt-3 grid gap-3">
+            <a href={LINKS.stripe} target="_blank" rel="noopener noreferrer" className="pay-method group" onClick={() => window.__lovableEvents?.track?.("project.payment_started", { provider: "stripe" })}>
+              <span className="pay-logo bg-primary text-primary-foreground"><CreditCard className="h-5 w-5" /></span>
+              <span className="flex-1"><span className="block font-bold">PAY IN USD · STRIPE</span><span className="block text-xs text-muted-foreground">Opens Stripe secure checkout</span></span>
+              <span className="pay-currency">USD</span>
+              <ExternalLink className="h-4 w-4 text-muted-foreground transition group-hover:text-primary" aria-hidden="true" />
+            </a>
+            <a href={LINKS.flutterwave} target="_blank" rel="noopener noreferrer" className="pay-method group" onClick={() => window.__lovableEvents?.track?.("project.payment_started", { provider: "flutterwave" })}>
+              <span className="pay-logo bg-ink text-ink-foreground"><Landmark className="h-5 w-5" /></span>
+              <span className="flex-1"><span className="block font-bold">PAY IN NGN · FLUTTERWAVE</span><span className="block text-xs text-muted-foreground">Opens Flutterwave secure checkout</span></span>
+              <span className="pay-currency">NGN</span>
+              <ExternalLink className="h-4 w-4 text-muted-foreground transition group-hover:text-primary" aria-hidden="true" />
+            </a>
+          </div>
+          <p className="mt-3 inline-flex items-center gap-1.5 text-xs text-muted-foreground"><Lock className="h-3.5 w-3.5" /> Payments are processed securely by Stripe or Flutterwave. We never see your card details.</p>
+
+          <div className="checkout-next mt-8">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-card text-primary"><CalendarCheck className="h-5 w-5" /></span>
+            <div className="flex-1">
+              <p className="font-semibold">Paid? Choose your 90-minute slot.</p>
+              <ExtLink href={calendlyUrl(who.name, who.email)} variant="outline" className="mt-4 w-full" onClick={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "private_clinic" })}>CHOOSE MY SLOT ON CALENDLY →</ExtLink>
+            </div>
           </div>
         </div>
       ) : (

@@ -505,3 +505,14 @@ main img:hover { transform: scale(1.015); }
 .who-icon { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 1rem; background: color-mix(in oklab, var(--primary) 22%, transparent); color: var(--primary); transition: transform .3s; }
 .who-tile:hover .who-icon { transform: rotate(-8deg) scale(1.08); }
 @media (prefers-reduced-motion: reduce) { .who-tile, .who-ghost, .who-icon { transition: none; } }
+
+/* Clinic checkout */
+.checkout-receipt { position: relative; border: 1px solid var(--border); background: var(--card); border-radius: 1.5rem; padding: 1.5rem; box-shadow: 0 20px 45px -30px color-mix(in oklab, var(--foreground) 40%, transparent); }
+.checkout-perforation { position: relative; margin: 1.25rem -1.5rem; border-top: 2px dashed var(--border); }
+.checkout-perforation::before, .checkout-perforation::after { content: ""; position: absolute; top: -.8rem; width: 1.5rem; height: 1.5rem; border-radius: 999px; background: var(--background); border: 1px solid var(--border); }
+.checkout-perforation::before { left: -.75rem; } .checkout-perforation::after { right: -.75rem; }
+.pay-method { display: flex; align-items: center; gap: .9rem; padding: 1rem 1.1rem; border: 1.5px solid var(--border); border-radius: 1.25rem; background: var(--card); transition: border-color .2s, transform .2s, box-shadow .2s; }
+.pay-method:hover, .pay-method:focus-visible { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 14px 30px -18px color-mix(in oklab, var(--primary) 55%, transparent); outline: none; }
+.pay-logo { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: .9rem; flex-shrink: 0; }
+.pay-currency { font-size: .7rem; font-weight: 800; letter-spacing: .1em; padding: .25rem .55rem; border-radius: 999px; background: var(--secondary); color: var(--primary); }
+.checkout-next { display: flex; gap: 1rem; padding: 1.25rem; border-radius: 1.5rem; background: var(--blush, var(--secondary)); }
