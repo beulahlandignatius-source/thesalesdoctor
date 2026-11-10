@@ -59,6 +59,18 @@ function Overview() {
                     <div key={l}><dd className="font-display text-3xl font-extrabold tabular-nums">{n}</dd><dt className="mt-1 text-xs text-muted-foreground">{l}</dt></div>
                   ))}
                 </dl>
+                <div className="mt-5 space-y-3 border-t border-border pt-4 text-sm">
+                  {([["Views to booking starts", f["started"]], ["Views to completed bookings", f["completed"]]] as const).map(([l, n]) => {
+                    const v = f["viewed"] ?? 0;
+                    const pct = v ? Math.min(100, Math.round(((n ?? 0) / v) * 100)) : null;
+                    return (
+                      <div key={l}>
+                        <div className="mb-1.5 flex justify-between gap-3"><span className="text-muted-foreground">{l}</span><strong className="tabular-nums">{pct == null ? "No views yet" : `${pct}%`}</strong></div>
+                        <div className="h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-primary" style={{ width: `${pct ?? 0}%` }} /></div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             );
           })}
