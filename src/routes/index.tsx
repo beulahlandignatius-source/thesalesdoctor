@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CtaLink } from "@/components/site";
 import { ClientReviews, reviewsQuery } from "@/components/client-reviews";
 import { StackedCards } from "@/components/stacked-cards";
-import { CalendarDays, ClipboardList, TrendingUp } from "lucide-react";
+import { CalendarDays, ClipboardList, TrendingUp, BadgeDollarSign, Users, Globe2 } from "lucide-react";
 import desk from "@/assets/dr-dan-desk.jpg";
 import portrait from "@/assets/dr-dan-portrait.jpg.asset.json";
 import standing from "@/assets/dr-dan-standing.jpg.asset.json";
@@ -234,13 +234,15 @@ function Index() {
       <section className="mx-auto max-w-7xl px-5 py-20 md:py-28">
         <p className="eyebrow">The proof</p>
         <h2 className="mt-4 text-[clamp(2rem,5vw,4.25rem)] font-black leading-[0.95] tracking-tight">The people I’ve helped so far.</h2>
-        <div className="mt-12 border-t-2 border-foreground">
-          {proof.map(([n, l]) => (
-            <div key={n} className="proof-row group grid items-baseline gap-2 border-b border-foreground/15 py-6 md:grid-cols-[1fr_1fr] md:py-8">
-              <p className="font-display text-[clamp(3.5rem,11vw,9rem)] font-black leading-[0.85] tracking-[-0.05em] transition-colors group-hover:text-primary">{n}</p>
-              <p className="max-w-sm text-lg text-muted-foreground md:justify-self-end md:text-right">{l}</p>
-            </div>
-          ))}
+        <div className="proof-bento mt-12">
+          {proof.map(([n, l], i) => {
+            const Icon = [BadgeDollarSign, Users, Globe2][i] ?? TrendingUp;
+            return <article key={n} className={`proof-tile proof-tile-${i + 1}`}>
+              <div className="flex items-center justify-between"><span className="proof-icon"><Icon aria-hidden="true" className="h-6 w-6" /></span><Pulse className="h-8 w-28 opacity-70" /></div>
+              <p className="proof-number font-display font-black">{n}</p>
+              <p className="proof-label">{l}</p>
+            </article>;
+          })}
         </div>
         <ClientReviews existing={testimonials} />
       </section>

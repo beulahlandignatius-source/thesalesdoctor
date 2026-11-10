@@ -430,6 +430,24 @@ main img:hover { transform: scale(1.015); }
 @media (prefers-reduced-motion: reduce) { .mentorship-benefit:hover { transform: none; } }
 
 /* Branded intake forms: quiet surfaces, tactile selection and clear field groups. */
+.proof-bento { display: grid; gap: 1rem; }
+.proof-tile { position: relative; overflow: hidden; display: flex; min-height: 17rem; flex-direction: column; justify-content: space-between; padding: 1.75rem; border-radius: 2rem .75rem 2rem 2rem; transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+.proof-tile:hover { transform: translateY(-4px); }
+.proof-tile::after { content: ""; position: absolute; right: -3rem; bottom: -3rem; width: 10rem; height: 10rem; border-radius: 42% 58% 45% 55%; background: currentColor; opacity: .07; }
+.proof-tile-1 { background: var(--primary); color: var(--primary-foreground); }
+.proof-tile-2 { background: var(--blush); color: var(--foreground); }
+.proof-tile-3 { background: var(--ink); color: var(--ink-foreground); }
+.proof-tile-2 .proof-icon, .proof-tile-2 svg.ecg, .proof-tile-2 path { color: var(--primary); }
+.proof-icon { display: flex; width: 3.25rem; height: 3.25rem; align-items: center; justify-content: center; border-radius: 1.1rem; border: 1px solid currentColor; }
+.proof-number { margin-top: 2.5rem; font-size: clamp(4rem, 14vw, 7.5rem); line-height: .85; letter-spacing: -.04em; }
+.proof-label { max-width: 18rem; margin-top: 1rem; font-size: 1.05rem; line-height: 1.45; opacity: .82; }
+@media (min-width: 768px) {
+  .proof-bento { grid-template-columns: 1.35fr 1fr; grid-template-rows: auto auto; }
+  .proof-tile-1 { grid-row: span 2; min-height: 36rem; padding: 2.5rem; }
+  .proof-tile-1 .proof-number { font-size: clamp(6rem, 11vw, 10rem); }
+  .proof-tile-2 .proof-number, .proof-tile-3 .proof-number { font-size: clamp(4rem, 7vw, 6rem); }
+}
+@media (prefers-reduced-motion: reduce) { .proof-tile:hover { transform: none; } }
 .form-panel { background: var(--card); box-shadow: var(--shadow-nav); border-top: 4px solid var(--primary); }
 .form-contact { padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
 .form-contact > label:last-child { grid-column: 1 / -1; }
