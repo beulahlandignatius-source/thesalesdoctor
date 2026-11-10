@@ -675,10 +675,38 @@ main img:hover { transform: scale(1.015); }
 .severity-bar { display: flex; gap: 3px; height: .9rem; overflow: hidden; border-radius: 9999px; background: var(--muted); }
 .sev-dot { width: 10px; height: 10px; border-radius: 9999px; }
 .sev-LOW { background: var(--border); } .sev-MODERATE { background: var(--blush); } .sev-HIGH { background: color-mix(in oklab, var(--primary) 60%, var(--card)); } .sev-CRITICAL { background: var(--primary); }
-@media (max-width: 639px) { .dash-stats > .dashboard-stat { padding: 1.1rem; } .dash-stats > .dashboard-stat-accent:first-child { grid-column: span 2; } .dash-stats .text-4xl { font-size: 1.9rem; } }
+@media (max-width: 639px) { .dash-stats > .dashboard-stat { padding: 1.1rem; } .dash-stats-5 > .dashboard-stat-accent:first-child { grid-column: span 2; } .dash-stats .text-4xl { font-size: 1.9rem; } }
 .hero-pulse { overflow: visible; }
 .hero-pulse path { stroke-linejoin: round; stroke-linecap: round; }
 .hero-pulse-trace { opacity: .22; }
 .hero-pulse-beat { stroke-dasharray: 22 78; animation: hero-beat 2.8s linear infinite; filter: drop-shadow(0 0 6px color-mix(in oklab, var(--primary) 70%, transparent)); }
 @keyframes hero-beat { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) { .hero-pulse-beat { animation: none; stroke-dasharray: none; } }
+/* Admin date range + drill-down */
+.date-range { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; border: 1px solid var(--border); background: var(--card); border-radius: 1.5rem; padding: .6rem; box-shadow: var(--shadow-nav); }
+.date-range-chips { display: flex; gap: .35rem; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+.date-chip { white-space: nowrap; min-height: 2.5rem; padding: 0 .95rem; border-radius: 999px; font-size: .8rem; font-weight: 600; color: var(--muted-foreground); transition: background .2s, color .2s; }
+.date-chip:hover { color: var(--foreground); background: var(--muted); }
+.date-chip[aria-pressed="true"] { background: var(--primary); color: var(--primary-foreground); }
+.date-range-custom { display: flex; align-items: center; gap: .4rem; padding: 0 .5rem; font-size: .8rem; flex-wrap: wrap; }
+.date-range-custom input { min-height: 2.5rem; border-radius: .9rem; border: 1px solid var(--border); background: var(--background); color: var(--foreground); padding: 0 .6rem; font-size: .8rem; }
+.delta { display: inline-flex; align-items: center; border-radius: 999px; padding: .1rem .5rem; font-size: .7rem; font-weight: 700; font-variant-numeric: tabular-nums; background: var(--muted); color: var(--muted-foreground); }
+.delta-up { background: color-mix(in oklab, var(--primary) 14%, transparent); color: var(--primary); }
+.delta-down { background: var(--ink); color: var(--background); }
+.delta-light { background: color-mix(in oklab, currentColor 16%, transparent); color: inherit; }
+.pulse-hit { fill: transparent; cursor: pointer; outline: none; }
+.pulse-hit:hover, .pulse-hit:focus-visible { fill: color-mix(in oklab, var(--primary) 10%, transparent); }
+.pulse-cursor { stroke: var(--primary); stroke-dasharray: 3 4; stroke-width: 1.5; }
+.drill-panel { margin-top: 1rem; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; border-radius: 1rem; background: color-mix(in oklab, var(--primary) 8%, transparent); padding: .75rem 1rem; font-size: .85rem; }
+.drill-link { display: inline-flex; min-height: 2.5rem; align-items: center; gap: .35rem; border-radius: 999px; background: var(--card); color: var(--foreground); padding: 0 .9rem; font-weight: 600; border: 1px solid var(--border); }
+.drill-link:hover { border-color: var(--primary); color: var(--primary); }
+.drill-row { border-radius: .9rem; padding: .5rem .6rem; margin: 0 -.6rem; transition: background .2s; }
+.drill-row:hover, .drill-row:focus-visible { background: color-mix(in oklab, var(--primary) 7%, transparent); }
+.range-banner { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: 1rem; border-radius: 1rem; background: color-mix(in oklab, var(--primary) 8%, transparent); padding: .6rem 1rem; font-size: .85rem; }
+@media (max-width: 639px) {
+  .date-range { border-radius: 1.25rem; }
+  .date-range-chips { width: 100%; }
+  .date-range-custom { width: 100%; padding: 0 .25rem; }
+  .date-range-custom input { flex: 1; min-width: 0; }
+  .dash-stats > .dashboard-stat p.font-display { word-break: break-word; }
+}

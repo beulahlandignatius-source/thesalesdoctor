@@ -318,10 +318,6 @@ function Index() {
             </div>
             <div className="close-panel md:col-span-5">
               <p className="text-lg">Start free, or go deep. Either way, you leave knowing what to do next.</p>
-              <div className="mt-5 grid gap-2">
-                <Link to="/book/free" className="close-option"><Search className="h-4 w-4 shrink-0" aria-hidden="true" /> Free 25-min Client Acquisition Review<ArrowUpRight className="ml-auto h-4 w-4 shrink-0" aria-hidden="true" /></Link>
-                <Link to="/book/clinic" className="close-option"><Activity className="h-4 w-4 shrink-0" aria-hidden="true" /> 90-min Private Sales Clinic<ArrowUpRight className="ml-auto h-4 w-4 shrink-0" aria-hidden="true" /></Link>
-              </div>
               <CtaLink to="/book" variant="light" className="mt-6 w-full">BOOK A CONSULTATION →</CtaLink>
             </div>
           </div>

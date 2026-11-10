@@ -1,6 +1,6 @@
 import type React from "react";
 /** ECG-style trend chart: one or two daily series drawn as heartbeat lines. */
-export function PulseChart({ series, labels }: { series: { name: string; values: number[]; tone: "primary" | "soft" }[]; labels: string[] }) {
+export function PulseChart({ series, labels, onSelect, selected }: { series: { name: string; values: number[]; tone: "primary" | "soft" }[]; labels: string[]; onSelect?: (i: number) => void; selected?: number | null }) {
   const W = 600, H = 160, pad = 12;
   const max = Math.max(1, ...series.flatMap((s) => s.values));
   const n = labels.length;
@@ -14,6 +14,8 @@ export function PulseChart({ series, labels }: { series: { name: string; values:
         <path d={path(s.values)} className="pulse-stroke" pathLength={1} />
         {s.values.map((v, i) => v > 0 ? <circle key={i} cx={pt(v, i)[0]} cy={pt(v, i)[1]} r={3.5} className="pulse-dot" /> : null)}
       </g>)}
+      {selected != null && <line x1={pt(0, selected)[0]} x2={pt(0, selected)[0]} y1={pad} y2={H - pad} className="pulse-cursor" />}
+      {onSelect && labels.map((l, i) => { const w = (W - pad * 2) / Math.max(1, n - 1); return <rect key={i} x={pt(0, i)[0] - w / 2} y={0} width={w} height={H} className="pulse-hit" role="button" tabIndex={0} aria-label={`${l}: ${series.map((s) => `${s.values[i]} ${s.name}`).join(", ")}. Open records`} onClick={() => onSelect(i)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(i); } }} />; })}
     </svg>
     <figcaption className="mt-2 flex justify-between text-[11px] text-muted-foreground"><span>{labels[0]}</span><span>{labels[n - 1]}</span></figcaption>
   </figure>;

@@ -53,39 +53,30 @@ export const updateEnquiryStatus = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+/** Admin overview for a date range plus the equal-length period before it, so the dashboard can compare. */
 export const adminOverview = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
+  .inputValidator((d: unknown) => z.object({ from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/) }).parse(d))
+  .handler(async ({ context, data }) => {
     await assertAdmin(context);
+    const { previousRange, isoBounds } = await import("@/lib/date-range");
     const sb = context.supabase;
-    const count = async (q: any) => (await q).count ?? 0;
-    const now = new Date();
-    const month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString();
-    const paid = (provider: string) => count(sb.from("clinic_payments").select("id", { count: "exact", head: true }).eq("provider", provider).gte("paid_at", month));
-    const [free, clinic, mentor, newOnes, xrays, booked, stripePaid, flutterwavePaid] = await Promise.all([
-      count(sb.from("clinic_enquiries").select("id", { count: "exact", head: true }).eq("kind", "free_review")),
-      count(sb.from("clinic_enquiries").select("id", { count: "exact", head: true }).eq("kind", "private_clinic")),
-      count(sb.from("clinic_enquiries").select("id", { count: "exact", head: true }).eq("kind", "mentorship")),
-      count(sb.from("clinic_enquiries").select("id", { count: "exact", head: true }).eq("status", "new")),
-      count(sb.from("audit_sessions").select("id", { count: "exact", head: true }).not("completed_at", "is", null)),
-      count(sb.from("audit_sessions").select("id", { count: "exact", head: true }).eq("booked", true)),
-      paid("stripe"),
-      paid("flutterwave"),
+    const { gte } = isoBounds(previousRange(data)), { lt } = isoBounds(data);
+    const [enq, started, done, funnel, paid, recent] = await Promise.all([
+      sb.from("clinic_enquiries").select("kind, status, created_at").gte("created_at", gte).lt("created_at", lt).limit(10000),
+      sb.from("audit_sessions").select("created_at").gte("created_at", gte).lt("created_at", lt).limit(10000),
+      sb.from("audit_sessions").select("completed_at, booked").gte("completed_at", gte).lt("completed_at", lt).limit(10000),
+      sb.from("booking_funnel_events").select("session, step, created_at").gte("created_at", gte).lt("created_at", lt).limit(20000),
+      sb.from("clinic_payments").select("provider, paid_at").gte("paid_at", gte).lt("paid_at", lt).limit(10000),
+      sb.from("clinic_enquiries").select("id, kind, name, status, created_at").order("created_at", { ascending: false }).limit(5),
     ]);
-    const { data: funnelRows } = await sb.from("booking_funnel_events").select("session, step").gte("created_at", month).limit(10000);
-    const funnel = { free_review: { viewed: 0, started: 0, completed: 0 }, private_clinic: { viewed: 0, started: 0, completed: 0 } } as Record<string, Record<string, number>>;
-    for (const r of funnelRows ?? []) if (funnel[r.session] && r.step in funnel[r.session]!) funnel[r.session]![r.step]!++;
-    const { data: recent } = await sb
-      .from("clinic_enquiries")
-      .select("id, kind, name, status, created_at")
-      .order("created_at", { ascending: false })
-      .limit(5);
-    const since = new Date(Date.now() - 14 * 864e5).toISOString();
-    const [{ data: enqDates }, { data: xrayDates }, startedXrays] = await Promise.all([
-      sb.from("clinic_enquiries").select("created_at").gte("created_at", since).limit(5000),
-      sb.from("audit_sessions").select("completed_at").gte("completed_at", since).limit(5000),
-      count(sb.from("audit_sessions").select("id", { count: "exact", head: true })),
-    ]);
-    return { free, clinic, mentor, newOnes, xrays, booked, stripePaid, flutterwavePaid, funnel, recent: recent ?? [], startedXrays,
-      trend: { enquiries: (enqDates ?? []).map((r) => r.created_at as string), xrays: (xrayDates ?? []).map((r) => r.completed_at as string | null) } };
+    if (enq.error || started.error || done.error) throw new Error("Could not load overview");
+    return {
+      enquiries: (enq.data ?? []) as { kind: string; status: string; created_at: string }[],
+      started: (started.data ?? []).map((r: { created_at: string }) => r.created_at),
+      completed: (done.data ?? []) as { completed_at: string; booked: boolean }[],
+      funnel: (funnel.data ?? []) as { session: string; step: string; created_at: string }[],
+      payments: (paid.data ?? []) as { provider: string; paid_at: string }[],
+      recent: (recent.data ?? []) as { id: string; kind: string; name: string; status: string; created_at: string }[],
+    };
   });

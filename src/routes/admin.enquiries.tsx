@@ -1,4 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { DateRangePicker } from "@/components/admin/date-range-picker";
+import { inRange, readRange, fmtRange } from "@/lib/date-range";
+import { X } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ENQUIRY_STATUSES, listEnquiries, updateEnquiryStatus } from "@/lib/enquiries.functions";
@@ -16,6 +19,10 @@ export const Route = createFileRoute("/admin/enquiries")({
       { name: "robots", content: "noindex" },
     ],
   }),
+  validateSearch: (s: Record<string, unknown>): { from?: string | undefined; to?: string | undefined; kind?: string | undefined; status?: string | undefined } => {
+    const g = (k: string) => (typeof s[k] === "string" && s[k] ? (s[k] as string) : undefined);
+    return { from: g("from"), to: g("to"), kind: g("kind"), status: g("status") };
+  },
   component: Enquiries,
 });
 
@@ -30,8 +37,13 @@ function Enquiries() {
     },
   });
   const [q, setQ] = useState("");
-  const [kind, setKind] = useState("");
-  const [status, setStatusF] = useState("");
+  const search = Route.useSearch();
+  const navigate = useNavigate({ from: "/admin/enquiries" });
+  const kind = search.kind ?? "", status = search.status ?? "";
+  const range = search.from && search.to ? readRange(search) : null;
+  const setF = (patch: Record<string, string | undefined>) => navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true });
+  const setKind = (v: string) => setF({ kind: v || undefined });
+  const setStatusF = (v: string) => setF({ status: v || undefined });
   const [open, setOpen] = useState<string | null>(null);
 
   const rows = useMemo(() => (data ?? []).filter((r) => {
@@ -39,13 +51,17 @@ function Enquiries() {
     if (t && !`${r.name} ${r.email} ${r.whatsapp}`.toLowerCase().includes(t)) return false;
     if (kind && r.kind !== kind) return false;
     if (status && r.status !== status) return false;
+    if (range && !inRange(r.created_at, range)) return false;
     return true;
-  }), [data, q, kind, status]);
+  }), [data, q, kind, status, range?.from, range?.to]);
 
   const sel = "field !py-2 text-sm min-h-11 sm:!w-auto";
   return (
     <div>
       <h1 className="mb-6 font-display text-3xl font-extrabold">Sales Clinic enquiries</h1>
+      <div className="mb-4"><DateRangePicker value={range ?? readRange({})} onChange={(r) => setF(r)} />
+        <div className="range-banner"><span>{range ? <>Showing {fmtRange(range)}</> : "Showing all dates"} · <strong>{rows.length}</strong> {rows.length === 1 ? "enquiry" : "enquiries"}</span>
+          {(range || kind || status) && <button type="button" onClick={() => navigate({ search: {}, replace: true })} className="ml-auto inline-flex min-h-10 items-center gap-1 rounded-full px-3 font-semibold text-primary hover:bg-card"><X className="h-4 w-4" />Clear filters</button>}</div></div>
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         <input aria-label="Search" placeholder="Search name, email or WhatsApp" value={q} onChange={(e) => setQ(e.target.value)} className="field !py-2 text-sm sm:!w-72" />
         <select aria-label="Type" value={kind} onChange={(e) => setKind(e.target.value)} className={sel}>
