@@ -36,14 +36,14 @@ function Book() {
       <div aria-hidden className="pointer-events-none absolute -right-32 -top-24 h-80 w-80 rounded-full bg-blush opacity-70 blur-3xl" />
       <Link to="/" className="relative inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-muted-foreground transition hover:border-primary hover:text-primary">← Back to The Sales Clinic</Link>
 
-      <header className="relative mt-8 grid gap-6 md:grid-cols-[1.4fr_1fr] md:items-end">
+      <header className="relative mt-8 grid gap-6 grid-cols-[1fr_auto] items-end md:grid-cols-[1.4fr_1fr] md:items-center">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full bg-blush px-3 py-1 text-xs font-semibold text-primary"><Stethoscope className="h-3.5 w-3.5" /> The Sales Clinic</span>
           <h1 className="mt-4 text-5xl font-black leading-[0.95] md:text-7xl">Choose your <span className="text-primary">session.</span></h1>
+          <p className="mt-5 max-w-md text-lg text-muted-foreground">Both start with your goals. The difference is how deep we go.</p>
         </div>
-        <div className="flex items-end gap-4 md:flex-col md:items-stretch">
+        <div className="flex justify-end">
           <figure className="session-portrait"><img src={redSuit} alt="Dr. Dan Odotukpono in a red suit, seated and smiling" className="h-full w-full object-cover object-top" /></figure>
-          <p className="text-lg text-muted-foreground md:pb-2">Both start with your goals. The difference is how deep we go.</p>
         </div>
       </header>
 

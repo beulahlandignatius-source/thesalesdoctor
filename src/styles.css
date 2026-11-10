@@ -791,9 +791,9 @@ main img:hover { transform: scale(1.015); }
 @media (prefers-reduced-motion: reduce) { .footer-glow, .footer-ecg-beat { animation: none; } }
 /* New Dr. Dan portraits */
 .session-portrait { flex-shrink: 0; width: 7.5rem; aspect-ratio: 4/5; overflow: hidden; border-radius: 1.75rem 1.75rem 1.75rem .5rem; background: var(--blush); box-shadow: 0 20px 40px -20px color-mix(in oklab, var(--primary) 60%, transparent); }
-@media (min-width: 768px) { .session-portrait { width: 100%; max-width: 18rem; margin-left: auto; } }
+@media (min-width: 768px) { .session-portrait { width: 15rem; } }
 .session-portrait img, .mentor-portrait img { transition: transform .8s cubic-bezier(.2,.8,.2,1); }
 .session-portrait:hover img, .mentor-portrait:hover img { transform: scale(1.04); }
 .mentor-portrait-frame { overflow: hidden; height: 22rem; border-radius: 2rem 2rem 2rem .75rem; background: var(--blush); }
 .mentor-portrait-frame img { object-position: center 20%; }
-@media (min-width: 768px) { .mentor-portrait-frame { height: 26rem; } }
+@media (min-width: 768px) { .mentor-portrait-frame { height: 32rem; max-width: 26rem; margin-inline: auto; } .mentor-portrait-frame img { object-position: center 8%; } }
