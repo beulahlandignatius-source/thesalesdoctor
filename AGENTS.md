@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Sales Clinic pages (/, /book/*, /mentorship) and the imported Client X-Ray (/xray, /audit, /results) share one root nav/footer; /admin/* has its own AdminNav instead — keeps visitor and admin chrome separate.
+- Visitor forms save via the public submitEnquiry server fn (zod-validated, insert-only with the admin client); clinic_enquiries/audit_* tables have RLS with admin-only reads via is_admin(), so visitors can never read stored data.
+- Admin access = Cloud email/password sign-in plus a row in admin_users; there is no public admin signup.
+- src/lib/backend/* are thin re-exports of the generated Cloud clients/middleware so the imported X-Ray code keeps its imports.

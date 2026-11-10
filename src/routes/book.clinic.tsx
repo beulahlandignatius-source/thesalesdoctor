@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { F, FormShell, Options, StuckPicker, field, privacy } from "@/components/form-bits";
+import { F, FormError, FormShell, Options, StuckPicker, field, privacy, useEnquiry } from "@/components/form-bits";
 import { ExtLink, btnClass } from "@/components/site";
 import { CLINIC_PRICE, CLINIC_TERMS, LINKS, REVENUE, TARGETS, calendlyUrl } from "@/lib/links";
 
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/book/clinic")({
 
 function Clinic() {
   const [who, setWho] = useState<{ name: string; email: string } | null>(null);
+  const { save, busy, error } = useEnquiry("private_clinic");
   return (
     <FormShell eyebrow="Private Sales Clinic · 90 minutes" title="Book your Private Sales Clinic"
       intro="A deep working session on your numbers, your process and your target. We don’t just find the gap. We work out how to close it."
@@ -37,11 +38,10 @@ function Clinic() {
           </div>
         </div>
       ) : (
-        <form className="space-y-5" onSubmit={(e) => {
+        <form className="space-y-5" onSubmit={async (e) => {
           e.preventDefault();
-          const d = new FormData(e.currentTarget);
-          setWho({ name: String(d.get("name")), email: String(d.get("email")) });
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          const w = await save(e.currentTarget);
+          if (w) { setWho(w); window.scrollTo({ top: 0, behavior: "smooth" }); }
         }}>
           <F label="Full name"><input name="name" required className={field} /></F>
           <F label="Email address"><input name="email" type="email" required className={field} /></F>
@@ -56,7 +56,8 @@ function Clinic() {
             <span className="font-semibold">Private Sales Clinic · 90 min</span>
             <span className="text-right text-sm"><strong className="font-display text-xl">{CLINIC_PRICE}</strong><br /><span className="opacity-70">{CLINIC_TERMS}</span></span>
           </div>
-          <button type="submit" className={btnClass("primary", "md", "w-full")}>CONTINUE TO PAYMENT →</button>
+          <FormError msg={error} />
+          <button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "CONTINUE TO PAYMENT →"}</button>
           {privacy}
         </form>
       )}
