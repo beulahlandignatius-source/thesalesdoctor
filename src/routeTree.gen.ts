@@ -15,7 +15,6 @@ import { Route as AuditRouteImport } from './routes/audit'
 import { Route as MentorshipRouteImport } from './routes/mentorship'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ResultsRouteImport } from './routes/results'
-import { Route as ServicesRouteImport } from './routes/services'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminIdRouteImport } from './routes/admin.$id'
 import { Route as AdminEnquiriesRouteImport } from './routes/admin.enquiries'
@@ -55,11 +54,6 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const ResultsRoute = ResultsRouteImport.update({
   id: '/results',
   path: '/results',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -120,7 +114,6 @@ export interface FileRoutesByFullPath {
   '/mentorship': typeof MentorshipRoute
   '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
-  '/services': typeof ServicesRoute
   '/admin/$id': typeof AdminIdRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/password': typeof AdminPasswordRoute
@@ -138,7 +131,6 @@ export interface FileRoutesByTo {
   '/mentorship': typeof MentorshipRoute
   '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
-  '/services': typeof ServicesRoute
   '/admin/$id': typeof AdminIdRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/password': typeof AdminPasswordRoute
@@ -158,7 +150,6 @@ export interface FileRoutesById {
   '/mentorship': typeof MentorshipRoute
   '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
-  '/services': typeof ServicesRoute
   '/admin/$id': typeof AdminIdRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/password': typeof AdminPasswordRoute
@@ -179,7 +170,6 @@ export interface FileRouteTypes {
     | '/mentorship'
     | '/reset-password'
     | '/results'
-    | '/services'
     | '/admin/$id'
     | '/admin/enquiries'
     | '/admin/password'
@@ -197,7 +187,6 @@ export interface FileRouteTypes {
     | '/mentorship'
     | '/reset-password'
     | '/results'
-    | '/services'
     | '/admin/$id'
     | '/admin/enquiries'
     | '/admin/password'
@@ -216,7 +205,6 @@ export interface FileRouteTypes {
     | '/mentorship'
     | '/reset-password'
     | '/results'
-    | '/services'
     | '/admin/$id'
     | '/admin/enquiries'
     | '/admin/password'
@@ -236,7 +224,6 @@ export interface RootRouteChildren {
   MentorshipRoute: typeof MentorshipRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResultsRoute: typeof ResultsRoute
-  ServicesRoute: typeof ServicesRoute
   BookClinicRoute: typeof BookClinicRoute
   BookFreeRoute: typeof BookFreeRoute
   XrayBookRoute: typeof XrayBookRoute
@@ -286,13 +273,6 @@ declare module '@tanstack/react-router' {
       path: '/results'
       fullPath: '/results'
       preLoaderRoute: typeof ResultsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -393,7 +373,6 @@ const rootRouteChildren: RootRouteChildren = {
   MentorshipRoute: MentorshipRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ResultsRoute: ResultsRoute,
-  ServicesRoute: ServicesRoute,
   BookClinicRoute: BookClinicRoute,
   BookFreeRoute: BookFreeRoute,
   XrayBookRoute: XrayBookRoute,

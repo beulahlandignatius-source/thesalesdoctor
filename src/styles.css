@@ -1,6 +1,6 @@
 @import "tailwindcss" source(none);
-@import "tw-animate-css";
 @source "../src";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -41,7 +41,8 @@
 
 /* Brand: red #B3261E, ink #1A1414, milk #FAF9F5, pale red #F3E4E1, grey #5C5050 */
 :root {
-  --radius: 0.5rem;
+  /* One UI–style: generous rounded corners, soft background, white floating cards */
+  --radius: 1.25rem;
   --background: oklch(0.982 0.005 95);
   --foreground: oklch(0.2 0.012 20);
   --card: oklch(1 0 0);
@@ -73,7 +74,6 @@
   --report-muted: oklch(0.44 0.014 245);
   --report-brand: oklch(0.51 0.18 28);
   --report-gold: oklch(0.65 0.065 75);
-  --shadow-control: 0 3px 12px -8px color-mix(in oklab, var(--foreground) 18%, transparent);
 }
 
 @layer base {
@@ -85,20 +85,22 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: 0; }
-  input, select, textarea { border-radius: var(--radius); }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
+  input, select, textarea { border-radius: 1rem; }
+  header:not(.xray-bar) { backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4); }
   img { border-radius: inherit; }
 }
 
 @layer components {
-  .bg-card { box-shadow: none; }
+  /* One UI-style soft shadow on cards and bordered panels */
+  .bg-card { box-shadow: 0 1px 2px color-mix(in oklab, var(--foreground) 4%, transparent), 0 8px 24px -12px color-mix(in oklab, var(--foreground) 12%, transparent); }
 }
 
 @utility eyebrow {
   font-family: var(--font-display);
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-primary);
 }
@@ -218,38 +220,20 @@
   }
 }
 
-/* ---------- Restrained editorial motion ---------- */
+/* ---------- Premium layer ---------- */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .035; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
 ::selection { background: var(--primary); color: var(--primary-foreground); }
 h1 { text-wrap: balance; }
 p { text-wrap: pretty; }
-.clinic-home > section:not(:first-child) { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 22%; }
-@keyframes reveal { from { opacity: .7; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-.clinic-home img { transition: transform .8s cubic-bezier(.2,.7,.2,1); }
-@media (hover: hover) { .clinic-home figure:hover img { transform: scale(1.015); } }
-.site-header { backdrop-filter: none; }
-.clinic-button { white-space: normal; height: auto; transition: background-color .2s, color .2s, transform .2s, box-shadow .2s; }
-.clinic-button.bg-primary:hover { background: color-mix(in oklab, var(--primary) 88%, var(--ink)); box-shadow: var(--shadow-control); }
-.clinic-button.bg-primary { color: var(--primary-foreground); }
-.clinic-field { transition: border-color .2s, box-shadow .2s; }
-.mobile-navigation { animation: menu-in .22s ease-out both; max-height: calc(100dvh - 72px); overflow-y: auto; }
-.completion-state { animation: menu-in .3s ease-out both; }
-@keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
-.hero-photo { mask-image: linear-gradient(to right, transparent, black 22%); }
-.hero-mobile-photo { aspect-ratio: 4 / 3; }
-.clinic-home :is(h1,h2,h3,dt,blockquote), .site-header *, footer *, .journey-shell * { letter-spacing: 0; }
-.clinic-home .bg-ink > div > .eyebrow, .clinic-home .bg-ink .eyebrow { color: var(--blush); }
-@media (min-width: 1024px) { .clinic-hero > div.relative { min-height: 720px; } }
-@media (max-width: 639px) {
-  .clinic-hero > div.relative { padding-top: 24px; }
-  .clinic-hero h1 { font-size: 36px; line-height: 1.06; margin-top: 16px; }
-  .clinic-hero h1 + p { font-size: 16px; line-height: 1.6; margin-top: 18px; }
-  .clinic-hero .hero-mobile-photo { aspect-ratio: 16 / 7; object-position: center 24%; }
-  .clinic-hero .relative.mt-10 { margin-top: 24px; }
-  .clinic-hero .mt-8 { margin-top: 20px; }
-  .clinic-home section:not(:first-child) > div { row-gap: 2rem; }
-  .clinic-home section { scroll-margin-top: 72px; }
-  .journey-form .clinic-button { width: 100%; }
-}
+header:not(.xray-bar) { background-color: color-mix(in oklab, var(--background) 72%, transparent) !important; }
+main section { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 35%; }
+@keyframes reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+main img { transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+main img:hover { transform: scale(1.015); }
+.bg-card { border: 1px solid color-mix(in oklab, var(--border) 60%, transparent); transition: transform .3s, box-shadow .3s; }
 
 /* Client X-Ray interactions */
 .xray-ambient { background-color: transparent; }
@@ -257,7 +241,7 @@ p { text-wrap: pretty; }
 .xray-option { border-radius: 1.1rem !important; transition: transform .18s, box-shadow .25s, border-color .2s, background-color .2s !important; }
 .xray-option:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -16px color-mix(in oklab, var(--foreground) 35%, transparent); }
 .xray-option:active { transform: scale(.98); }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .clinic-home > section, .mobile-navigation, .completion-state { animation: none; } }
+@media (prefers-reduced-motion: reduce) { main section { animation: none; } }
 
 /* ---------- Editorial direction ---------- */
 .btn-sweep { position: relative; overflow: hidden; isolation: isolate; }

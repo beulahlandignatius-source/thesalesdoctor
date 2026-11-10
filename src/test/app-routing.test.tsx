@@ -14,8 +14,4 @@ describe("App routing", () => {
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
-  it("gives Services a real destination instead of a dead link", () => {
-    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
-    expect(router.matchRoutes("/services").at(-1)?.routeId).toBe("/services");
-  });
 });

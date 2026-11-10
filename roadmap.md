@@ -4,9 +4,4 @@
 - [x] Shared nav bar across all pages (mobile + desktop)
 - [x] Save Sales Clinic form submissions to the backend
 - [x] Admin dashboard covering X-Ray audits and Sales Clinic enquiries, with nav, mobile + desktop
-- [x] Create admin accounts and password change/recovery
-- [x] Audit existing Sales Clinic sections and customer journeys (original HTML unavailable; current wording preserved)
-- [x] Refine design system and add Services navigation/destination
-- [x] Redesign every landing-page section without changing wording
-- [x] Redesign chooser, free review, private clinic, and mentorship forms
-- [x] Verify preserved content, saved submissions/readback in admin, link destinations, and mobile layouts (external payment/booking completion not tested)
+- [ ] Create the first admin account — waiting on the admin's email address

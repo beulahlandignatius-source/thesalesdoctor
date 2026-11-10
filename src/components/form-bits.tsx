@@ -2,15 +2,13 @@ import { Link } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { STUCK } from "@/lib/links";
 import { submitEnquiry } from "@/lib/enquiries.functions";
-import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
 
-export const field = "clinic-field w-full min-h-13 rounded-md border border-input bg-background px-4 py-3.5 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15";
+export const field = "w-full rounded-md border border-input bg-card px-4 py-3 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
 export function F({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-2.5 block text-sm font-medium text-foreground">{label}</span>
+      <span className="mb-1.5 block text-sm font-semibold text-foreground">{label}</span>
       {children}
     </label>
   );
@@ -32,16 +30,15 @@ export function StuckPicker({ label }: { label: string }) {
   return (
     <fieldset>
       <legend className="mb-2 text-sm font-semibold">{label}</legend>
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className="flex flex-wrap gap-2">
         {STUCK.map((s) => {
           const on = sel.includes(s);
           return (
-            <Button variant="ghost" type="button" key={s} aria-pressed={on}
+            <button type="button" key={s} aria-pressed={on}
               onClick={() => setSel(on ? sel.filter((x) => x !== s) : [...sel, s])}
-              className={`min-h-13 h-auto justify-start whitespace-normal rounded-md border px-3.5 py-3 text-left text-sm font-normal transition ${on ? "border-primary bg-blush text-foreground hover:bg-blush" : "border-input bg-background hover:border-primary hover:bg-muted"}`}>
-              <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border ${on ? "border-primary bg-primary text-primary-foreground" : "border-input"}`} aria-hidden="true">{on && <Check className="h-3 w-3" />}</span>
+              className={`rounded-full border px-3.5 py-2 text-sm transition ${on ? "border-primary bg-primary text-primary-foreground" : "border-input bg-card hover:border-primary"}`}>
               {s}
-            </Button>
+            </button>
           );
         })}
       </div>
@@ -52,25 +49,25 @@ export function StuckPicker({ label }: { label: string }) {
 
 export function FormShell({ eyebrow, title, intro, steps, children }: { eyebrow?: string; title: string; intro: string; steps: string[]; children: ReactNode }) {
   return (
-    <main className="journey-shell mx-auto grid max-w-7xl gap-10 px-6 py-10 md:gap-16 md:px-10 md:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
-      <div className="min-w-0 lg:sticky lg:top-28 lg:self-start">
+    <main className="mx-auto grid max-w-6xl gap-10 px-5 py-10 md:grid-cols-[1fr_1.3fr] md:py-16">
+      <div>
         <Link to="/" className="text-sm font-semibold text-muted-foreground hover:text-primary">← Back to The Sales Clinic</Link>
         {eyebrow && <p className="eyebrow mt-8">{eyebrow}</p>}
-        <h1 className="mt-5 text-4xl font-bold leading-[1.08] md:text-5xl">{title}</h1>
-        <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{intro}</p>
-        <div className="mt-10 border-t border-border pt-7">
+        <h1 className="mt-3 text-4xl font-extrabold leading-tight md:text-5xl">{title}</h1>
+        <p className="mt-4 text-lg text-muted-foreground">{intro}</p>
+        <div className="mt-8 rounded-lg bg-blush p-6">
           <p className="eyebrow">What happens next</p>
-          <ol className="mt-6 space-y-5">
+          <ol className="mt-4 space-y-3">
             {steps.map((s, i) => (
               <li key={s} className="flex gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blush font-display text-sm font-bold text-primary">{i + 1}</span>
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary font-display text-sm font-bold text-primary-foreground">{i + 1}</span>
                 <span className="pt-0.5">{s}</span>
               </li>
             ))}
           </ol>
         </div>
       </div>
-      <div className="journey-form min-w-0 border-t border-border pt-8 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">{children}</div>
+      <div className="rounded-xl border border-border bg-card p-6 shadow-sm md:p-8">{children}</div>
     </main>
   );
 }

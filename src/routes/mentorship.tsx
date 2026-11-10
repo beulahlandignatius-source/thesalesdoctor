@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { F, FormError, FormShell, field, privacy, useEnquiry } from "@/components/form-bits";
 import { ExtLink, btnClass } from "@/components/site";
 import { LINKS } from "@/lib/links";
@@ -10,8 +9,6 @@ export const Route = createFileRoute("/mentorship")({
     meta: [
       { title: "Become my mentee — Dr. Dan, The Sales Clinic" },
       { name: "description", content: "Work directly with Dr. Dan until winning clients is a skill you own." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
       { property: "og:title", content: "Become Dr. Dan’s mentee — The Sales Clinic" },
       { property: "og:description", content: "Tell me where you are and where you want to go." },
     ],
@@ -27,13 +24,13 @@ function Mentor() {
       intro="Tell me where you are and where you want to go. If we’re a fit, I’ll work with you directly until winning clients is a skill you own."
       steps={["Tell me about you and your goals.", "We have a short conversation on WhatsApp.", "If it’s a fit, we get to work."]}>
       {sent ? (
-        <div className="completion-state py-8 text-center">
+        <div className="py-8 text-center">
           <h2 className="text-2xl font-extrabold">Your enquiry is in.</h2>
           <p className="mt-2 text-muted-foreground">Next, say hello to Dr. Dan on WhatsApp so we can have a short conversation.</p>
           <ExtLink href={LINKS.whatsapp} className="mt-6">CONTINUE TO WHATSAPP →</ExtLink>
         </div>
       ) : (
-        <form className="space-y-7" onSubmit={async (e) => {
+        <form className="space-y-5" onSubmit={async (e) => {
           e.preventDefault();
           if (await save(e.currentTarget)) { setSent(true); window.scrollTo({ top: 0, behavior: "smooth" }); }
         }}>
@@ -44,7 +41,7 @@ function Mentor() {
           <F label="What are you trying to achieve?"><textarea name="goal" required rows={3} className={field} /></F>
           <F label="Why do you want to be mentored?"><textarea name="why" required rows={3} className={field} /></F>
           <FormError msg={error} />
-          <Button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "SEND MY ENQUIRY →"}</Button>
+          <button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "SEND MY ENQUIRY →"}</button>
           <p className="text-center text-sm text-muted-foreground">Next you’ll continue to WhatsApp to message Dr. Dan directly.</p>
           {privacy}
         </form>

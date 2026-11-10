@@ -9,8 +9,6 @@ export const Route = createFileRoute("/admin/enquiries")({
     meta: [
       { title: "Sales Clinic enquiries — Sales Admin" },
       { name: "description", content: "Private list of free review, Private Sales Clinic and mentorship enquiries." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
       { property: "og:title", content: "Sales Clinic enquiries — Sales Admin" },
       { property: "og:description", content: "Private admin list." },
       { name: "robots", content: "noindex" },
