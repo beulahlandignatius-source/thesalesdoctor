@@ -21,7 +21,7 @@ export function ClientReviews({ existing }: { existing: string[][] }) {
   const [error, setError] = useState("");
   const save = useServerFn(submitReview);
   const cards = [
-    ...existing.map(([body, name, role]) => ({ body, name, role, rating: null as number | null, photoUrl: null as string | null })),
+    ...existing.map(([body, name, role, photo]) => ({ body, name, role, rating: null as number | null, photoUrl: (photo ?? null) as string | null })),
     ...data,
   ];
   return <div className="mt-16 grid items-center gap-12 md:grid-cols-2">
