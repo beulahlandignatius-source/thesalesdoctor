@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { F, FormShell, Options, StuckPicker, field, privacy } from "@/components/form-bits";
+import { F, FormError, FormShell, Options, StuckPicker, field, privacy, useEnquiry } from "@/components/form-bits";
 import { ExtLink, btnClass } from "@/components/site";
 import { TARGETS, calendlyUrl } from "@/lib/links";
 
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/book/free")({
 
 function Free() {
   const [done, setDone] = useState<string | null>(null);
+  const { save, busy, error } = useEnquiry("free_review");
   return (
     <FormShell eyebrow="Free · 25 minutes" title="Book your free Client Acquisition Review"
       intro="A focused 25 minutes on your goals, what’s working, what’s holding you back, and your biggest opportunity to grow."
@@ -25,16 +26,14 @@ function Free() {
       {done ? (
         <div className="py-8 text-center">
           <h2 className="text-2xl font-extrabold">Now pick your time.</h2>
-          <p className="mt-2 text-muted-foreground">Your calendar opened in a new tab. If it didn’t, use the button below.</p>
+          <p className="mt-2 text-muted-foreground">Thanks, your details are in. Choose a time that suits you.</p>
           <ExtLink href={done} className="mt-6">CHOOSE MY TIME ON CALENDLY →</ExtLink>
         </div>
       ) : (
-        <form className="space-y-5" onSubmit={(e) => {
+        <form className="space-y-5" onSubmit={async (e) => {
           e.preventDefault();
-          const d = new FormData(e.currentTarget);
-          const url = calendlyUrl(String(d.get("name")), String(d.get("email")));
-          window.open(url, "_blank", "noopener");
-          setDone(url);
+          const who = await save(e.currentTarget);
+          if (who) { setDone(calendlyUrl(who.name, who.email)); window.scrollTo({ top: 0, behavior: "smooth" }); }
         }}>
           <F label="Full name"><input name="name" required className={field} /></F>
           <F label="Email address"><input name="email" type="email" required className={field} /></F>
@@ -45,7 +44,8 @@ function Free() {
           <StuckPicker label="Where are you getting stuck? (choose as many as apply)" />
           <F label="Anything else I should know? (optional)"><input name="notes" placeholder="One line is enough" className={field} /></F>
           <F label="Website or LinkedIn (optional)"><input name="site" placeholder="https://" className={field} /></F>
-          <button type="submit" className={btnClass("primary", "md", "w-full")}>BOOK MY FREE REVIEW →</button>
+          <FormError msg={error} />
+          <button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "BOOK MY FREE REVIEW →"}</button>
           {privacy}
         </form>
       )}
