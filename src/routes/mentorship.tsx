@@ -1,3 +1,4 @@
+import blushJacket from "@/assets/dr-dan-blush-jacket.jpg";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { F, FormError, FormShell, field, privacy, useEnquiry } from "@/components/form-bits";
@@ -23,7 +24,9 @@ function Mentor() {
   const [sent, setSent] = useState(false);
   const { save, busy, error } = useEnquiry("mentorship");
   return (
-    <div className="mentorship-enquiry"><FormShell title="Become my mentee"
+    <div className="mentorship-enquiry">
+      <figure className="mentor-portrait mx-auto max-w-3xl px-5 pt-6"><div className="mentor-portrait-frame"><img src={blushJacket} alt="Dr. Dan Odotukpono standing in a pale red jacket, smiling" className="h-full w-full object-cover" /></div></figure>
+      <FormShell title="Become my mentee"
       intro="Tell me where you are and where you want to go. If we’re a fit, I’ll work with you directly until winning clients is a skill you own."
       steps={["Tell me about you and your goals.", "We have a short conversation on WhatsApp.", "If it’s a fit, we get to work."]}>
       {sent ? (

@@ -1,3 +1,4 @@
+import redSuit from "@/assets/dr-dan-red-suit.jpg";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Children, useEffect, useRef, useState, type ReactNode } from "react";
 import { CtaLink } from "@/components/site";
@@ -40,7 +41,10 @@ function Book() {
           <span className="inline-flex items-center gap-2 rounded-full bg-blush px-3 py-1 text-xs font-semibold text-primary"><Stethoscope className="h-3.5 w-3.5" /> The Sales Clinic</span>
           <h1 className="mt-4 text-5xl font-black leading-[0.95] md:text-7xl">Choose your <span className="text-primary">session.</span></h1>
         </div>
-        <p className="text-lg text-muted-foreground md:pb-2">Both start with your goals. The difference is how deep we go.</p>
+        <div className="flex items-end gap-4 md:flex-col md:items-stretch">
+          <figure className="session-portrait"><img src={redSuit} alt="Dr. Dan Odotukpono in a red suit, seated and smiling" className="h-full w-full object-cover object-top" /></figure>
+          <p className="text-lg text-muted-foreground md:pb-2">Both start with your goals. The difference is how deep we go.</p>
+        </div>
       </header>
 
       <SessionCarousel>
