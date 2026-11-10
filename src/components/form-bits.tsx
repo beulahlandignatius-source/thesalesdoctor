@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { STUCK } from "@/lib/links";
 import { submitEnquiry } from "@/lib/enquiries.functions";
 import { StackedCards } from "@/components/stacked-cards";
@@ -56,7 +56,16 @@ export function StuckPicker({ label }: { label: string }) {
 export function FormShell({ eyebrow, title, intro, steps, children, startAtForm = false }: { eyebrow?: string; title: string; intro: string; steps: string[]; children: ReactNode; startAtForm?: boolean }) {
   const [stage, setStage] = useState<"steps" | "form">("steps");
   const showForm = startAtForm || stage === "form";
-  const go = (s: "steps" | "form") => { setStage(s); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const go = (s: "steps" | "form") => {
+    if (s === "form") window.history.pushState({ ...window.history.state, bookingStage: "form" }, "");
+    else if (window.history.state?.bookingStage === "form") { window.history.back(); return; }
+    setStage(s); window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  // Phone/browser back from the form returns to the steps instead of leaving the page.
+  useEffect(() => {
+    const onPop = () => { setStage(window.history.state?.bookingStage === "form" ? "form" : "steps"); window.scrollTo({ top: 0 }); };
+    window.addEventListener("popstate", onPop); return () => window.removeEventListener("popstate", onPop);
+  }, []);
   if (!showForm) return (
     <main className="booking-shell mx-auto max-w-3xl px-5 py-10 md:py-16">
       <Link to="/book" className="text-sm font-semibold text-muted-foreground hover:text-primary">← Back to sessions</Link>
