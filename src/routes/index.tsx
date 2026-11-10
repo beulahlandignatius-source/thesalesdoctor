@@ -144,14 +144,18 @@ function Index() {
         </div>
 
         {/* stats ledger */}
-        <dl className="hero-stats relative mx-auto mt-6 grid max-w-7xl grid-cols-3">
+        <div className="hero-stats-wrap relative mx-auto mt-6 max-w-7xl">
+        <JourneyLine cards=".hero-stat" dot=".hero-stat-dot" className="hero-stats-line" />
+        <dl className="hero-stats relative grid grid-cols-3">
           {stats.map(([n, l], i) => (
-            <div key={n} className={`hero-stat hero-stat-${i + 1}`}>
+            <div key={n} className={`hero-stat hero-stat-${i + 1}`} style={{ ["--i" as string]: i }}>
+              <span className="hero-stat-dot" aria-hidden="true" />
               <dt className="font-display text-[clamp(1.6rem,6vw,4.5rem)] font-black leading-none">{n}</dt>
               <dd className="mt-2 text-[11px] md:text-sm">{l}</dd>
             </div>
           ))}
         </dl>
+        </div>
       </section>
 
       {/* ===== 3 QUESTIONS — the funnel ===== */}
