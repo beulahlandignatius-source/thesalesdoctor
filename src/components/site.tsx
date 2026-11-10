@@ -3,6 +3,7 @@ import { useState, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme";
 
 const NAV = [
   { to: "/", label: "Home", exact: true },
@@ -28,6 +29,7 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <CtaLink to="/book" size="sm" className="hidden sm:inline-flex">BOOK A CONSULTATION</CtaLink>
           <Button variant="outline" size="icon" className="rounded-full md:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}

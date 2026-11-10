@@ -11,3 +11,6 @@
 - [x] Extend Farmora presentation to booking, mentorship, X-Ray, results and account pages
 - [x] Upgrade admin navigation and overview with real-data summaries and review queue
 - [x] Check all pages and signed-in admin navigation on phone and desktop
+- [x] Borrow Stephanie's accent placement and rounded treatments without changing photos or copy
+- [x] Add persistent white/light and dark themes across visitor and admin pages
+- [x] Refine mentorship presentation and check both themes on mobile and desktop

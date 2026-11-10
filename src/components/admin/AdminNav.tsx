@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { LayoutDashboard, ScanLine, Inbox, ExternalLink, LogOut, Menu, X, KeyRound, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme";
 
 const items = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
@@ -21,6 +22,7 @@ export function AdminNav({ onSignOut, email }: { onSignOut: () => void; email: s
         <p className="mb-10 mt-2 px-3 text-xs text-muted-foreground">Admin workspace</p>
         <nav aria-label="Admin sidebar" className="space-y-2">{items.map((i) => <Link key={i.to} to={i.to} activeOptions={{ exact: i.exact }} activeProps={active} className={linkCls + " !rounded-2xl !py-3"}><i.icon className="h-5 w-5" />{i.label}</Link>)}</nav>
         <div className="mt-auto space-y-2 border-t border-border pt-6">
+          <ThemeToggle />
           <Link to="/" className={linkCls}><ExternalLink className="h-4 w-4" />View site</Link>
           <Link to="/admin/password" className={linkCls}><KeyRound className="h-4 w-4" />Password</Link>
           <Button variant="ghost" onClick={onSignOut} className={linkCls + " w-full !justify-start"}><LogOut />Log out</Button>
@@ -53,9 +55,11 @@ export function AdminNav({ onSignOut, email }: { onSignOut: () => void; email: s
           <Link to="/admin/password" className={linkCls}><KeyRound className="h-4 w-4" /> Password</Link>
           <Button variant="ghost" onClick={onSignOut} className={linkCls}><LogOut className="h-4 w-4" /> Log out</Button>
         </div>
+        <div className="flex items-center gap-1"><ThemeToggle />
         <Button variant="outline" size="icon" className="rounded-full md:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
+        </div>
       </div>
       {open && (
         <nav className="absolute inset-x-0 top-full mt-3 rounded-3xl border border-border bg-card px-2 pb-3 pt-2 shadow-lg md:hidden" aria-label="Admin mobile">

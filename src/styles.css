@@ -43,7 +43,7 @@
 :root {
   /* One UI–style: generous rounded corners, soft background, white floating cards */
   --radius: 1.25rem;
-  --background: oklch(0.982 0.005 95);
+  --background: oklch(1 0 0);
   --foreground: oklch(0.2 0.012 20);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.2 0.012 20);
@@ -85,7 +85,7 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: 0; }
   input, select, textarea { border-radius: 1rem; }
   header:not(.xray-bar) { backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4); }
   img { border-radius: inherit; }
@@ -222,7 +222,7 @@
 
 /* ---------- Premium layer ---------- */
 body::after {
-  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .035; mix-blend-mode: multiply;
+  content: none; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .035; mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 ::selection { background: var(--primary); color: var(--primary-foreground); }
@@ -376,3 +376,55 @@ main img:hover { transform: scale(1.015); }
   .admin-topbar > div > div { flex-wrap: wrap; }
 }
 @media (prefers-reduced-motion: reduce) { .dashboard-stat { transition: none; } .dashboard-stat:hover { transform: none; } }
+
+/* Stephanie reference: white space, deliberate solid accents, sculpted content shapes. */
+:root { color-scheme: light; --surface-soft: oklch(.974 .004 30); }
+.dark {
+  color-scheme: dark;
+  --background: oklch(.16 .008 20);
+  --foreground: oklch(.96 .004 30);
+  --card: oklch(.215 .01 20);
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(.70 .17 28);
+  --primary-foreground: oklch(.16 .008 20);
+  --secondary: oklch(.28 .025 25);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(.255 .009 20);
+  --muted-foreground: oklch(.76 .009 30);
+  --accent: var(--secondary);
+  --accent-foreground: var(--primary);
+  --border: oklch(.34 .012 20);
+  --input: var(--border);
+  --ring: var(--primary);
+  --blush: var(--secondary);
+  --cream: var(--muted);
+  --studio: oklch(.205 .008 245);
+  --studio-foreground: var(--foreground);
+  --studio-muted: var(--muted-foreground);
+  --surface-soft: oklch(.19 .008 20);
+}
+.site-header > div { gap: .5rem; }
+.farmora-home dl { border: 0; background: var(--surface-soft); border-radius: 2rem; }
+.farmora-home dl > div:first-child dt { color: var(--primary); }
+.farmora-home .funnel-row > span { color: var(--primary); background: var(--blush); border-radius: 1rem 1rem 2rem 1rem; padding: .5rem .75rem; font-size: 1.75rem; }
+.farmora-home .symptom:nth-child(2), .farmora-home .symptom:nth-child(3) { background: color-mix(in oklab, var(--ink-foreground) 5%, var(--ink)); }
+.farmora-home .proof-row:first-child > p:first-child { color: var(--primary); }
+.mentorship-spread { background: var(--surface-soft); border-block: 1px solid var(--border); }
+.mentorship-spread figure blockquote { border-radius: 1.75rem .5rem 1.75rem 1.75rem; }
+.mentorship-benefits ul { display: grid; gap: .75rem; }
+.mentorship-benefit { padding: 1.5rem; border-radius: 1.75rem .75rem 1.75rem 1.75rem; background: var(--card); color: var(--foreground); transition: transform .25s; }
+.mentorship-benefit:hover { transform: translateY(-3px); }
+.mentorship-benefit:nth-child(1) { background: var(--primary); color: var(--primary-foreground); }
+.mentorship-benefit:nth-child(2) { background: var(--blush); }
+.mentorship-benefit:nth-child(3) { background: var(--ink); color: var(--ink-foreground); }
+.benefit-number { display: flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border: 1px solid currentColor; border-radius: 50%; }
+.benefit-detail { display: block; margin-top: .4rem; opacity: .8; line-height: 1.6; }
+.mentorship-alternative { border-radius: 0 1.5rem 1.5rem 0; }
+.mentorship-enquiry .form-panel { border-top: 4px solid var(--primary); }
+.mentorship-enquiry .stack-card { background: var(--surface-soft); }
+.mentorship-enquiry .stack-next { background: var(--blush); }
+@media (min-width: 768px) { .mentorship-benefit:nth-child(2), .mentorship-benefit:nth-child(4) { margin-left: 1.25rem; } }
+@media (max-width: 1023px) and (min-width: 768px) { .site-header nav .ulink { margin-inline: .5rem; } .site-header > div > div > a { display: none; } }
+@media (prefers-reduced-motion: reduce) { .mentorship-benefit:hover { transform: none; } }

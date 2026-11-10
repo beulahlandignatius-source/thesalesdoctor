@@ -3,6 +3,7 @@ import { useState } from "react";
 import { F, FormError, FormShell, field, privacy, useEnquiry } from "@/components/form-bits";
 import { ExtLink, btnClass } from "@/components/site";
 import { LINKS } from "@/lib/links";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/mentorship")({
   head: () => ({
@@ -22,7 +23,7 @@ function Mentor() {
   const [sent, setSent] = useState(false);
   const { save, busy, error } = useEnquiry("mentorship");
   return (
-    <FormShell title="Become my mentee"
+    <div className="mentorship-enquiry"><FormShell title="Become my mentee"
       intro="Tell me where you are and where you want to go. If we’re a fit, I’ll work with you directly until winning clients is a skill you own."
       steps={["Tell me about you and your goals.", "We have a short conversation on WhatsApp.", "If it’s a fit, we get to work."]}>
       {sent ? (
@@ -43,11 +44,11 @@ function Mentor() {
           <F label="What are you trying to achieve?"><textarea name="goal" required rows={3} className={field} /></F>
           <F label="Why do you want to be mentored?"><textarea name="why" required rows={3} className={field} /></F>
           <FormError msg={error} />
-          <button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "SEND MY ENQUIRY →"}</button>
+          <Button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "SEND MY ENQUIRY →"}</Button>
           <p className="text-center text-sm text-muted-foreground">Next you’ll continue to WhatsApp to message Dr. Dan directly.</p>
           {privacy}
         </form>
       )}
-    </FormShell>
+    </FormShell></div>
   );
 }

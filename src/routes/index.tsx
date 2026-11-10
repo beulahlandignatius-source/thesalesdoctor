@@ -189,7 +189,7 @@ function Index() {
       </section>
 
       {/* ===== MENTORSHIP — asymmetric magazine spread ===== */}
-      <section className="bg-blush">
+      <section className="mentorship-spread">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 md:grid-cols-12 md:py-28">
           <div className="md:col-span-7">
             <p className="eyebrow">Mentorship</p>
@@ -208,13 +208,13 @@ function Index() {
               </blockquote>
             </figure>
           </div>
-          <div className="md:col-span-4 md:col-start-9 md:pt-24">
+          <div className="mentorship-benefits md:col-span-4 md:col-start-9 md:pt-24">
             <h3 className="text-2xl font-black uppercase tracking-tight">What mentorship gives you</h3>
             <ul className="mt-6">
               {gives.map(([b, d], i) => (
-                <li key={b} className="group grid grid-cols-[2rem_1fr] gap-3 border-t border-foreground/15 py-5">
-                  <span className="font-display text-sm font-black text-primary">{String(i + 1).padStart(2, "0")}</span>
-                  <p><strong className="block font-display text-lg font-bold">{b}</strong> <span className="text-muted-foreground">{d}</span></p>
+                <li key={b} className="mentorship-benefit group grid grid-cols-[2rem_1fr] gap-3">
+                  <span className="benefit-number font-display text-sm font-black">{String(i + 1).padStart(2, "0")}</span>
+                  <p><strong className="block font-display text-lg font-bold">{b}</strong> <span className="benefit-detail">{d}</span></p>
                 </li>
               ))}
             </ul>
@@ -222,7 +222,7 @@ function Index() {
               <CtaLink to="/mentorship" variant="dark" className="w-full">BECOME MY MENTEE →</CtaLink>
               <p className="mt-3 text-sm text-muted-foreground">Tell me where you are. We’ll see if it’s a fit.</p>
             </div>
-            <div className="mt-10 border-l-4 border-primary bg-background p-6">
+            <div className="mentorship-alternative mt-10 border-l-4 border-primary bg-background p-6">
               <p className="text-muted-foreground"><strong className="text-foreground">Prefer it done for you?</strong> I also build funnels, run outbound and inbound client acquisition and conversion, and lead campaigns. We’ll work out what fits in your consultation.</p>
               <CtaLink to="/book" variant="outline" className="mt-5">BOOK A CONSULTATION →</CtaLink>
             </div>
