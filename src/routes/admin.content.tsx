@@ -4,6 +4,8 @@ import { PenLine, Trash2, Plus, ExternalLink, Image as ImageIcon } from "lucide-
 import { backend as supabase } from "@/lib/backend/client";
 import { Button } from "@/components/ui/button";
 
+const EDIT_PAGES = [["/", "Home"], ["/services", "Services"], ["/about", "About"], ["/book", "Sessions"], ["/book/free", "Free review"], ["/book/clinic", "Private Clinic"], ["/mentorship", "Mentorship"], ["/xray", "Client X-Ray"], ["/reviews", "Reviews gallery"]] as const;
+
 export const Route = createFileRoute("/admin/content")({
   head: () => ({ meta: [
     { title: "Site content | Admin, The Sales Clinic" },
@@ -21,6 +23,8 @@ type Row = { id: string; kind: string; original: string; replacement: string; up
 
 function ContentAdmin() {
   const [rows, setRows] = useState<Row[] | null>(null);
+  const [page, setPage] = useState("/");
+  const [preview, setPreview] = useState(false);
   const [orig, setOrig] = useState(""); const [repl, setRepl] = useState(""); const [msg, setMsg] = useState("");
   const load = async () => { const { data } = await supabase.from("site_overrides").select("*").order("updated_at", { ascending: false }); setRows((data ?? []) as Row[]); };
   useEffect(() => { void load(); }, []);
@@ -34,9 +38,17 @@ function ContentAdmin() {
   return <div className="space-y-8">
     <header className="flex flex-wrap items-end justify-between gap-4">
       <div><p className="eyebrow">Site content</p><h1 className="mt-2 font-display text-3xl font-black md:text-4xl">Edit your website</h1>
-        <p className="mt-2 max-w-xl text-muted-foreground">Open any page while signed in and tap <b>Edit this page</b> at the bottom. Tap any heading, paragraph, button or photo to change it.</p></div>
-      <Link to="/" className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground"><ExternalLink className="h-4 w-4" /> Open the site to edit</Link>
+        <p className="mt-2 max-w-xl text-muted-foreground">Choose a page below to edit its wording and photos here. Editing controls never appear on the visitor site.</p></div>
+      <Button asChild variant="outline"><Link to="/"><ExternalLink className="h-4 w-4" /> View website</Link></Button>
     </header>
+
+    <section className="space-y-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <label className="flex items-center gap-2 text-sm font-semibold">Page<select aria-label="Page to edit" value={page} onChange={e => setPage(e.target.value)} className="rounded-lg border border-border bg-background px-3 py-2 text-foreground">{EDIT_PAGES.map(([path, label]) => <option key={path} value={path}>{label}</option>)}</select></label>
+        <Button variant="premium" onClick={() => setPreview(!preview)}><PenLine />{preview ? "Close page editor" : "Edit page"}</Button>
+      </div>
+      {preview && <iframe key={page} src={page} title="Website page editor" className="h-[75dvh] min-h-96 w-full rounded-lg border border-border bg-background" />}
+    </section>
 
     <section className="dashboard-card rounded-3xl border border-border bg-card p-5">
       <h2 className="font-display text-lg font-bold">Change wording by hand</h2>

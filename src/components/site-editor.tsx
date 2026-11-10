@@ -3,6 +3,7 @@ import { useRouterState, useNavigate } from "@tanstack/react-router";
 import { Pencil, X, ImageUp, Check, RotateCcw } from "lucide-react";
 import { backend as supabase } from "@/lib/backend/client";
 import { applyAll, buildMaps, norm, originalText, type Maps, type OverrideRow } from "@/lib/site-content/engine";
+import { canShowPageEditor } from "@/lib/site-content/editor-scope";
 
 const PAGES = [["/", "Home"], ["/services", "Services"], ["/about", "About"], ["/book", "Sessions"], ["/book/free", "Free review"], ["/book/clinic", "Private Clinic"], ["/mentorship", "Mentorship"], ["/xray", "Client X-Ray"], ["/reviews", "Reviews gallery"]] as const;
 
@@ -14,6 +15,7 @@ export function SiteEditor() {
   const navigate = useNavigate();
   const maps = useRef<Maps>({ text: new Map(), image: new Map() });
   const [isAdmin, setIsAdmin] = useState(false);
+  const [embeddedEditor, setEmbeddedEditor] = useState(false);
   const [editing, setEditing] = useState(false);
   const [target, setTarget] = useState<Target | null>(null);
   const [draft, setDraft] = useState("");
@@ -21,6 +23,11 @@ export function SiteEditor() {
   const [err, setErr] = useState("");
 
   const apply = useCallback(() => applyAll(document.body, maps.current), []);
+  useEffect(() => {
+    try { setEmbeddedEditor(window.parent !== window && window.parent.location.origin === window.location.origin && /^\/admin\/content\/?$/.test(window.parent.location.pathname)); }
+    catch { setEmbeddedEditor(false); }
+  }, []);
+  const allowed = canShowPageEditor(isAdmin, embeddedEditor, "/admin/content");
 
   const load = useCallback(async () => {
     const { data } = await supabase.from("site_overrides").select("kind, original, replacement");
@@ -52,7 +59,6 @@ export function SiteEditor() {
       if (!uid) return setIsAdmin(false);
       const { data } = await supabase.from("admin_users").select("user_id").eq("user_id", uid).maybeSingle();
       setIsAdmin(!!data);
-      if (data && sessionStorage.getItem("site-editing") === "1") setEditing(true);
     };
     void check();
     const { data: sub } = supabase.auth.onAuthStateChange((e) => { if (e === "SIGNED_IN" || e === "SIGNED_OUT") void check(); });
@@ -60,9 +66,8 @@ export function SiteEditor() {
   }, []);
 
   useEffect(() => {
-    document.body.classList.toggle("site-editing", editing);
-    sessionStorage.setItem("site-editing", editing ? "1" : "0");
-    if (!editing) return;
+    document.body.classList.toggle("site-editing", editing && allowed);
+    if (!editing || !allowed) return;
     const onClick = (e: MouseEvent) => {
       const el = e.target as HTMLElement;
       if (el.closest("[data-no-edit]")) return;
@@ -80,10 +85,10 @@ export function SiteEditor() {
       setErr(""); setDraft(current); setTarget({ kind: "text", original: originalText.get(node) ?? current, current });
     };
     document.addEventListener("click", onClick, true);
-    return () => document.removeEventListener("click", onClick, true);
-  }, [editing]);
+    return () => { document.removeEventListener("click", onClick, true); document.body.classList.remove("site-editing"); };
+  }, [editing, allowed]);
 
-  if (path.startsWith("/admin") || !isAdmin) return null;
+  if (path.startsWith("/admin") || !allowed) return null;
 
   const saveText = async () => {
     if (!target) return; setBusy(true); setErr("");
