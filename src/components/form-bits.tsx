@@ -4,7 +4,7 @@ import { STUCK } from "@/lib/links";
 import { submitEnquiry } from "@/lib/enquiries.functions";
 import { StackedCards } from "@/components/stacked-cards";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, ClipboardList, Check, UserRound, Mail, Phone, Building2, Target, Globe, MessageSquare, BriefcaseBusiness, ChevronDown, LockKeyhole } from "lucide-react";
+import { CalendarDays, ClipboardList, Check, UserRound, Mail, Phone, Building2, Target, Globe, MessageSquare, BriefcaseBusiness, ChevronDown, LockKeyhole, ArrowRight } from "lucide-react";
 import logo from "@/assets/logo-transparent.png";
 
 export const field = "w-full rounded-2xl border border-input bg-card px-4 py-3.5 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
@@ -53,23 +53,34 @@ export function StuckPicker({ label }: { label: string }) {
   );
 }
 
-export function FormShell({ eyebrow, title, intro, steps, children }: { eyebrow?: string; title: string; intro: string; steps: string[]; children: ReactNode }) {
-  return (
-    <main className="booking-shell mx-auto grid max-w-6xl gap-10 px-5 py-10 md:grid-cols-[1fr_1.3fr] md:gap-16 md:py-16">
-      <div>
-        <Link to="/" className="text-sm font-semibold text-muted-foreground hover:text-primary">← Back to The Sales Clinic</Link>
-        {eyebrow && <p className="eyebrow mt-8">{eyebrow}</p>}
-        <h1 className="mt-3 text-4xl font-extrabold leading-tight md:text-5xl">{title}</h1>
-        <p className="mt-4 text-lg text-muted-foreground">{intro}</p>
-        <div className="mt-10">
-          <p className="eyebrow">What happens next</p>
-          <div className="mt-7"><StackedCards label="booking step" items={steps.map((s, i) => {
-            const Icon = [ClipboardList, CalendarDays, Check][i] ?? Check;
-            return <><div className="stack-badge"><Icon className="h-10 w-10" /><span className="stack-number">{i + 1}</span></div><span className="stack-step mt-6">Step {String(i + 1).padStart(2, "0")}</span><p className="mt-6 text-xl font-semibold leading-relaxed">{s}</p></>;
-          })} /></div>
-        </div>
+export function FormShell({ eyebrow, title, intro, steps, children, startAtForm = false }: { eyebrow?: string; title: string; intro: string; steps: string[]; children: ReactNode; startAtForm?: boolean }) {
+  const [stage, setStage] = useState<"steps" | "form">("steps");
+  const showForm = startAtForm || stage === "form";
+  const go = (s: "steps" | "form") => { setStage(s); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  if (!showForm) return (
+    <main className="booking-shell mx-auto max-w-3xl px-5 py-10 md:py-16">
+      <Link to="/book" className="text-sm font-semibold text-muted-foreground hover:text-primary">← Back to sessions</Link>
+      {eyebrow && <p className="eyebrow mt-8">{eyebrow}</p>}
+      <h1 className="mt-3 text-4xl font-extrabold leading-tight md:text-6xl">{title}</h1>
+      <p className="mt-4 text-lg text-muted-foreground">{intro}</p>
+      <div className="mt-10">
+        <p className="eyebrow">What happens next</p>
+        <div className="mt-7"><StackedCards label="booking step" items={steps.map((s, i) => {
+          const Icon = [ClipboardList, CalendarDays, Check][i] ?? Check;
+          return <><div className="stack-badge"><Icon className="h-10 w-10" /><span className="stack-number">{i + 1}</span></div><span className="stack-step mt-6">Step {String(i + 1).padStart(2, "0")}</span><p className="mt-6 text-xl font-semibold leading-relaxed">{s}</p></>;
+        })} /></div>
       </div>
-      <div className="form-panel self-start overflow-hidden rounded-3xl border border-border bg-card p-6 md:p-9">
+      <button type="button" onClick={() => go("form")} className="xray-continue group mt-10 inline-flex h-14 w-full items-center justify-center bg-primary px-8 text-base text-primary-foreground md:w-auto">
+        Next<span className="xray-continue-arrow ml-3"><ArrowRight className="h-4 w-4" /></span>
+      </button>
+    </main>
+  );
+  return (
+    <main className="booking-shell mx-auto max-w-3xl px-5 py-10 md:py-16">
+      {startAtForm ? <Link to="/book" className="text-sm font-semibold text-muted-foreground hover:text-primary">← Back to sessions</Link> : <button type="button" onClick={() => go("steps")} className="block text-sm font-semibold text-muted-foreground hover:text-primary">← Back to steps</button>}
+      {eyebrow && <p className="eyebrow mt-8">{eyebrow}</p>}
+      <h1 className="mt-3 text-3xl font-extrabold leading-tight md:text-4xl">{title}</h1>
+      <div className="form-panel mt-8 overflow-hidden rounded-3xl border border-border bg-card p-6 md:p-9">
         <div className="form-brand mb-8 flex items-center gap-5 border-b border-border pb-6"><img src={logo} alt="The Sales Doctor" className="h-16 w-28 object-contain" /><span className="h-px flex-1 bg-border" aria-hidden="true" /><ClipboardList aria-hidden="true" className="h-6 w-6 text-primary" /></div>
         {children}
       </div>

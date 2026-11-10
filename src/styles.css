@@ -577,3 +577,4 @@ main img:hover { transform: scale(1.015); }
   .word, .hero-photo-in, .hero-block-in, .float-orb, .orbit, .marker-draw { animation: none !important; }
   .marker-draw { background-size: 100% 40%; }
 }
+.session-track { scrollbar-width: none; } .session-track::-webkit-scrollbar { display: none; }

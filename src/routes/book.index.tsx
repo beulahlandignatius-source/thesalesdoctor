@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Children, useEffect, useRef, useState, type ReactNode } from "react";
 import { CtaLink } from "@/components/site";
 import { CLINIC_PRICE } from "@/lib/links";
 import { Check, Compass, Layers, Search, Stethoscope, Target, TrendingUp } from "lucide-react";
@@ -42,7 +43,7 @@ function Book() {
         <p className="text-lg text-muted-foreground md:pb-2">Both start with your goals. The difference is how deep we go.</p>
       </header>
 
-      <div className="relative mt-12 grid gap-6 md:grid-cols-[1fr_1.15fr] md:items-stretch">
+      <SessionCarousel>
         <article className="group flex flex-col border border-border bg-card p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl md:p-9" style={{ borderRadius: "2rem .75rem 2rem 2rem" }}>
           <div className="flex items-center justify-between">
             <p className="eyebrow">Free · 25 min</p>
@@ -80,7 +81,7 @@ function Book() {
           </ul>
           <CtaLink to="/book/clinic" className="relative mt-8 w-full">BOOK MY SALES CLINIC →</CtaLink>
         </article>
-      </div>
+      </SessionCarousel>
 
       <dl className="relative mt-8 grid gap-3 md:grid-cols-3">
         {([["Depth", "Review vs. working session", Layers], ["Focus", "Find the gap vs. close it", Target], ["Not sure?", "Start free. Go deeper after.", Compass]] as const).map(([k, v, Icon], i) => (
@@ -92,4 +93,25 @@ function Book() {
       </dl>
     </main>
   );
+}
+
+/** Auto-advancing, swipeable carousel; pauses while hovered, touched or focused. */
+function SessionCarousel({ children }: { children: ReactNode }) {
+  const track = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const count = Children.count(children);
+  const goTo = (i: number) => { const el = track.current; const card = el?.children[i] as HTMLElement | undefined; if (el && card) el.scrollTo({ left: card.offsetLeft - el.offsetLeft, behavior: "smooth" }); };
+  useEffect(() => {
+    if (paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = setInterval(() => goTo((active + 1) % count), 4500);
+    return () => clearInterval(t);
+  }, [active, paused, count]);
+  return <div className="relative mt-12" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onTouchStart={() => setPaused(true)} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
+    <div ref={track} aria-roledescription="carousel" className="session-track flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4"
+      onScroll={(e) => { const el = e.currentTarget; const w = (el.children[0] as HTMLElement)?.offsetWidth ?? 1; setActive(Math.round(el.scrollLeft / (w + 24))); }}>
+      {Children.map(children, (c) => <div className="flex w-[88%] shrink-0 snap-start md:w-[62%] [&>article]:w-full">{c}</div>)}
+    </div>
+    <div className="mt-4 flex justify-center gap-2">{Array.from({ length: count }, (_, i) => <button key={i} type="button" aria-label={`Show session ${i + 1}`} aria-current={active === i} onClick={() => goTo(i)} className={`h-2.5 rounded-full transition-all ${active === i ? "w-8 bg-primary" : "w-2.5 bg-border"}`} />)}</div>
+  </div>;
 }
