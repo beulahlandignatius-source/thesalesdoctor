@@ -18,6 +18,7 @@ import { ThemeProvider } from "../components/theme";
 import { SiteEditor } from "../components/site-editor";
 import { SalesCompanion } from "../components/sales-companion";
 import { PageTransition } from "../components/page-transition";
+import { Splash } from "../components/Splash";
 
 function NotFoundComponent() {
   return (
@@ -132,6 +133,7 @@ function PublicChrome({ children }: { children: ReactNode }) {
   return (
     <>
       <Header />
+      <Splash />
       <div className="visitor-pages">{children}</div>
       {!noFooter && <Footer />}
       <SalesCompanion />

@@ -3,6 +3,7 @@ import studio from "@/assets/diagnostic-studio.jpg";
 import { ArrowUpRight, Activity, Stethoscope, ScanSearch, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DiagnosticGuide } from "@/components/diagnostic-guide";
+import { MobileXrayDeck } from "@/components/mobile-xray-deck";
 
 export const Route = createFileRoute("/xray/")({
   head: () => ({
@@ -27,7 +28,7 @@ export const Route = createFileRoute("/xray/")({
 
 function Index() {
   return (
-    <div className="min-h-dvh bg-background">
+    <MobileXrayDeck className="xray-opening min-h-dvh bg-background">
       <section className="studio-hero relative isolate mx-3 mt-3 overflow-hidden rounded-[2rem] shadow-sm sm:mx-6 sm:rounded-[2.5rem]">
         <img
           src={studio}
@@ -62,7 +63,7 @@ function Index() {
         </div>
       </section>
       <div className="mx-auto max-w-6xl px-6 py-6 sm:px-10">
-        <DiagnosticGuide message="Let's take an X-ray of your business!" scanning />
+        <DiagnosticGuide message="Let's scan. Let's take an X-ray of your business!" scanning />
       </div>
       <section className="xray-introduction relative mx-auto max-w-6xl bg-background px-6 py-16 text-foreground sm:px-10 sm:py-24">
         <p className="eyebrow flex items-center gap-2"><Activity className="h-4 w-4" /> Diagnosis</p>
@@ -84,7 +85,7 @@ function Index() {
           </article>
         </div>
       </section>
-    </div>
+    </MobileXrayDeck>
   );
 }
 

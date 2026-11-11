@@ -47,6 +47,8 @@ function Audit() {
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [optionPage, setOptionPage] = useState(0);
+  const [infoPage, setInfoPage] = useState(0);
   const heading = useRef<HTMLHeadingElement>(null);
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(
@@ -85,6 +87,7 @@ function Audit() {
   const step = Math.min(s.step, QUESTIONS.length);
   const q = step > 0 ? QUESTIONS[step - 1] : null;
   useEffect(() => {
+    setOptionPage(0);
     if (ready) heading.current?.focus({ preventScroll: true });
   }, [step, ready]);
   const i = s.info;
@@ -214,7 +217,7 @@ function Audit() {
   const remaining = Math.max(0, TOTAL - step - 1);
 
   return (
-    <div className="min-h-dvh bg-background xray-ambient">
+    <div className="min-h-dvh bg-background xray-ambient mobile-assessment">
       <DiagnosticSweep />
       <div className="assessment-workspace mx-auto flex min-h-dvh max-w-xl flex-col px-6 pb-32 pt-5 sm:pt-8">
         <header className="xray-bar flex items-center justify-between pr-14">
@@ -253,7 +256,7 @@ function Audit() {
           <span className="text-muted-foreground">{remaining === 0 ? "Last one" : `${remaining} to go`}</span>
         </div>
 
-        <div key={`guide-${step}`} className="mt-6">
+        <div key={`guide-${step}`} className="assessment-guide mt-6">
           <DiagnosticGuide compact mood={busy ? "examining" : answerMascotMood(q ?? null, answer)} scanning={busy || step === 0 || !!q}
             message={step === 0 ? "Let's take an X-ray of your business!" : "Let's see what's happening inside your business."} />
         </div>
@@ -280,7 +283,7 @@ function Audit() {
                     ["whatsapp", "WhatsApp number", "tel"],
                   ] as const
                 ).map(([k, label, type]) => (
-                  <label key={k} htmlFor={`info-${k}`} className="block">
+                  <label key={k} htmlFor={`info-${k}`} className={`block mobile-info-field ${["name", "email", "whatsapp"][infoPage] === k ? "info-visible" : "info-offscreen"}`}>
                     <span className="text-sm text-muted-foreground">{label}</span>
                     <input
                       id={`info-${k}`}
@@ -296,6 +299,11 @@ function Audit() {
                   </label>
                 ))}
               </div>
+              <nav className="mobile-option-controls" aria-label="Contact details">
+                <Button variant="ghost" size="sm" disabled={infoPage === 0} onClick={() => setInfoPage(infoPage - 1)} aria-label="Previous contact field"><ArrowLeft /></Button>
+                <span>{infoPage + 1} / 3</span>
+                <Button variant="ghost" size="sm" disabled={infoPage === 2} onClick={() => setInfoPage(infoPage + 1)} aria-label="Next contact field"><ArrowRight /></Button>
+              </nav>
             </>
           ) : (
             <>
@@ -340,7 +348,7 @@ function Audit() {
                 <p className="mt-2 text-right text-xs tabular-nums text-muted-foreground">{answer.length}/1000</p>
                 </>
               ) : (
-                <div role="group" aria-labelledby="question-heading" className="mt-6 space-y-3">
+                <div role="group" aria-labelledby="question-heading" className="assessment-options mt-6 space-y-3">
                   {q.options.map((o, oi) => {
                     const on = selected.includes(o);
                     return (
@@ -350,7 +358,7 @@ function Audit() {
                         disabled={!ready || busy}
                         onClick={() => pick(o)}
                         aria-pressed={on}
-                        className={`xray-option animate-in fade-in slide-in-from-bottom-2 fill-mode-both ${on ? "answer-card-on" : ""}`}
+                        className={`xray-option animate-in fade-in slide-in-from-bottom-2 fill-mode-both ${Math.floor(oi / 3) === optionPage ? "option-visible" : "option-offscreen"} ${on ? "answer-card-on" : ""}`}
                         style={{ animationDelay: `${oi * 45}ms` }}
                       >
                         <span
@@ -366,6 +374,11 @@ function Audit() {
                   })}
                 </div>
               )}
+              {q.type !== "text" && q.options.length > 3 && <nav className="mobile-option-controls" aria-label="Answer choices">
+                <Button variant="ghost" size="sm" disabled={optionPage === 0} onClick={() => setOptionPage(optionPage - 1)} aria-label="Previous choices"><ArrowLeft /></Button>
+                <span>{optionPage * 3 + 1}–{Math.min((optionPage + 1) * 3, q.options.length)} of {q.options.length}{multi && selected.length > 0 ? ` · ${selected.length} selected` : ""}</span>
+                <Button variant="ghost" size="sm" disabled={(optionPage + 1) * 3 >= q.options.length} onClick={() => setOptionPage(optionPage + 1)} aria-label="More choices"><ArrowRight /></Button>
+              </nav>}
               {q.type !== "text" && (
                 <p className="mt-6 hidden text-xs text-muted-foreground sm:block">
                   Tip: press <kbd className="rounded border border-border bg-card px-1.5">A</kbd>–<kbd className="rounded border border-border bg-card px-1.5">{String.fromCharCode(64 + q.options.length)}</kbd> to choose, <kbd className="rounded border border-border bg-card px-1.5">Enter</kbd> to continue.
@@ -378,7 +391,7 @@ function Audit() {
 
       {/* Thumb-reach action bar: always visible at the bottom of the screen */}
       <div
-        className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/95 backdrop-blur"
+        className="assessment-actions fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/95 backdrop-blur"
         style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
       >
         <div className="mx-auto max-w-xl px-5 pt-3">

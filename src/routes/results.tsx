@@ -16,6 +16,8 @@ import {
 import { buildDiagnosisReport } from "@/lib/diagnosis-report";
 import { deliverFile } from "@/lib/download";
 import { DiagnosticGuide, DiagnosticSweep } from "@/components/diagnostic-guide";
+import { BusinessScan } from "@/components/business-scan";
+import { MobileXrayDeck } from "@/components/mobile-xray-deck";
 
 export const Route = createFileRoute("/results")({
   head: () => ({
@@ -81,7 +83,7 @@ function Results() {
 
   if (status === "done" && result) return <ResultView r={result} />;
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-background px-6">
+    <div className="xray-preparing flex min-h-dvh items-center justify-center bg-background px-6">
       {status === "loading" && <DiagnosticSweep repeat />}
       <div className="max-w-sm text-center">
         <img
@@ -100,11 +102,14 @@ function Results() {
           </>
         ) : (
           <>
+            <div className="phone-business-scan"><BusinessScan /></div>
+            <div className="desktop-business-scan">
             <DiagnosticGuide mood="examining" message="Let's see what's happening inside your business." scanning />
             <div className="mx-auto mt-10 h-10 w-10 animate-spin rounded-full border-4 border-muted border-t-primary" />
             <p role="status" className="mt-6 font-display text-2xl text-primary">
               Your X-Ray is being prepared...
             </p>
+            </div>
           </>
         )}
       </div>
@@ -126,7 +131,9 @@ function ResultView({ r }: { r: Result }) {
   const section = "diagnostic-finding border-t border-border pt-8";
   return (
     <div className="results-workspace min-h-dvh bg-background px-6 pb-10 pt-10">
-      <div className="mx-auto max-w-3xl space-y-8">
+      <MobileXrayDeck className="mx-auto max-w-3xl space-y-8">
+        <div className="phone-business-scan"><BusinessScan complete /></div>
+        <div className="result-opening-screen">
         <img src={logo} alt="The Sales Doctor" className="mx-auto w-28" />
         <p className={`${label} text-center`}>Your client acquisition diagnosis</p>
         <DiagnosticGuide compact mood="findings" message="Hmm, I've spotted something." />
@@ -145,6 +152,7 @@ function ResultView({ r }: { r: Result }) {
         </div>
 
         <ReportDownload r={r} />
+        </div>
 
         <section className={section}>
           <h2 className={label}>What's happening</h2>
@@ -208,7 +216,7 @@ function ResultView({ r }: { r: Result }) {
             </Button>
           )}
         </section>
-      </div>
+      </MobileXrayDeck>
     </div>
   );
 }
