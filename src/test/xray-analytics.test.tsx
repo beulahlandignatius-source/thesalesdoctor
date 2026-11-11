@@ -25,7 +25,7 @@ describe("X-Ray form analytics", () => {
     expect(track).toHaveBeenCalledWith("project.xray_validation_error", { stage: "contact", field: "whatsapp", reason: "invalid_format" });
   });
   it.each([true, false])("counts final submission only when every answer saves: %s", async (success) => {
-    localStorage.setItem("client-xray-v2", JSON.stringify({ step: QUESTIONS.length, session: { id: "test", token: "test" }, info: { name: "Test", email: "test@example.com", whatsapp: "123456789" }, answers: { q1: "Service", q29: "$0" } }));
+    localStorage.setItem("client-xray-v2", JSON.stringify({ step: QUESTIONS.length, session: { id: "test", token: "test" }, info: { name: "Test", email: "test@example.com", whatsapp: "123456789" }, answers: { q1: "Service", q4: "Under $250", q5: "1–2", q29: "$0" } }));
     mocks.get.mockResolvedValue({ completed: false, info: { name: "Test", email: "test@example.com", whatsapp: "123456789" }, answers: {}, step: QUESTIONS.length });
     if (!success) mocks.save.mockRejectedValue(new Error("offline"));
     const track = vi.fn(); window.__lovableEvents = { track }; render(<Audit />);

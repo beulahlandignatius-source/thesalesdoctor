@@ -358,6 +358,30 @@ main img:hover { transform: scale(1.015); }
 .admin-signin input { border-radius: 1rem; }
 .booking-shell > div:first-child > .eyebrow { display: table; }
 .assessment-question h1:focus { outline: none; }
+.xray-topic-question { min-width: 0; padding-block: 1.5rem; border-bottom: 1px solid var(--border); }
+.xray-topic-question:first-child { padding-top: 0; }
+.xray-topic-question legend { float: left; width: 100%; font-size: 1rem; }
+.xray-topic-question legend + * { clear: both; }
+.xray-topic-number { display: inline-block; margin-right: .65rem; font-size: .75rem; color: var(--primary); }
+.xray-topic-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .625rem; }
+.xray-topic-options .xray-option { width: 100%; min-height: 52px; height: auto; white-space: normal; padding: .875rem !important; gap: .625rem; border-radius: .5rem !important; font-size: .875rem; line-height: 1.5; }
+.xray-topic-check { width: 1.25rem; height: 1.25rem; border-width: 1px; display: grid; place-items: center; flex-shrink: 0; }
+.xray-topic-assessment .assessment-actions { padding-bottom: env(safe-area-inset-bottom); }
+@media (max-width: 639px) {
+  .xray-topic-assessment .assessment-workspace { padding-inline: 1.125rem; }
+  .xray-topic-assessment .xray-topic-progress { display: flex; height: auto; background: transparent; overflow: visible; margin-top: 1rem; }
+  .xray-topic-assessment .assessment-question { margin-top: 1rem; padding-top: 1rem; }
+  .visitor-pages .xray-topic-assessment .assessment-question h1 { font-size: 1.5rem; line-height: 1.25; }
+  .xray-topic-assessment .xray-topic-options { grid-template-columns: minmax(0, 1fr); }
+  .xray-topic-assessment .xray-topic-options .xray-option { padding: .75rem !important; font-size: .875rem; }
+  .xray-topic-assessment .xray-topic-options .xray-option > span:first-child { width: 1.25rem; height: 1.25rem; }
+  .xray-topic-assessment .xray-topic-options .xray-option > span:nth-child(2) { font-size: .875rem; }
+  .xray-topic-assessment .xray-topic-fields { margin-top: 1.5rem; }
+  .xray-topic-assessment .xray-topic-question { padding-block: 1.25rem; }
+  .xray-topic-assessment .xray-topic-question:first-child { padding-top: 0; }
+  .xray-topic-assessment .assessment-actions .xray-continue { min-height: 48px; }
+}
+@media (prefers-reduced-motion: reduce) { .xray-topic-assessment .assessment-question { animation: none; } }
 @media (max-width: 639px) {
   .dashboard-overview > div:nth-child(2) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dashboard-stat { padding: 1.1rem; }

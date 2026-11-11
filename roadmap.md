@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Group the existing X-Ray into six coherent topic pages; preserved all 29 business questions plus contact details, choices, validation, saved answers and analytics; verified back/refresh and real submission at 320, 411, 820 and 1280px with unchanged results/booking.
 - [x] Reposition Services around the approved sales-and-marketing brief, three problem cards and existing diagnosis/ongoing offers; verified chooser links and layouts at 320, 411, 820 and 1280px.
 - [x] Add the supplied five clinic bonuses to the booking introduction and indicate five free bonuses on previews; verified bonus reveal, form validation and back navigation at 320, 411, 820 and 1280px, with the $53 payment journey unchanged.
 - [x] Compact consultation questions inside fields and collapse all grouped challenges into a dropdown; verified multiple selections persist on 320px, 390px and desktop with unchanged submission tests.
