@@ -24,7 +24,7 @@ const STORIES: Record<Mode, { beats: Beat[]; length: number; loop: boolean; reve
 
 export function MascotReveal({ targets, mode = "push" }: { targets: string; mode?: Mode }) {
   const lane = useRef<HTMLDivElement>(null);
-  const [beat, setBeat] = useState<Beat>(STORIES[mode].beats[0]);
+  const [beat, setBeat] = useState<Beat>(STORIES[mode].beats[0]!);
   useEffect(() => {
     const host = lane.current;
     const section = host?.closest("section");
@@ -44,7 +44,7 @@ export function MascotReveal({ targets, mode = "push" }: { targets: string; mode
     const observer = new IntersectionObserver(entries => {
       if (!entries.some(e => e.isIntersecting)) return;
       observer.disconnect();
-      if (reduce) { setBeat(story.beats[story.beats.length - 1]); return; }
+      if (reduce) { setBeat(story.beats[story.beats.length - 1]!); return; }
       play();
     }, { threshold: .2 });
     observer.observe(host);
