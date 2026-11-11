@@ -1448,7 +1448,7 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 }
 @media (prefers-reduced-motion: reduce) {
   .xray-machine-beam { display: none; }
-  .xray-machine-backdrop, .xray-machine-modal, .xray-machine-completion { animation: none; }
+  .xray-machine-backdrop, .xray-machine-modal, .xray-machine-completion, .xray-machine-modal.receipt-leaving, .xray-machine-backdrop.receipt-leaving { animation: none; }
   .xray-machine-progress > span { transition: none; }
 }
 @keyframes phone-xray-arrive {

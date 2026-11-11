@@ -7,9 +7,21 @@ describe("X-Ray scanner handoff", () => {
     const onComplete = vi.fn();
     render(<XraySubmissionModal alreadyComplete onComplete={onComplete} />);
     expect(onComplete).not.toHaveBeenCalled();
-    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "View my X-Ray report" }));
     await waitFor(() => expect(onComplete).toHaveBeenCalledOnce());
+  });
+  it("allows Escape to continue once completion is confirmed", async () => {
+    const onComplete = vi.fn();
+    render(<XraySubmissionModal alreadyComplete onComplete={onComplete} />);
+    await waitFor(() => expect(screen.getByRole("button", { name: "View my X-Ray report" })).toHaveFocus());
+    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+    await waitFor(() => expect(onComplete).toHaveBeenCalledOnce());
+  });
+  it("prevents Escape from leaving during the submission receipt", () => {
+    const onComplete = vi.fn();
+    render(<XraySubmissionModal onComplete={onComplete} />);
+    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+    expect(onComplete).not.toHaveBeenCalled();
+    expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuemin", "0");
   });
 });
