@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, Activity, Stethoscope, ScanSearch, ScanLine, ChartNoAxesCombined, Target, Clock3, Check } from "lucide-react";
+import { ArrowUpRight, Activity, Stethoscope, ScanSearch, ScanLine, ChartNoAxesCombined, Target, Clock3, Check, Pause, Play, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DiagnosticGuide } from "@/components/diagnostic-guide";
 import { useEffect, useState } from "react";
@@ -31,12 +31,22 @@ export const Route = createFileRoute("/xray/")({
 function Index() {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [hasSession, setHasSession] = useState(false);
+  const [scanPaused, setScanPaused] = useState(false);
   useEffect(() => { setHasSession(!!loadState().session); }, []);
   return (
     <div className={`xray-opening xray-photo-opening bg-background ${detailsOpen ? "xray-details-open" : ""}`}>
-      <section className="xray-photo-hero relative isolate overflow-hidden">
+      <section className={`xray-photo-hero relative isolate overflow-hidden ${scanPaused ? "hero-scan-paused" : ""}`}>
         <img src={portrait.url} alt="Dr. Dan Odotukpono, The Sales Doctor, with his stethoscope" className="xray-photo-subject" fetchPriority="high" />
+        <div className="xray-hero-scan" aria-hidden="true">
+          <div className="xray-hero-scan-view">
+            <img src={portrait.url} alt="" className="xray-scan-photo" />
+            <div className="xray-scan-grid" />
+            <div className="xray-scan-organs"><span><Users /></span><span><Target /></span><span><ChartNoAxesCombined /></span></div>
+          </div>
+          <div className="xray-hero-scan-beam" />
+        </div>
         <div className="xray-photo-shade" aria-hidden="true" />
+        <Button variant="outline" size="icon" className="xray-hero-scan-control min-h-11 min-w-11" aria-label={scanPaused ? "Play hero scanning animation" : "Pause hero scanning animation"} aria-pressed={scanPaused} onClick={() => setScanPaused(!scanPaused)}>{scanPaused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}</Button>
         <div className="xray-photo-instrument" aria-hidden="true"><ScanLine /><ChartNoAxesCombined /><div className="xray-photo-beam" /></div>
         <div className="xray-photo-copy mx-auto max-w-6xl px-6 sm:px-10">
           <div className="max-w-lg">

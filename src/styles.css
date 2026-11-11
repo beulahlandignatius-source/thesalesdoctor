@@ -1543,3 +1543,28 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .mascot-reveal-actor, .mascot-reveal-actor .companion-character { width: 60px; height: 60px; }
 }
 @media (prefers-reduced-motion: reduce) { .mascot-reveal-actor img { animation: none; } }
+
+.xray-hero-scan { position: absolute; inset: 0 0 0 auto; width: 64%; overflow: hidden; pointer-events: none; }
+.xray-hero-scan-view { position: absolute; inset: 0; background: var(--ink); animation: hero-scan-swipe 10s ease-in-out infinite; }
+.xray-scan-photo { width: 100%; height: 100%; object-fit: cover; object-position: center 10%; filter: grayscale(1) contrast(1.4); opacity: .55; border-radius: 0; }
+.xray-scan-grid { position: absolute; inset: 0; background-image: linear-gradient(var(--primary) 1px, transparent 1px), linear-gradient(90deg,var(--primary) 1px,transparent 1px); background-size: 48px 48px; opacity: .18; }
+.xray-scan-organs { position: absolute; inset: 35% 30% 15%; display: flex; flex-direction: column; align-items: center; justify-content: space-between; color: var(--ink-foreground); }
+.xray-scan-organs span { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--primary); border-radius: 50%; background: var(--ink); box-shadow: 0 0 22px color-mix(in oklab,var(--primary) 45%,transparent); }
+.xray-hero-scan-beam { position: absolute; inset-inline: 0; height: 48px; border-bottom: 2px solid var(--primary); background: linear-gradient(transparent,color-mix(in oklab,var(--primary) 35%,transparent)); box-shadow: 0 6px 22px color-mix(in oklab,var(--primary) 65%,transparent); animation: hero-body-scan 3.5s ease-in-out infinite alternate; }
+.xray-hero-scan-control { position: absolute; z-index: 3; top: 1rem; right: 1rem; background: var(--background); color: var(--foreground); }
+.xray-photo-hero .xray-photo-instrument { display: none; }
+.hero-scan-paused .xray-hero-scan-view, .hero-scan-paused .xray-hero-scan-beam { animation-play-state: paused; }
+@keyframes hero-scan-swipe { 0%,20%,100% { clip-path: inset(0 100% 0 0); } 40%,80% { clip-path: inset(0); } }
+@keyframes hero-body-scan { from { top: 0; } to { top: calc(100% - 48px); } }
+@media (max-width: 639px) {
+  .xray-hero-scan { width: 100%; height: 300px; inset: 0 0 auto; }
+  .xray-scan-photo { object-position: center 12%; }
+  .xray-scan-organs { inset: 35% 30% 5%; }
+  .xray-scan-organs span { width: 36px; height: 36px; }
+  .xray-scan-organs svg { width: 20px; height: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .xray-hero-scan-view { animation: none; clip-path: inset(0 100% 0 0); }
+  .xray-hero-scan-beam { animation: none; top: 45%; }
+  .xray-hero-scan-control { display: none; }
+}
