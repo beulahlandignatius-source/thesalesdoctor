@@ -209,6 +209,32 @@
         "properties": {}
       }
     },
+    "project.xray_form_started": {
+      "event_schema_version": 1,
+      "description": "A visitor edits their first X-Ray contact field; once per mounted form, not on page view or later edits.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      }
+    },
+    "project.xray_form_submitted": {
+      "event_schema_version": 1,
+      "description": "The final X-Ray form submission successfully saves all answers before opening results; does not imply diagnosis generation or payment.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      }
+    },
     "project.xray_report_downloaded": {
       "event_schema_version": 1,
       "description": "A visitor clicked to download their Client X-Ray PDF report.",
@@ -233,6 +259,48 @@
         "type": "object",
         "properties": {},
         "additionalProperties": false
+      }
+    },
+    "project.xray_validation_error": {
+      "event_schema_version": 1,
+      "description": "An X-Ray contact field loses focus invalid or a required written answer loses focus empty.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "stage",
+          "field",
+          "reason"
+        ],
+        "properties": {
+          "stage": {
+            "type": "string",
+            "enum": [
+              "contact",
+              "questions"
+            ]
+          },
+          "field": {
+            "type": "string",
+            "enum": [
+              "name",
+              "email",
+              "whatsapp",
+              "answer"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "required",
+              "invalid_format"
+            ]
+          }
+        }
       }
     }
   }

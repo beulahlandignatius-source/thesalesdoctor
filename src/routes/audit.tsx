@@ -41,7 +41,7 @@ export const Route = createFileRoute("/audit")({
 
 const TOTAL = QUESTIONS.length + 1;
 
-function Audit() {
+export function Audit() {
   const nav = useNavigate();
   const [s, setS] = useState<AuditState>(emptyState());
   const [ready, setReady] = useState(false);
@@ -50,6 +50,7 @@ function Audit() {
   const [optionPage, setOptionPage] = useState(0);
   const heading = useRef<HTMLHeadingElement>(null);
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const formStarted = useRef(false);
   useEffect(
     () => () => {
       if (advanceTimer.current) clearTimeout(advanceTimer.current);
@@ -144,6 +145,7 @@ function Audit() {
       }
     } else persist(q.id, answer, step + 1);
     if (isLast) {
+      window.__lovableEvents?.track?.("project.xray_form_submitted", {});
       try {
         localStorage.removeItem("client-xray-diagnosis");
       } catch {}
@@ -162,7 +164,13 @@ function Audit() {
       window.scrollTo(0, 0);
     }
   };
-  const setInfo = (k: keyof BasicInfo, v: string) => setS({ ...s, info: { ...s.info, [k]: v } });
+  const setInfo = (k: keyof BasicInfo, v: string) => {
+    if (!formStarted.current) {
+      formStarted.current = true;
+      window.__lovableEvents?.track?.("project.xray_form_started", {});
+    }
+    setS({ ...s, info: { ...s.info, [k]: v } });
+  };
   const setAnswer = (v: string) => q && setS({ ...s, answers: { ...s.answers, [q.id]: v } });
   const multi = q?.type === "choice" && !!q.multi;
   const selected = multi ? answer.split(MULTI_SEP).filter(Boolean) : [answer];
@@ -292,6 +300,11 @@ function Audit() {
                       maxLength={k === "email" ? 255 : 100}
                       value={i[k]}
                       onChange={(e) => setInfo(k, e.target.value)}
+                      onBlur={(e) => {
+                        const value = e.currentTarget.value.trim();
+                        const valid = k === "name" ? !!value : k === "email" ? /^\S+@\S+\.\S+$/.test(value) : value.replace(/\D/g, "").length >= 7;
+                        if (!valid) window.__lovableEvents?.track?.("project.xray_validation_error", { stage: "contact", field: k, reason: value ? "invalid_format" : "required" });
+                      }}
                       placeholder={k === "whatsapp" ? "+234 800 000 0000" : undefined}
                       className="field mt-1"
                     />
@@ -334,6 +347,11 @@ function Audit() {
                   required={!OPTIONAL_IDS.has(q.id)}
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
+                  onBlur={(e) => {
+                    if (!OPTIONAL_IDS.has(q.id) && !e.currentTarget.value.trim()) {
+                      window.__lovableEvents?.track?.("project.xray_validation_error", { stage: "questions", field: "answer", reason: "required" });
+                    }
+                  }}
                   maxLength={1000}
                   rows={4}
                   placeholder={q.placeholder ?? "Type your answer"}
