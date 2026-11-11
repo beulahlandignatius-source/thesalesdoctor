@@ -1533,3 +1533,13 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .xray-topic-assessment .assessment-actions > div { padding-bottom: .75rem; }
 }
 @media (prefers-reduced-motion: reduce) { .xray-photo-beam { animation: none; top: 50%; } }
+
+.mascot-reveal-lane { position: relative; height: 88px; width: 100%; margin-block: .75rem; overflow: hidden; pointer-events: none; }
+.mascot-reveal-actor { position: relative; z-index: 1; width: 80px; height: 80px; transform-origin: bottom center; }
+.mascot-reveal-actor .companion-character { width: 80px; height: 80px; }
+.mascot-reveal-track { position: absolute; inset: auto 0 7px; height: 1px; background: var(--border); }
+@media (max-width: 639px) {
+  .mascot-reveal-lane { height: 68px; }
+  .mascot-reveal-actor, .mascot-reveal-actor .companion-character { width: 60px; height: 60px; }
+}
+@media (prefers-reduced-motion: reduce) { .mascot-reveal-actor img { animation: none; } }

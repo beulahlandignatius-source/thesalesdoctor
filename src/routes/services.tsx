@@ -6,6 +6,7 @@ import { LINKS, CLINIC_PRICE } from "@/lib/links";
 import redSuit from "@/assets/dr-dan-red-suit.jpg";
 import { useMotionFx } from "@/components/motion";
 import { WhatsAppIcon } from "@/components/whatsapp-icon";
+import { MascotReveal } from "@/components/mascot-reveal";
 
 export const Route = createFileRoute("/services")({
   head: () => ({ meta: [
@@ -65,6 +66,7 @@ function Services() {
 
     <section className="mx-auto max-w-6xl px-5 pb-16 md:pb-24">
       <div className="flex items-start justify-between gap-4 border-t border-border pt-8"><h2 className="max-w-2xl font-display text-3xl font-black md:text-4xl">Where do you want me to come in?</h2><HeartPulse aria-hidden="true" className="mt-1 h-8 w-8 shrink-0 text-primary" /></div>
+      <MascotReveal targets=".service-card" mode="curtain" />
       <div className="mt-8 grid gap-4 md:grid-cols-3">{PROBLEMS.map((problem, i) => <article key={problem.title} className={`!col-span-1 service-card service-card-${i + 1} !min-h-0`}>
         <span className="mb-6 font-display text-sm font-bold opacity-60">0{i + 1}</span>
         <h3 className="font-display text-2xl font-bold leading-tight">{problem.title}</h3>
@@ -78,6 +80,7 @@ function Services() {
       <div className="mx-auto max-w-6xl px-5 py-12 md:py-20">
         <p className="eyebrow">Start with a diagnosis</p>
         <h2 className="mt-3 font-display text-3xl font-black md:text-4xl">Find what’s broken first.</h2>
+        <MascotReveal targets=".service-card" />
         <div className="mt-8 grid gap-4 md:grid-cols-3">{DIAGNOSES.map((s, i) => { const Icon = s.icon; return <article key={s.title} className={`!col-span-1 service-card service-card-${i + 1}`}>
           <div className="flex items-start justify-between gap-3"><span className="service-icon"><Icon className="h-5 w-5" aria-hidden="true" /></span><span className="service-tag">{s.tag}</span></div>
           <h3 className="mt-6 font-display text-2xl font-bold">{s.title}</h3><p className="mt-3 text-sm leading-relaxed opacity-80">{s.body}</p>

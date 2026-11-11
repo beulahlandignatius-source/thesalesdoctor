@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Add mascot travel to sessions and push/curtain reveals to mentorship quotes and service cards; verified images, bounded motion and links at 411/1280px plus reduced-motion at 320px.
 - [x] Add stationary topic progress with percentage and stages remaining; verified all stages at 320/411/1280px, real phone submission/report and 12 passing tests.
 - [x] Refine mobile X-Ray portrait/scan framing and readable question controls; verified all six topics with long answers at 320/360/390/411/480px, tablet/desktop and real phone submission through report readiness.
 - [x] Add fresh X-Ray retry from opening/results/completion without changing previous submissions; verified blank contact, distinct real saved sessions, reload and retry at phone/desktop sizes.
