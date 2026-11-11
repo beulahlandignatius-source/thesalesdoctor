@@ -1,6 +1,6 @@
 # Roadmap
 - [x] Reposition Services around the approved sales-and-marketing brief, three problem cards and existing diagnosis/ongoing offers; verified chooser links and layouts at 320, 411, 820 and 1280px.
-- [ ] Add the five individual clinic bonus names when supplied (not present in existing page or available source material).
+- [x] Add the supplied five clinic bonuses to the booking introduction and indicate five free bonuses on previews; verified bonus reveal, form validation and back navigation at 320, 411, 820 and 1280px, with the $53 payment journey unchanged.
 - [x] Compact consultation questions inside fields and collapse all grouped challenges into a dropdown; verified multiple selections persist on 320px, 390px and desktop with unchanged submission tests.
 - [x] Add requested country flags and update sales figure to $135K+.
 - [x] Allow admins to edit/delete submitted and existing sample reviews, with confirmation and protected access; verified temporary record edit/delete.

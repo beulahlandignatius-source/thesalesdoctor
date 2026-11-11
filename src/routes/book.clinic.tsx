@@ -5,15 +5,16 @@ import { btnClass } from "@/components/site";
 import { CLINIC_PRICE, CLINIC_TERMS, LINKS, REVENUE, TARGETS } from "@/lib/links";
 import { PaidDialog } from "@/components/paid-dialog";
 import { Button } from "@/components/ui/button";
+import { ClinicBonuses } from "@/components/clinic-bonuses";
 import { CalendarCheck, Clock, CreditCard, ExternalLink, Landmark, Lock, Receipt, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/book/clinic")({
   head: () => ({
     meta: [
       { title: "Book your Private Sales Clinic | The Sales Clinic" },
-      { name: "description", content: "A 90-minute deep working session with Dr. Dan on your numbers, your process and your target." },
+      { name: "description", content: "A $53, 90-minute working session with Dr. Dan, including five free bonuses worth $27 plus VIP-only access." },
       { property: "og:title", content: "Private Sales Clinic | The Sales Clinic" },
-      { property: "og:description", content: "We don’t just find the gap. We work out how to close it." },
+      { property: "og:description", content: "Book a $53 Private Sales Clinic: 90 minutes with Dr. Dan and all five bonuses included." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -26,7 +27,8 @@ function Clinic() {
   const { save, busy, error } = useEnquiry("private_clinic");
   const navigate = useNavigate();
   return (
-    <FormShell eyebrow="Private Sales Clinic · 90 minutes" title="Book your Private Sales Clinic"
+    <FormShell eyebrow={`Private Sales Clinic · ${CLINIC_PRICE}`} title="Book your Private Sales Clinic"
+      introduction={<ClinicBonuses />} nextLabel="BOOK MY SALES CLINIC"
       intro="A deep working session on your numbers, your process and your target. We don’t just find the gap. We work out how to close it."
       steps={["Share your goals and where you are now.", "Confirm payment and choose your 90-minute slot.", "We work through it together. You leave with a plan."]}>
       {who ? (
@@ -45,6 +47,7 @@ function Clinic() {
                 <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Order summary</p>
                 <p className="mt-2 font-display text-lg font-extrabold">Private Sales Clinic</p>
                 <p className="mt-1 inline-flex items-center gap-1.5 text-sm text-muted-foreground"><Clock className="h-3.5 w-3.5" /> 90 min · with Dr. Dan</p>
+                <p className="mt-2 text-sm font-semibold text-primary">All 5 free bonuses included</p>
               </div>
               <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary text-primary-foreground"><Receipt className="h-5 w-5" /></span>
             </div>
@@ -103,7 +106,7 @@ function Clinic() {
           <StuckPicker grouped label="What would you like to work through? (choose as many as apply)" />
           <F compact label="Anything else I should know? (optional)"><input name="notes" placeholder="One line is enough" className={field} /></F>
           <div className="flex items-center justify-between rounded-lg bg-ink p-4 text-ink-foreground">
-            <span className="font-semibold">Private Sales Clinic · 90 min</span>
+            <span className="font-semibold">Private Sales Clinic · 90 min<span className="mt-1 block text-xs font-normal opacity-80">All 5 free bonuses included</span></span>
             <span className="text-right text-sm"><strong className="font-display text-xl">{CLINIC_PRICE}</strong><br /><span className="opacity-70">{CLINIC_TERMS}</span></span>
           </div>
           <FormError msg={error} />

@@ -88,7 +88,7 @@ export function StuckPicker({ label, grouped = false }: { label: string; grouped
   );
 }
 
-export function FormShell({ eyebrow, title, intro, steps, children, startAtForm = false }: { eyebrow?: string; title: string; intro: string; steps: string[]; children: ReactNode; startAtForm?: boolean }) {
+export function FormShell({ eyebrow, title, intro, steps, children, startAtForm = false, introduction, nextLabel = "Next" }: { eyebrow?: string; title: string; intro: string; steps: string[]; children: ReactNode; startAtForm?: boolean; introduction?: ReactNode; nextLabel?: string }) {
   const [stage, setStage] = useState<"steps" | "form">("steps");
   const showForm = startAtForm || stage === "form";
   const go = (s: "steps" | "form") => {
@@ -107,6 +107,7 @@ export function FormShell({ eyebrow, title, intro, steps, children, startAtForm 
       {eyebrow && <p className="eyebrow mt-8">{eyebrow}</p>}
       <h1 className="mt-3 text-4xl font-extrabold leading-tight md:text-6xl">{title}</h1>
       <p className="mt-4 text-lg text-muted-foreground">{intro}</p>
+      {introduction}
       <div className="mt-10">
         <p className="eyebrow">What happens next</p>
         <div className="mt-7"><StackedCards label="booking step" items={steps.map((s, i) => {
@@ -114,9 +115,9 @@ export function FormShell({ eyebrow, title, intro, steps, children, startAtForm 
           return <><div className="stack-badge"><Icon className="h-10 w-10" /><span className="stack-number">{i + 1}</span></div><span className="stack-step mt-6">Step {String(i + 1).padStart(2, "0")}</span><p className="mt-6 text-xl font-semibold leading-relaxed">{s}</p></>;
         })} /></div>
       </div>
-      <button type="button" onClick={() => go("form")} className="xray-continue group mt-10 inline-flex h-14 w-full items-center justify-center bg-primary px-8 text-base text-primary-foreground md:w-auto">
-        Next<span className="xray-continue-arrow ml-3"><ArrowRight className="h-4 w-4" /></span>
-      </button>
+      <Button type="button" onClick={() => go("form")} className="xray-continue group mt-10 inline-flex h-14 w-full items-center justify-center bg-primary px-8 text-base text-primary-foreground md:w-auto">
+        {nextLabel}<span className="xray-continue-arrow ml-3"><ArrowRight className="h-4 w-4" /></span>
+      </Button>
     </main>
   );
   return (

@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Children, useEffect, useRef, useState, type ReactNode } from "react";
 import { CtaLink } from "@/components/site";
 import { CLINIC_PRICE } from "@/lib/links";
-import { Check, Compass, Layers, Search, Stethoscope, Target, TrendingUp } from "lucide-react";
+import { Check, Compass, Gift, Layers, Search, Stethoscope, Target, TrendingUp } from "lucide-react";
 
 export const Route = createFileRoute("/book/")({
   head: () => ({
@@ -75,6 +75,7 @@ function Book() {
           <p className="relative mt-6 font-display text-6xl font-black md:text-7xl">{CLINIC_PRICE}</p>
           <h2 className="relative mt-2 text-3xl font-extrabold md:text-4xl">Private Sales Clinic</h2>
           <p className="relative mt-2 text-ink-foreground/70">Best if you’re ready to work on it, not just talk about it.</p>
+          <p className="relative mt-4 flex items-center gap-2 text-sm font-semibold"><Gift aria-hidden="true" className="h-4 w-4 shrink-0" />5 free bonuses included</p>
           <div className="relative my-6 h-px bg-ink-foreground/15" />
           <p className="eyebrow relative text-ink-foreground/60">We’ll work through</p>
           <ul className="relative mt-4 flex-1 space-y-3">
