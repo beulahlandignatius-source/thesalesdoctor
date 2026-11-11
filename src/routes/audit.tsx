@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { startAuditSession, updateAuditInfo, saveAuditAnswer, getAuditSession } from "@/lib/audit-session.functions";
+import { startAuditSession, updateAuditInfo, saveAuditAnswer, getAuditSession, submitAuditForReview } from "@/lib/audit-session.functions";
+import { XraySubmissionModal } from "@/components/xray-submission-modal";
 import { QUESTIONS, loadState, saveState, emptyState, type AuditState, type BasicInfo } from "@/lib/audit";
 import { AUDIT_PAGES, pageForStep, stepForPage, questionsForPage, pageAnswersValid } from "@/lib/audit-pages";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ export function Audit() {
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [receipt, setReceipt] = useState<"scanning" | "complete" | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const workspace = useRef<HTMLDivElement>(null);
   const formStarted = useRef(false);
@@ -35,7 +37,7 @@ export function Audit() {
     if (!local.session) { setReady(true); return; }
     getAuditSession({ data: local.session }).then(r => {
       if (!active) return;
-      if (r.completed) { setS(emptyState()); return; }
+      if (r.completed) { setReceipt("complete"); return; }
       setS(cur => ({ ...cur, info: r.info, answers: { ...r.answers, ...cur.answers }, step: Object.keys(local.answers).length ? local.step : r.step }));
     }).catch(() => { if (active) setS(cur => ({ ...emptyState(), info: cur.info })); })
       .finally(() => { if (active) setReady(true); });
@@ -56,7 +58,7 @@ export function Audit() {
     setS(cur => ({ ...cur, info: { ...cur.info, [key]: value } }));
   };
   const next = async () => {
-    if (!ready || !canContinue || submitting.current) return;
+    if (!ready || !canContinue || submitting.current || receipt) return;
     submitting.current = true; setBusy(true); setError("");
     try {
       if (page === 0) {
@@ -74,10 +76,11 @@ export function Audit() {
         const toSave = isLast ? QUESTIONS.filter(q => s.answers[q.id] !== undefined) : questions;
         await Promise.all(toSave.map(q => saveAuditAnswer({ data: { ...ref, questionId: q.id, answer: s.answers[q.id] ?? "", step: nextStep } })));
         if (isLast) {
+          await submitAuditForReview({ data: ref });
           window.__lovableEvents?.track?.("project.xray_form_submitted", {});
           saveState(s);
           try { localStorage.removeItem("client-xray-diagnosis"); } catch {}
-          await nav({ to: "/results" });
+          setReceipt("scanning");
         } else setS(cur => ({ ...cur, step: nextStep }));
       }
     } catch { setError(page === 0 ? "Something went wrong. Please try again." : "We couldn't save your answers. Please check your connection and try again."); }
@@ -90,6 +93,7 @@ export function Audit() {
     else setS(cur => ({ ...cur, step: stepForPage(page - 1) }));
   };
   return <div className={`min-h-dvh bg-background xray-ambient mobile-assessment xray-topic-assessment ${page === 0 ? "assessment-contact-screen" : ""}`}>
+    {receipt && <XraySubmissionModal alreadyComplete={receipt === "complete"} />}
     <DiagnosticSweep repeat />
     <div ref={workspace} className="assessment-workspace mx-auto flex min-h-dvh max-w-3xl flex-col px-6 pb-32 pt-5 sm:pt-8">
       <header className="xray-bar flex items-center justify-between gap-3">

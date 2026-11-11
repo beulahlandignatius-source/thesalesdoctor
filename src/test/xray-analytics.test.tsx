@@ -1,12 +1,13 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ start: vi.fn(), save: vi.fn(), navigate: vi.fn(), get: vi.fn() }));
+const mocks = vi.hoisted(() => ({ start: vi.fn(), save: vi.fn(), navigate: vi.fn(), get: vi.fn(), submit: vi.fn() }));
 vi.mock("@tanstack/react-router", async (original) => ({ ...await original<typeof import("@tanstack/react-router")>(), useNavigate: () => mocks.navigate, Link: ({ children }: { children: React.ReactNode }) => <span>{children}</span> }));
-vi.mock("@/lib/audit-session.functions", () => ({ startAuditSession: mocks.start, saveAuditAnswer: mocks.save, getAuditSession: mocks.get, updateAuditInfo: vi.fn() }));
+vi.mock("@/lib/audit-session.functions", () => ({ startAuditSession: mocks.start, saveAuditAnswer: mocks.save, getAuditSession: mocks.get, updateAuditInfo: vi.fn(), submitAuditForReview: mocks.submit }));
+vi.mock("@/components/xray-submission-modal", () => ({ XraySubmissionModal: () => <div role="dialog">Receipt</div> }));
 vi.mock("@/components/diagnostic-guide", () => ({ DiagnosticGuide: () => null, DiagnosticSweep: () => null }));
 import { Audit } from "@/routes/audit";
 import { QUESTIONS } from "@/lib/audit";
-beforeEach(() => { localStorage.clear(); window.scrollTo = vi.fn(); mocks.start.mockResolvedValue({ id: "test", token: "test" }); mocks.save.mockResolvedValue({}); });
+beforeEach(() => { localStorage.clear(); window.scrollTo = vi.fn(); mocks.start.mockResolvedValue({ id: "test", token: "test" }); mocks.save.mockResolvedValue({}); mocks.submit.mockResolvedValue({ submitted: true }); });
 afterEach(() => { cleanup(); vi.resetAllMocks(); delete window.__lovableEvents; });
 describe("X-Ray form analytics", () => {
   it("counts first contact edit once without collecting contact values", () => {
@@ -34,9 +35,22 @@ describe("X-Ray form analytics", () => {
     await waitFor(() => expect(mocks.save).toHaveBeenCalled());
     if (success) {
       await waitFor(() => expect(track).toHaveBeenCalledExactlyOnceWith("project.xray_form_submitted", {}));
-      expect(mocks.navigate).toHaveBeenCalledWith({ to: "/results" });
+      expect(mocks.submit).toHaveBeenCalledOnce();
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+      expect(mocks.navigate).not.toHaveBeenCalled();
     } else {
-      await screen.findByRole("alert"); expect(track).not.toHaveBeenCalled(); expect(mocks.navigate).not.toHaveBeenCalled();
+      await screen.findByRole("alert"); expect(track).not.toHaveBeenCalled(); expect(mocks.navigate).not.toHaveBeenCalled(); expect(screen.queryByRole("dialog")).toBeNull();
     }
+  });
+  it("does not show scanning when server confirmation fails", async () => {
+    localStorage.setItem("client-xray-v2", JSON.stringify({ step: 29, session: { id: "test", token: "test" }, info: { name: "Test", email: "test@example.com", whatsapp: "123456789" }, answers: { q4: "Under $250", q5: "1–2" } }));
+    mocks.get.mockResolvedValue({ completed: false, info: { name: "Test", email: "test@example.com", whatsapp: "123456789" }, answers: {}, step: 29 });
+    mocks.submit.mockRejectedValue(new Error("Incomplete assessment"));
+    const track = vi.fn(); window.__lovableEvents = { track }; render(<Audit />);
+    await waitFor(() => expect(screen.getByRole("button", { name: "See my X-Ray" })).toBeEnabled());
+    fireEvent.click(screen.getByRole("button", { name: "See my X-Ray" }));
+    await screen.findByRole("alert");
+    expect(screen.queryByRole("dialog")).toBeNull(); expect(track).not.toHaveBeenCalled();
+    expect(JSON.parse(localStorage.getItem("client-xray-v2") ?? "{}").answers.q4).toBe("Under $250");
   });
 });

@@ -39,7 +39,8 @@ export const updateAuditInfo = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { db, session } = await verify(data.id, data.token);
     if (session.completed_at) return { ok: true };
-    await db.from("audit_sessions").update({ name: data.info.name, email: data.info.email, phone: data.info.whatsapp }).eq("id", data.id);
+    const { error } = await db.from("audit_sessions").update({ name: data.info.name, email: data.info.email, phone: data.info.whatsapp }).eq("id", data.id);
+    if (error) throw new Error("Could not save contact details");
     return { ok: true };
   });
 
@@ -59,18 +60,22 @@ export const saveAuditAnswer = createServerFn({ method: "POST" })
     }
     const idx = q.type === "scale" ? q.options.indexOf(data.answer) : -1;
     if (data.answer === "") {
-      await db.from("audit_answers").delete().eq("session_id", data.id).eq("question_id", q.id);
+      const { error } = await db.from("audit_answers").delete().eq("session_id", data.id).eq("question_id", q.id);
+      if (error) throw new Error("Could not save answer");
     } else {
-      await db.from("audit_answers").upsert(
+      const { error } = await db.from("audit_answers").upsert(
         { session_id: data.id, question_id: q.id, answer: data.answer, score: idx >= 0 ? idx + 1 : null },
         { onConflict: "session_id,question_id" });
+      if (error) throw new Error("Could not save answer");
     }
-    await db.from("audit_sessions").update({ current_step: data.step }).eq("id", data.id);
+    const { error } = await db.from("audit_sessions").update({ current_step: data.step }).eq("id", data.id);
+    if (error) throw new Error("Could not save progress");
     return { ok: true };
   });
 
 async function loadAnswers(db: Awaited<ReturnType<typeof verify>>["db"], id: string) {
-  const { data } = await db.from("audit_answers").select("question_id, answer").eq("session_id", id);
+  const { data, error } = await db.from("audit_answers").select("question_id, answer").eq("session_id", id);
+  if (error) throw new Error("Could not read saved answers");
   return Object.fromEntries((data ?? []).map((r) => [r.question_id, r.answer])) as Record<string, string>;
 }
 
@@ -96,6 +101,22 @@ export const getAuditSession = createServerFn({ method: "POST" })
     };
   });
 
+// Confirm stored answers without invoking the diagnosis engine. completed_at
+// keeps human-review submissions visible in the existing protected admin list.
+export const submitAuditForReview = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => ref.parse(d))
+  .handler(async ({ data }) => {
+    const { db, session } = await verify(data.id, data.token);
+    const answers = await loadAnswers(db, data.id);
+    const { QUESTIONS, OPTIONAL_IDS } = await import("./audit");
+    if (QUESTIONS.some(q => !OPTIONAL_IDS.has(q.id) && !answers[q.id]?.trim())) throw new Error("Incomplete assessment");
+    if (!session.completed_at) {
+      const { error } = await db.from("audit_sessions").update({ completed_at: new Date().toISOString() }).eq("id", data.id);
+      if (error) throw new Error("Could not submit assessment");
+    }
+    return { submitted: true as const };
+  });
+
 export const completeAudit = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => ref.parse(d))
   .handler(async ({ data }) => {
@@ -103,6 +124,7 @@ export const completeAudit = createServerFn({ method: "POST" })
       const { db, session } = await verify(data.id, data.token);
       const existing = await loadResult(db, data.id);
       if (existing) return { ok: true as const, ...existing };
+      if (session.completed_at) return { ok: false as const, submittedForReview: true };
       const { calculateScores } = await import("./audit");
       const { runDiagnosis, calculateSeverity } = await import("./diagnosis.server");
       const answers = await loadAnswers(db, data.id);
@@ -123,7 +145,9 @@ export const completeAudit = createServerFn({ method: "POST" })
         completed_at: new Date().toISOString(), primary_diagnosis: ai.primary_diagnosis,
         diagnosis_title: ai.diagnosis_title, severity, confidence: ai.confidence,
       }).eq("id", data.id);
-      return { ok: true as const, ...(await loadResult(db, data.id))! };
+      const result = await loadResult(db, data.id);
+      if (!result) throw new Error("Result not found");
+      return { ok: true as const, ...result };
     } catch (e) {
       console.error("complete audit failed", e);
       return { ok: false as const };
