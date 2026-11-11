@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Compact consultation questions inside fields and collapse all grouped challenges into a dropdown; verified multiple selections persist on 320px, 390px and desktop with unchanged submission tests.
 - [x] Add requested country flags and update sales figure to $135K+.
 - [x] Allow admins to edit/delete submitted and existing sample reviews, with confirmation and protected access; verified temporary record edit/delete.
 - [x] Add reversible deletion of wording/photos in the embedded page editor and verify desktop/mobile; verified deletion and restoration.

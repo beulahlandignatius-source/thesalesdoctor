@@ -92,16 +92,16 @@ function Clinic() {
           if (w) { setWho(w); window.scrollTo({ top: 0, behavior: "smooth" }); }
         }}>
           <div className="form-contact grid gap-5 sm:grid-cols-2">
-          <F label="Full name"><input name="name" required autoComplete="name" className={field} /></F>
-          <F label="Email address"><input name="email" type="email" required autoComplete="email" className={field} /></F>
-          <F label="WhatsApp number"><input name="phone" type="tel" required autoComplete="tel" placeholder="+234…" className={field} /></F>
+          <F compact label="Full name"><input name="name" required autoComplete="name" className={field} /></F>
+          <F compact label="Email address"><input name="email" type="email" required autoComplete="email" className={field} /></F>
+          <F compact label="WhatsApp number"><input name="phone" type="tel" required autoComplete="tel" placeholder="+234…" className={field} /></F>
           </div>
-          <F label="Business or brand name"><input name="business" required className={field} /></F>
-          <F label="What do you sell, and who do you sell it to?"><input name="sell" required className={field} /></F>
-          <Options name="revenue" label="Current monthly revenue" options={REVENUE} placeholder="Select a range" />
-          <Options name="target" label="Your next target" options={TARGETS} placeholder="Select your next target" />
-          <StuckPicker label="What would you like to work through? (choose as many as apply)" />
-          <F label="Anything else I should know? (optional)"><input name="notes" placeholder="One line is enough" className={field} /></F>
+          <F compact label="Business or brand name"><input name="business" required className={field} /></F>
+          <F compact label="What do you sell, and who do you sell it to?"><input name="sell" required className={field} /></F>
+          <Options compact name="revenue" label="Current monthly revenue" options={REVENUE} placeholder="Select a range" />
+          <Options compact name="target" label="Your next target" options={TARGETS} placeholder="Select your next target" />
+          <StuckPicker grouped label="What would you like to work through? (choose as many as apply)" />
+          <F compact label="Anything else I should know? (optional)"><input name="notes" placeholder="One line is enough" className={field} /></F>
           <div className="flex items-center justify-between rounded-lg bg-ink p-4 text-ink-foreground">
             <span className="font-semibold">Private Sales Clinic · 90 min</span>
             <span className="text-right text-sm"><strong className="font-display text-xl">{CLINIC_PRICE}</strong><br /><span className="opacity-70">{CLINIC_TERMS}</span></span>

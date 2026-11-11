@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import { STUCK } from "@/lib/links";
 import { submitEnquiry } from "@/lib/enquiries.functions";
 import { StackedCards } from "@/components/stacked-cards";
@@ -11,8 +11,12 @@ import logo from "@/assets/logo-transparent.png";
 
 export const field = "w-full rounded-2xl border border-input bg-card px-4 py-3.5 text-base text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
-export function F({ label, children }: { label: string; children: ReactNode }) {
+export function F({ label, children, compact = false }: { label: string; children: ReactNode; compact?: boolean }) {
   const Icon = /email/i.test(label) ? Mail : /name/i.test(label) ? (/business/i.test(label) ? Building2 : UserRound) : /whatsapp/i.test(label) ? WhatsAppIcon : /website|linkedin/i.test(label) ? Globe : /achieve|target/i.test(label) ? Target : /sell|do\?/i.test(label) ? BriefcaseBusiness : MessageSquare;
+  if (compact) return <label className={`form-field relative block ${label.length > 30 ? "[&_input]:!pt-12 [&_select]:!pt-12" : "[&_input]:!pt-8 [&_select]:!pt-8"} [&_input]:!pb-2 [&_select]:!pb-2`}>
+    <span className="pointer-events-none absolute inset-x-4 top-2.5 z-10 flex items-start gap-1.5 text-xs font-medium leading-4 text-muted-foreground"><Icon aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-primary" />{label}</span>
+    {children}
+  </label>;
   return (
     <label className="form-field block">
       <span className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-foreground"><Icon aria-hidden="true" className="h-4 w-4 shrink-0 text-primary" />{label}</span>
@@ -21,9 +25,9 @@ export function F({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-export function Options({ name, label, options, placeholder }: { name: string; label: string; options: string[]; placeholder: string }) {
+export function Options({ name, label, options, placeholder, compact = false }: { name: string; label: string; options: string[]; placeholder: string; compact?: boolean }) {
   return (
-    <F label={label}>
+    <F label={label} compact={compact}>
       <div className="relative"><select name={name} required defaultValue="" className={field + " appearance-none !pr-12"}>
         <option value="" disabled>{placeholder}</option>
         {options.map((o) => <option key={o}>{o}</option>)}
@@ -35,6 +39,8 @@ export function Options({ name, label, options, placeholder }: { name: string; l
 
 export function StuckPicker({ label, grouped = false }: { label: string; grouped?: boolean }) {
   const [sel, setSel] = useState<string[]>([]);
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
   if (grouped) {
     const groups = [
       { title: "Getting attention", options: STUCK.slice(0, 5) },
@@ -42,8 +48,12 @@ export function StuckPicker({ label, grouped = false }: { label: string; grouped
       { title: null, options: STUCK.slice(11) },
     ];
     return <fieldset className="form-choices">
-      <legend className="mb-2 text-sm font-semibold">{label}</legend>
-      <div className="rounded-2xl border border-border px-3 py-4 sm:px-5">
+      <legend className="sr-only">{label}</legend>
+      <Button type="button" variant="outline" aria-expanded={open} aria-controls={panelId} onClick={() => setOpen(!open)} className="!h-auto min-h-14 w-full !justify-between !whitespace-normal rounded-2xl border-input bg-card px-4 py-3 !text-left">
+        <span className="min-w-0"><span className="block text-sm font-medium">{label}</span>{sel.length > 0 && <span className="mt-1 block text-xs text-primary">{sel.length} selected</span>}</span>
+        <ChevronDown aria-hidden="true" className={`ml-2 h-4 w-4 shrink-0 text-primary transition-transform motion-reduce:transition-none ${open ? "rotate-180" : ""}`} />
+      </Button>
+      <div id={panelId} hidden={!open} className="mt-2 max-h-80 overflow-y-auto rounded-2xl border border-border px-3 py-4 sm:px-5">
         {groups.map((group, index) => <div key={index} className={index === 2 ? "mt-3 border-t border-border pt-3" : index > 0 ? "mt-5" : ""}>
           {group.title && <p className="mb-2 px-2 font-display text-xs font-bold uppercase text-primary">{group.title}</p>}
           <div className="space-y-1">{group.options.map(option => {

@@ -46,16 +46,16 @@ export function Free() {
           if (who) setSubmitted(true);
         }}>
           <div className="form-contact grid gap-5 sm:grid-cols-2">
-          <F label="Full name"><input name="name" required autoComplete="name" className={field} /></F>
-          <F label="Email address"><input name="email" type="email" required autoComplete="email" className={field} /></F>
-          <F label="WhatsApp number"><input name="phone" type="tel" required autoComplete="tel" placeholder="+234…" className={field} /></F>
+          <F compact label="Full name"><input name="name" required autoComplete="name" className={field} /></F>
+          <F compact label="Email address"><input name="email" type="email" required autoComplete="email" className={field} /></F>
+          <F compact label="WhatsApp number"><input name="phone" type="tel" required autoComplete="tel" placeholder="+234…" className={field} /></F>
           </div>
-          <F label="Business or brand name"><input name="business" required className={field} /></F>
-          <F label="What do you sell?"><input name="sell" required className={field} /></F>
-          <Options name="target" label="What target are you working toward?" options={TARGETS} placeholder="Select your next target" />
+          <F compact label="Business or brand name"><input name="business" required className={field} /></F>
+          <F compact label="What do you sell?"><input name="sell" required className={field} /></F>
+          <Options compact name="target" label="What target are you working toward?" options={TARGETS} placeholder="Select your next target" />
           <StuckPicker grouped label="Where are you getting stuck? (choose as many as apply)" />
-          <F label="Anything else I should know? (optional)"><input name="notes" placeholder="One line is enough" className={field} /></F>
-          <F label="Website or LinkedIn (optional)"><input name="site" placeholder="https://" className={field} /></F>
+          <F compact label="Anything else I should know? (optional)"><input name="notes" placeholder="One line is enough" className={field} /></F>
+          <F compact label="Website or LinkedIn (optional)"><input name="site" placeholder="https://" className={field} /></F>
           <FormError msg={error} />
           <Button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "BOOK MY FREE REVIEW →"}</Button>
           {privacy}

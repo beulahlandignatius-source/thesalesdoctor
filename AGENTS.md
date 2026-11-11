@@ -37,7 +37,7 @@ use the editor.
 - StackedCards supplies swipe, arrow and dot navigation for steps and reviews; shared presentation keeps the reference interaction consistent without changing photo markup.
 - Visitor and admin layout wrappers scope shared visual tokens; dashboard summaries use existing protected reads and never substitute demo counts for live data.
 - A shared ThemeProvider owns the document dark class and browser-stored theme preference; visitor and admin navigation reuse ThemeToggle so every page shares one theme.
-- Booking and mentorship forms share branded FormShell/F controls and grouped contact fields; keep original input names and submit handlers so presentation changes preserve saved data and onward journeys.
+- Booking and mentorship forms share branded FormShell/F controls and grouped contact fields; consultation fields use persistent inset labels and grouped challenges use a collapsible multi-select with hidden inputs, preserving original names and submit handlers so presentation changes preserve saved data and onward journeys.
 - Private Sales Clinic paid counts come only from signed provider notifications stored once per provider payment; browser payment clicks are intent, not proof of payment.
 - Admin site editing stores text/photo replacements in site_overrides keyed by original wording or image address, applied client-side by SiteEditor; empty text and a removed-image sentinel provide reversible deletion without changing page structure or controls.
 - Page editing controls render only in a same-origin page preview embedded in /admin/content for a verified admin; standalone visitor pages apply saved overrides without edit controls or click interception.
