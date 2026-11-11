@@ -68,7 +68,8 @@ function Index() {
       </div>
       <section className="xray-introduction relative mx-auto max-w-6xl bg-background px-6 py-16 text-foreground sm:px-10 sm:py-24">
         <Button variant="ghost" className="xray-details-toggle" aria-expanded={detailsOpen} aria-controls="xray-intro-details" onClick={() => setDetailsOpen(!detailsOpen)}>
-          This isn't a generic marketing quiz. <span aria-hidden="true">{detailsOpen ? "−" : "+"}</span>
+          <span className="xray-details-label">This isn't a generic marketing quiz.<span className="xray-details-hint">{detailsOpen ? "Tap to see less" : "Tap to see more"}</span></span>
+          <span className="xray-details-symbol" aria-hidden="true">{detailsOpen ? "−" : "+"}</span>
         </Button>
         <div id="xray-intro-details" className="xray-intro-details">
         <p className="eyebrow flex items-center gap-2"><Activity className="h-4 w-4" /> Diagnosis</p>

@@ -1336,3 +1336,46 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .assessment-contact-screen .field { margin-top: .125rem; height: 44px; }
   .assessment-contact-screen .assessment-workspace { padding-bottom: 0; }
 }
+
+/* Phone diagnostic editorial: restrained frames, clear steps, one contact screen. */
+@media (max-width: 639px) {
+  .xray-fixed-opening { padding-inline: 1.125rem; }
+  .xray-fixed-opening .studio-hero { border-radius: 0; background: var(--background); box-shadow: none; border-bottom: 1px solid var(--border); }
+  .xray-fixed-opening .studio-image { height: 72px; width: 110px; left: auto; right: 0; border-radius: .5rem; opacity: .85; }
+  .xray-fixed-opening .studio-content { padding: 76px 0 1rem; }
+  .xray-fixed-opening .studio-content .eyebrow { padding: 0; background: transparent; border-radius: 0; font-size: .625rem; }
+  .visitor-pages .xray-fixed-opening h1 { font-size: 2rem; line-height: 1.15; color: var(--foreground); margin-top: .75rem; }
+  .visitor-pages .xray-fixed-opening .studio-content h2 { font-size: 1.125rem; line-height: 1.4; color: var(--foreground); font-weight: 500; }
+  .xray-fixed-opening .studio-content p { color: var(--muted-foreground); }
+  .xray-fixed-opening .studio-content p:last-child { font-size: .6875rem; }
+  .xray-fixed-opening .studio-content a { justify-content: space-between; padding-inline: 1.25rem; }
+  .xray-fixed-opening .xray-welcome { padding-block: .75rem; }
+  .xray-fixed-opening .guide-speech { border: 0; background: var(--cream); border-radius: .5rem; padding: .75rem; }
+  .xray-fixed-opening .guide-featured .guide-portrait { width: 3.75rem; height: 3.75rem; }
+  .xray-details-toggle { padding: .75rem 0; gap: .75rem; border-bottom: 1px solid var(--border); align-items: center; }
+  .xray-details-label { display: block; min-width: 0; font-family: var(--font-display); font-weight: 600; line-height: 1.4; }
+  .xray-details-hint { display: block; margin-top: .25rem; font-family: var(--font-sans); font-size: .6875rem; font-weight: 400; color: var(--muted-foreground); }
+  .xray-details-symbol { display: grid; place-items: center; width: 2rem; height: 2rem; flex-shrink: 0; background: var(--blush); color: var(--primary); border-radius: 50%; font-size: 1.25rem; }
+  .xray-fixed-opening .xray-intro-details { padding-block: 1rem; }
+  .xray-fixed-opening:not(.xray-details-open) { display: flex; flex-direction: column; }
+  .xray-fixed-opening:not(.xray-details-open) .xray-introduction { margin-top: auto; }
+  .xray-fixed-opening .guide-scan-track { display: none; }
+  .assessment-contact-screen .assessment-workspace { padding-inline: 1.125rem; }
+  .assessment-contact-screen .assessment-question { border-top: 1px solid var(--border); padding-top: .75rem; margin-top: .5rem; }
+  .assessment-contact-screen .field { border-radius: .5rem; background: var(--background); border: 1px solid var(--input); box-shadow: none; }
+  .assessment-contact-screen .field:focus { border-color: var(--primary); outline: 2px solid color-mix(in oklab,var(--primary) 15%,transparent); }
+  .assessment-contact-screen .assessment-question h1 { margin-bottom: .75rem; }
+  .assessment-contact-screen .assessment-actions { background: var(--background); border-top: 0; }
+  .assessment-contact-screen .assessment-actions > div { padding-inline: 1.125rem; }
+  .assessment-contact-screen .xray-bar > a { font-size: .75rem; text-transform: uppercase; }
+}
+@media (max-width: 639px) and (max-height: 700px) {
+  .xray-fixed-opening .studio-content { padding-top: 40px; padding-bottom: .75rem; }
+  .xray-fixed-opening .studio-image { height: 40px; width: 85px; }
+  .visitor-pages .xray-fixed-opening h1 { font-size: 1.75rem; margin-top: .5rem; }
+  .xray-fixed-opening .xray-welcome { padding-block: .5rem; }
+  .xray-fixed-opening .guide-featured .guide-portrait { width: 2.75rem; height: 2.75rem; }
+  .xray-fixed-opening .guide-speech { padding: .5rem; }
+  .assessment-contact-screen .assessment-question { padding-top: .375rem; margin-top: .25rem; }
+  .assessment-contact-screen .assessment-question h1 { margin-bottom: .375rem; }
+}
