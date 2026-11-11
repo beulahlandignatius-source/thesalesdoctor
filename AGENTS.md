@@ -34,6 +34,7 @@ use the editor.
 - Admin access = Cloud email/password sign-in plus a row in admin_users; there is no public admin signup.
 - src/lib/backend/* are thin re-exports of the generated Cloud clients/middleware so the imported X-Ray code keeps its imports.
 - Reviews use an insert-only public server function with validation and default pending status; public reads expose only published rows. Existing sample reviews live in the same table with stable source keys for bundled avatars; authenticated admin-checked functions edit/delete through RLS so every review has one authoritative record.
+- Stock review portraits are mapped only to existing sample source keys through the shared headshot collection; preserve client-uploaded photos and label sample cards to avoid attributing testimonials to stock models.
 - StackedCards supplies swipe, arrow and dot navigation for steps and reviews; shared presentation keeps the reference interaction consistent without changing photo markup.
 - Visitor and admin layout wrappers scope shared visual tokens; dashboard summaries use existing protected reads and never substitute demo counts for live data.
 - A shared ThemeProvider owns the document dark class and browser-stored theme preference; visitor and admin navigation reuse ThemeToggle so every page shares one theme.
