@@ -19,3 +19,8 @@ export const questionsForPage = (page: number) => (AUDIT_PAGES[page]?.ids ?? [])
 export const pageForStep = (step: number) => step <= 0 ? 0 : Math.max(1, AUDIT_PAGES.findIndex(page => page.ids.includes(QUESTIONS[Math.min(step, QUESTIONS.length) - 1]?.id ?? "")));
 export const stepForPage = (page: number) => page === 0 ? 0 : QUESTIONS.findIndex(q => q.id === AUDIT_PAGES[page]?.ids[0]) + 1;
 export const pageAnswersValid = (page: number, answers: Record<string, string>) => questionsForPage(page).every(q => OPTIONAL_IDS.has(q.id) || !!answers[q.id]?.trim());
+
+export function stageProgress(page: number) {
+  const completed = Math.max(0, Math.min(page, AUDIT_PAGES.length));
+  return { percent: Math.round(completed / AUDIT_PAGES.length * 100), remaining: AUDIT_PAGES.length - completed };
+}

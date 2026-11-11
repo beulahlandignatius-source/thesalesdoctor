@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { startAuditSession, updateAuditInfo, saveAuditAnswer, getAuditSession, submitAuditForReview } from "@/lib/audit-session.functions";
 import { XraySubmissionModal } from "@/components/xray-submission-modal";
 import { QUESTIONS, loadState, saveState, emptyState, type AuditState, type BasicInfo } from "@/lib/audit";
-import { AUDIT_PAGES, pageForStep, stepForPage, questionsForPage, pageAnswersValid } from "@/lib/audit-pages";
+import { AUDIT_PAGES, pageForStep, stepForPage, questionsForPage, pageAnswersValid, stageProgress } from "@/lib/audit-pages";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, ScanLine } from "lucide-react";
 import { DiagnosticGuide, DiagnosticSweep } from "@/components/diagnostic-guide";
@@ -48,6 +48,7 @@ export function Audit() {
   const topic = AUDIT_PAGES[page] ?? AUDIT_PAGES[0];
   const questions = questionsForPage(page);
   const isLast = page === AUDIT_PAGES.length - 1;
+  const progress = stageProgress(receipt ? AUDIT_PAGES.length : page);
   const infoValid = !!s.info.name.trim() && /^\S+@\S+\.\S+$/.test(s.info.email.trim()) && s.info.whatsapp.replace(/\D/g, "").length >= 7;
   const canContinue = page === 0 ? infoValid : pageAnswersValid(page, s.answers);
   useEffect(() => {
@@ -100,9 +101,6 @@ export function Audit() {
         <Link to="/xray" className="flex items-center gap-2 font-display text-sm font-semibold text-primary"><ScanLine className="h-4 w-4" /> Client X-Ray</Link>
         <span className="text-xs font-semibold tabular-nums text-muted-foreground">Stage {page + 1} of {AUDIT_PAGES.length}</span>
       </header>
-      <div role="progressbar" aria-label="Assessment progress" aria-valuemin={1} aria-valuemax={AUDIT_PAGES.length} aria-valuenow={page + 1} aria-valuetext={`Stage ${page + 1} of ${AUDIT_PAGES.length}: ${topic.title}`} className="xray-topic-progress mt-5 flex gap-1.5">
-        {AUDIT_PAGES.map((stage, index) => <span key={stage.title} className={`h-1 flex-1 rounded-full transition-colors duration-300 ${index <= page ? "bg-primary" : "bg-muted"}`} />)}
-      </div>
       <div key={page} className="assessment-question mt-8 animate-in fade-in duration-300">
         <p className="eyebrow">{page === 0 ? "Before we begin" : `Business examination · ${String(page + 1).padStart(2, "0")}`}</p>
         <h1 ref={heading} tabIndex={-1} className="mt-3 font-display text-3xl font-semibold leading-tight sm:text-4xl">{topic.title}</h1>
@@ -125,6 +123,16 @@ export function Audit() {
     </div>
     <div className="assessment-actions fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/95 backdrop-blur">
       <div className="mx-auto max-w-3xl px-5 pb-3 pt-3">
+        <div className="mb-3" aria-live="polite" aria-atomic="true">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 text-xs">
+            <p className="min-w-0 truncate font-semibold text-foreground">{topic.title} <span className="font-normal text-muted-foreground">· {page + 1}/{AUDIT_PAGES.length}</span></p>
+            <span className="shrink-0 font-semibold tabular-nums text-primary">{progress.percent}% complete</span>
+          </div>
+          <div role="progressbar" aria-label="Assessment progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress.percent} aria-valuetext={`${progress.percent}% complete. Stage ${page + 1} of ${AUDIT_PAGES.length}: ${topic.title}. ${progress.remaining} stages remaining including this one.`} className="mt-2 flex gap-1.5">
+            {AUDIT_PAGES.map((stage, index) => <span key={stage.title} className={`h-1.5 min-w-0 flex-1 rounded-full transition-colors motion-reduce:transition-none ${index < page || receipt ? "bg-primary" : index === page ? "bg-primary/35" : "bg-muted"}`} />)}
+          </div>
+          <p className="mt-1.5 text-xs text-muted-foreground">{receipt ? "All stages submitted" : isLast ? "Final stage" : `${progress.remaining} stages remaining, including this one`}</p>
+        </div>
         {error && <p role="alert" className="mb-3 text-sm text-destructive">{error}</p>}
         <div className="flex items-center gap-3">
           <Button onClick={back} variant="outline" disabled={busy} className="h-12 shrink-0"><ArrowLeft className="h-4 w-4" /> Back</Button>

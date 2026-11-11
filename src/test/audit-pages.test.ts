@@ -1,7 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { QUESTIONS } from "@/lib/audit";
-import { AUDIT_PAGES, pageForStep, stepForPage, pageAnswersValid } from "@/lib/audit-pages";
+import { AUDIT_PAGES, pageForStep, stepForPage, pageAnswersValid, stageProgress } from "@/lib/audit-pages";
 describe("Six topic stages", () => {
+  it("reports completed topic stages and includes the current stage in what remains", () => {
+    expect(stageProgress(0)).toEqual({ percent: 0, remaining: 6 });
+    expect(stageProgress(1)).toEqual({ percent: 17, remaining: 5 });
+    expect(stageProgress(3)).toEqual({ percent: 50, remaining: 3 });
+    expect(stageProgress(5)).toEqual({ percent: 83, remaining: 1 });
+    expect(stageProgress(6)).toEqual({ percent: 100, remaining: 0 });
+  });
   it("has six pages and preserves every existing question exactly once", () => {
     expect(AUDIT_PAGES).toHaveLength(6);
     const ids = AUDIT_PAGES.flatMap(p => p.ids);
