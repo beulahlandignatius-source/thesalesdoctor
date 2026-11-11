@@ -1,10 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { HeartPulse, Brain, Stethoscope, Rocket, Users, Megaphone, Quote, Linkedin } from "lucide-react";
+import { HeartPulse, Brain, Stethoscope, Megaphone, Quote, Linkedin } from "lucide-react";
 import { btnClass, ExtLink } from "@/components/site";
 import { LINKS } from "@/lib/links";
 import blushJacket from "@/assets/dr-dan-blush-jacket.jpg";
 import { useMotionFx } from "@/components/motion";
 import { SALES_CLOSED_LABEL } from "@/lib/sales-figures";
+import enskiLogo from "@/assets/enski-logo.png.asset.json";
+import credenceLogo from "@/assets/credence-logo.png.asset.json";
+import dreamersTrybeLogo from "@/assets/dreamers-trybe-logo.png.asset.json";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -27,9 +30,9 @@ const STORY = [
   { icon: Stethoscope, title: "A doctor, twice over", body: "In 2026 I was inducted as a medical doctor. Around here, they also call me The Sales Doctor, and both jobs share one goal." },
 ];
 const BUILT = [
-  { icon: Rocket, title: "Enski", body: "Founder. A platform connecting people who know things with people who need to learn them, reaching 1,000+ learners and hundreds of creators." },
-  { icon: Megaphone, title: "Credence", body: "Chief Marketing Officer. Helped build the agency from the ground up with a vision of becoming Africa’s largest marketing agency." },
-  { icon: Users, title: "Dreamers Trybe", body: "Co-founder. A community on a mission to empower 50,000 people, with 2,600+ members and 20+ landing high-paying roles in its first weeks." },
+  { logo: enskiLogo.url, title: "Enski", body: "Founder. A platform connecting people who know things with people who need to learn them, reaching 1,000+ learners and hundreds of creators." },
+  { logo: credenceLogo.url, title: "Credence", body: "Chief Marketing Officer. Helped build the agency from the ground up with a vision of becoming Africa’s largest marketing agency." },
+  { logo: dreamersTrybeLogo.url, title: "Dreamers Trybe", body: "Co-founder. A community on a mission to empower 50,000 people, with 2,600+ members and 20+ landing high-paying roles in its first weeks." },
 ];
 
 function About() {
@@ -60,7 +63,10 @@ function About() {
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 md:grid-cols-[1fr_1.4fr] md:items-center">
         <div><Quote className="h-10 w-10 text-primary" aria-hidden="true" /><p className="mt-6 font-display text-3xl font-black leading-tight md:text-4xl">“A good doctor’s goal is a patient who no longer needs them.”</p>
           <p className="mt-6 opacity-70">That’s why I became The Sales Doctor. Every brand that walks in almost dead should leave standing on its own, with a system that keeps working after I leave.</p></div>
-        <div className="grid gap-4">{BUILT.map((b) => { const Icon = b.icon; return <div key={b.title} className="principle-tile flex gap-4"><span className="service-icon shrink-0"><Icon className="h-5 w-5" /></span><div><h3 className="font-display text-lg font-bold">{b.title}</h3><p className="mt-1 text-sm opacity-70">{b.body}</p></div></div>; })}</div>
+        <div className="grid gap-4">{BUILT.map((b) => <div key={b.title} className="principle-tile flex flex-col items-start gap-4 sm:flex-row">
+          <span className="flex h-16 w-40 shrink-0 items-center justify-center rounded-lg bg-ink-foreground px-3 py-2"><img src={b.logo} alt={`${b.title} logo`} width={136} height={48} className="h-12 w-full !rounded-none object-contain" /></span>
+          <div className="min-w-0"><h3 className="font-display text-lg font-bold">{b.title}</h3><p className="mt-1 text-sm opacity-70">{b.body}</p></div>
+        </div>)}</div>
       </div>
     </section>
 
