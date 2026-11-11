@@ -37,7 +37,7 @@ export function Audit() {
     if (!local.session) { setReady(true); return; }
     getAuditSession({ data: local.session }).then(r => {
       if (!active) return;
-      if (r.completed) { setReceipt("complete"); return; }
+      if (r.completed) { void nav({ to: "/xray/complete", replace: true }); return; }
       setS(cur => ({ ...cur, info: r.info, answers: { ...r.answers, ...cur.answers }, step: Object.keys(local.answers).length ? local.step : r.step }));
     }).catch(() => { if (active) setS(cur => ({ ...emptyState(), info: cur.info })); })
       .finally(() => { if (active) setReady(true); });
@@ -93,7 +93,7 @@ export function Audit() {
     else setS(cur => ({ ...cur, step: stepForPage(page - 1) }));
   };
   return <div className={`min-h-dvh bg-background xray-ambient mobile-assessment xray-topic-assessment ${page === 0 ? "assessment-contact-screen" : ""}`}>
-    {receipt && <XraySubmissionModal alreadyComplete={receipt === "complete"} />}
+    {receipt && <XraySubmissionModal onComplete={() => { void nav({ to: "/xray/complete", replace: true }); }} />}
     <DiagnosticSweep repeat />
     <div ref={workspace} className="assessment-workspace mx-auto flex min-h-dvh max-w-3xl flex-col px-6 pb-32 pt-5 sm:pt-8">
       <header className="xray-bar flex items-center justify-between gap-3">

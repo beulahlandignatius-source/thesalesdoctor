@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import logo from "@/assets/logo-transparent.png";
 import { loadState } from "@/lib/audit";
 import { buildBookingUrl } from "@/lib/booking";
+import { z } from "zod";
+import { callPurposeLabel } from "@/lib/xray-booking";
 
 export const Route = createFileRoute("/xray/book")({
   ssr: false,
+  validateSearch: z.object({ purpose: z.enum(["visibility", "conversion", "engine", "review"]).optional().catch(undefined) }),
   head: () => ({
     meta: [
       { title: "Book Your Client Acquisition Review | The Sales Doctor" },
@@ -26,6 +29,7 @@ export const Route = createFileRoute("/xray/book")({
 });
 
 function Book() {
+  const { purpose } = Route.useSearch();
   const [src, setSrc] = useState<string | null>(null);
   const [diag, setDiag] = useState<{ title: string; severity: string } | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -34,7 +38,7 @@ function Book() {
     const s = loadState();
     let title = "",
       severity = "";
-    try {
+    if (!purpose) try {
       const r = JSON.parse(localStorage.getItem("client-xray-diagnosis") ?? "null");
       if (r) {
         title = r.diagnosis_title;
@@ -48,6 +52,7 @@ function Book() {
       business: s.answers["q1"] ?? "",
       diagnosis: title,
       severity,
+      purpose: callPurposeLabel(purpose),
     });
     if (url) {
       const u = new URL(url);
@@ -56,14 +61,14 @@ function Book() {
       u.searchParams.set("hide_gdpr_banner", "1");
       setSrc(u.toString());
     }
-  }, []);
+  }, [purpose]);
 
   return (
     <div className="min-h-dvh bg-background px-4 pb-10 pt-5">
       <div className="mx-auto max-w-3xl">
         <header className="flex items-center justify-between pr-14">
           <Link
-            to="/results"
+            to={purpose ? "/xray/complete" : "/results"}
             className="inline-flex min-h-11 items-center text-sm text-muted-foreground"
           >
             ← Back to my X-Ray
@@ -75,13 +80,14 @@ function Book() {
           <p className="eyebrow">Client Acquisition Review with Dr. Dan</p>
           <h1 className="mt-3 font-display text-4xl font-bold text-foreground">Choose a time</h1>
           <p className="mx-auto mt-2 max-w-md text-muted-foreground">
-            Your details and X-Ray result are already filled in, so you only need to pick a slot.
+            {purpose ? "Your contact details and call purpose come with you. Choose a time that suits you." : "Your details and X-Ray result are already filled in, so you only need to pick a slot."}
           </p>
           {diag && (
             <p className="mt-4 inline-block rounded-full border border-border bg-card px-4 py-1.5 text-sm text-foreground">
               {diag.title} · <span className="font-semibold text-primary">{diag.severity}</span>
             </p>
           )}
+          {purpose && <p className="mt-4 text-sm font-medium text-primary">{callPurposeLabel(purpose)}</p>}
         </div>
 
         <div className="relative mt-8 overflow-hidden rounded-[2rem] border border-border bg-card">

@@ -10,6 +10,13 @@ import { QUESTIONS } from "@/lib/audit";
 beforeEach(() => { localStorage.clear(); window.scrollTo = vi.fn(); mocks.start.mockResolvedValue({ id: "test", token: "test" }); mocks.save.mockResolvedValue({}); mocks.submit.mockResolvedValue({ submitted: true }); });
 afterEach(() => { cleanup(); vi.resetAllMocks(); delete window.__lovableEvents; });
 describe("X-Ray form analytics", () => {
+  it("takes an already submitted session to its completion page without replaying the scanner", async () => {
+    localStorage.setItem("client-xray-v2", JSON.stringify({ step: 29, session: { id: "test", token: "test" }, info: { name: "Test", email: "test@example.com", whatsapp: "123456789" }, answers: {} }));
+    mocks.get.mockResolvedValue({ completed: true });
+    render(<Audit />);
+    await waitFor(() => expect(mocks.navigate).toHaveBeenCalledWith({ to: "/xray/complete", replace: true }));
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
   it("counts first contact edit once without collecting contact values", () => {
     const track = vi.fn(); window.__lovableEvents = { track }; render(<Audit />);
     fireEvent.change(screen.getByLabelText("Your name"), { target: { value: "Test" } });

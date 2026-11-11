@@ -32,6 +32,7 @@ import { Route as BookFreeRouteImport } from './routes/book.free'
 import { Route as BookScheduleRouteImport } from './routes/book.schedule'
 import { Route as XrayIndexRouteImport } from './routes/xray.index'
 import { Route as XrayBookRouteImport } from './routes/xray.book'
+import { Route as XrayCompleteRouteImport } from './routes/xray.complete'
 import { Route as ApiPublicPaymentsFlutterwaveRouteImport } from './routes/api/public/payments/flutterwave'
 import { Route as ApiPublicPaymentsStripeRouteImport } from './routes/api/public/payments/stripe'
 
@@ -150,6 +151,11 @@ const XrayBookRoute = XrayBookRouteImport.update({
   path: '/xray/book',
   getParentRoute: () => rootRouteImport,
 } as any)
+const XrayCompleteRoute = XrayCompleteRouteImport.update({
+  id: '/xray/complete',
+  path: '/xray/complete',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicPaymentsFlutterwaveRoute =
   ApiPublicPaymentsFlutterwaveRouteImport.update({
     id: '/api/public/payments/flutterwave',
@@ -183,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/book/free': typeof BookFreeRoute
   '/book/schedule': typeof BookScheduleRoute
   '/xray/book': typeof XrayBookRoute
+  '/xray/complete': typeof XrayCompleteRoute
   '/admin/': typeof AdminIndexRoute
   '/book/': typeof BookIndexRoute
   '/xray/': typeof XrayIndexRoute
@@ -209,6 +216,7 @@ export interface FileRoutesByTo {
   '/book/free': typeof BookFreeRoute
   '/book/schedule': typeof BookScheduleRoute
   '/xray/book': typeof XrayBookRoute
+  '/xray/complete': typeof XrayCompleteRoute
   '/admin': typeof AdminIndexRoute
   '/book': typeof BookIndexRoute
   '/xray': typeof XrayIndexRoute
@@ -237,6 +245,7 @@ export interface FileRoutesById {
   '/book/free': typeof BookFreeRoute
   '/book/schedule': typeof BookScheduleRoute
   '/xray/book': typeof XrayBookRoute
+  '/xray/complete': typeof XrayCompleteRoute
   '/admin/': typeof AdminIndexRoute
   '/book/': typeof BookIndexRoute
   '/xray/': typeof XrayIndexRoute
@@ -266,6 +275,7 @@ export interface FileRouteTypes {
     | '/book/free'
     | '/book/schedule'
     | '/xray/book'
+    | '/xray/complete'
     | '/admin/'
     | '/book/'
     | '/xray/'
@@ -292,6 +302,7 @@ export interface FileRouteTypes {
     | '/book/free'
     | '/book/schedule'
     | '/xray/book'
+    | '/xray/complete'
     | '/admin'
     | '/book'
     | '/xray'
@@ -319,6 +330,7 @@ export interface FileRouteTypes {
     | '/book/free'
     | '/book/schedule'
     | '/xray/book'
+    | '/xray/complete'
     | '/admin/'
     | '/book/'
     | '/xray/'
@@ -340,6 +352,7 @@ export interface RootRouteChildren {
   BookFreeRoute: typeof BookFreeRoute
   BookScheduleRoute: typeof BookScheduleRoute
   XrayBookRoute: typeof XrayBookRoute
+  XrayCompleteRoute: typeof XrayCompleteRoute
   BookIndexRoute: typeof BookIndexRoute
   XrayIndexRoute: typeof XrayIndexRoute
   ApiPublicPaymentsFlutterwaveRoute: typeof ApiPublicPaymentsFlutterwaveRoute
@@ -509,6 +522,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof XrayBookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/xray/complete': {
+      id: '/xray/complete'
+      path: '/xray/complete'
+      fullPath: '/xray/complete'
+      preLoaderRoute: typeof XrayCompleteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/payments/flutterwave': {
       id: '/api/public/payments/flutterwave'
       path: '/api/public/payments/flutterwave'
@@ -564,6 +584,7 @@ const rootRouteChildren: RootRouteChildren = {
   BookFreeRoute: BookFreeRoute,
   BookScheduleRoute: BookScheduleRoute,
   XrayBookRoute: XrayBookRoute,
+  XrayCompleteRoute: XrayCompleteRoute,
   BookIndexRoute: BookIndexRoute,
   XrayIndexRoute: XrayIndexRoute,
   ApiPublicPaymentsFlutterwaveRoute: ApiPublicPaymentsFlutterwaveRoute,

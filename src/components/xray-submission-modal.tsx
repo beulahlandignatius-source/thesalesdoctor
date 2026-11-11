@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Link } from "@tanstack/react-router";
-import { Activity, ArrowUpRight, Check, ScanLine, Target, TrendingUp, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Activity, Check, ScanLine, Target, TrendingUp, Users } from "lucide-react";
 import doctor from "@/assets/mascot-examining.png";
 import positive from "@/assets/mascot-positive.png";
 
 const messages = ["Receiving your business information...", "Examining your business structure...", "Reviewing your sales process...", "Checking potential growth bottlenecks...", "Preparing your examination report..."];
 
 /** Receipt animation only. Mount exclusively after server-confirmed submission. */
-export function XraySubmissionModal({ alreadyComplete = false }: { alreadyComplete?: boolean }) {
+export function XraySubmissionModal({ alreadyComplete = false, onComplete }: { alreadyComplete?: boolean; onComplete: () => void }) {
   const [progress, setProgress] = useState(alreadyComplete ? 100 : 0);
   const complete = progress >= 100;
+  useEffect(() => { if (complete) onComplete(); }, [complete, onComplete]);
   useEffect(() => {
     if (alreadyComplete) return;
     const start = performance.now();
@@ -40,7 +39,7 @@ export function XraySubmissionModal({ alreadyComplete = false }: { alreadyComple
               <p role="status" aria-live="polite" className="xray-machine-message">{messages[Math.min(4, Math.floor(progress / 20))]}</p>
               <div className="flex items-center justify-between text-xs text-muted-foreground"><span>Submission receipt</span><span>{Math.round(progress)}%</span></div>
               <div role="progressbar" aria-label="Submission receipt animation" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress)} className="xray-machine-progress"><span style={{ width: `${progress}%` }} /></div>
-            </div> : <Button asChild variant="premium" size="lg" className="mt-8"><Link to="/">Return to the website <ArrowUpRight className="h-5 w-5" /></Link></Button>}
+            </div> : null}
           </div>
         </div>
         <footer className="xray-machine-footer"><span>THE SALES CLINIC</span><span>{complete ? "Next: personal review by Dr. Dan’s team" : "Securely received · No answers lost"}</span></footer>
