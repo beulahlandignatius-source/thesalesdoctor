@@ -16,7 +16,7 @@ export function XrayTopicQuestion({ question: q, answer, busy, onAnswer }: { que
     </> : !multi ? <div className="mt-3">
       <Select value={answer} onValueChange={onAnswer} disabled={busy}>
         <SelectTrigger aria-labelledby={`heading-${q.id}`} className="min-h-12 h-auto whitespace-normal bg-background py-3 text-left [&>span]:line-clamp-none"><SelectValue placeholder="Choose your answer" /></SelectTrigger>
-        <SelectContent position="popper" className="max-w-[calc(100vw-2.5rem)]">
+        <SelectContent position="popper" className="xray-topic-select max-w-[calc(100vw-2.5rem)]">
           {q.options.map(option => <SelectItem key={option} value={option} className="min-h-11 whitespace-normal py-3">{option}</SelectItem>)}
         </SelectContent>
       </Select>

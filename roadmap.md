@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Refine mobile X-Ray portrait/scan framing and readable question controls; verified all six topics with long answers at 320/360/390/411/480px, tablet/desktop and real phone submission through report readiness.
 - [x] Add fresh X-Ray retry from opening/results/completion without changing previous submissions; verified blank contact, distinct real saved sessions, reload and retry at phone/desktop sizes.
 - [x] Made scanner 92–94% viewport height with completion in the same modal, deliberate report handoff and interactive findings navigation; verified real submissions and downloaded PDF at phone and desktop sizes.
 - [x] Redesign only the X-Ray opening with the existing Dr. Dan photo, brand-matched scan composition and expandable introduction; preserved copy and form destinations, verified 320/411/820/1280px.

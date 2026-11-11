@@ -1496,18 +1496,19 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 .xray-photo-opening .xray-introduction { padding-block: 1rem 3rem; }
 @media (max-width: 639px) {
   .xray-photo-opening { padding-top: 0; }
-  .xray-photo-hero { min-height: 0; height: max(370px, calc(100dvh - 275px)); }
-  .xray-photo-subject { width: 100%; object-position: center 20%; }
-  .xray-photo-shade { background: linear-gradient(0deg, var(--ink) 0%, color-mix(in oklab, var(--ink) 88%, transparent) 38%, color-mix(in oklab, var(--ink) 12%, transparent) 75%); }
-  .xray-photo-copy { display: flex; align-items: end; height: 100%; padding: 1rem 1.125rem 1.5rem; }
+  .xray-photo-hero { min-height: 490px; height: auto; }
+  .xray-photo-subject { width: 100%; height: 300px; inset: 0 0 auto; object-position: center 12%; }
+  .xray-photo-shade { background: linear-gradient(0deg, var(--ink) 0%, var(--ink) 36%, color-mix(in oklab, var(--ink) 65%, transparent) 51%, transparent 72%); }
+  .xray-photo-copy { display: flex; align-items: end; min-width: 0; height: auto; padding: 230px 1.125rem 1.5rem; }
+  .xray-photo-copy > div { min-width: 0; width: 100%; }
   .visitor-pages .xray-photo-opening h1 { font-size: 1.875rem; color: var(--ink-foreground); }
   .visitor-pages .xray-photo-opening .xray-photo-copy h2 { font-size: 1rem; font-weight: 500; line-height: 1.4; color: var(--ink-foreground); margin-top: .5rem; }
   .xray-photo-description { font-size: .8125rem; line-height: 1.5; margin-top: .5rem; }
   .xray-photo-copy .eyebrow { font-size: .625rem; }
   .xray-photo-copy a { margin-top: .75rem; }
-  .xray-photo-meta { font-size: .625rem; gap: .5rem .75rem; margin-top: .75rem; }
+  .xray-photo-meta { font-size: .75rem; gap: .5rem .75rem; margin-top: .75rem; }
   .xray-photo-meta svg { width: 12px; height: 12px; }
-  .xray-photo-instrument { width: 65px; height: 65px; top: 1rem; right: 1rem; bottom: auto; }
+  .xray-photo-instrument { width: 52px; height: 52px; top: 1rem; right: .75rem; bottom: auto; pointer-events: none; }
   .xray-photo-opening .xray-welcome { margin: 0; padding: .75rem 1.125rem; }
   .xray-photo-opening .guide-featured { flex-direction: row; gap: .5rem; }
   .xray-photo-opening .guide-featured .guide-portrait { width: 3.5rem; height: 3.5rem; flex-basis: auto; flex-shrink: 0; }
@@ -1516,5 +1517,19 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .xray-photo-opening .guide-message { font-size: .75rem; }
   .xray-photo-opening .xray-introduction { padding: 0 1.125rem 1rem; }
   .xray-photo-opening .xray-intro-details { padding-block: 1rem; }
+  .xray-topic-assessment .xray-bar { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .5rem; }
+  .xray-topic-assessment .xray-bar > a { min-width: 0; }
+  .xray-topic-assessment .xray-bar > span, .xray-topic-assessment .xray-bar svg { flex-shrink: 0; }
+  .xray-topic-assessment .assessment-workspace { scrollbar-gutter: stable; scroll-padding-block: 1rem; padding-bottom: 1.5rem; }
+  .xray-topic-assessment .xray-topic-question { padding-block: 1rem; min-inline-size: 0; }
+  .xray-topic-assessment .xray-topic-question legend { font-size: .9375rem; line-height: 1.5; }
+  .xray-topic-assessment .xray-topic-question textarea { height: auto; min-height: 80px; font-size: 1rem; }
+  .xray-topic-assessment .xray-topic-question [role="combobox"] { width: 100%; min-width: 0; min-height: 48px; font-size: 1rem; gap: .5rem; }
+  .xray-topic-assessment .xray-topic-question [role="combobox"] > span { min-width: 0; overflow-wrap: anywhere; }
+  .xray-topic-assessment .xray-topic-question summary { min-height: 48px; overflow-wrap: anywhere; line-height: 1.5; }
+  .xray-topic-select { max-height: min(360px, var(--radix-select-content-available-height)); }
+  .xray-topic-select [role="option"] { min-height: 48px; font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; }
+  .xray-topic-assessment .assessment-actions { background: var(--background); }
+  .xray-topic-assessment .assessment-actions > div { padding-bottom: .75rem; }
 }
 @media (prefers-reduced-motion: reduce) { .xray-photo-beam { animation: none; top: 50%; } }
