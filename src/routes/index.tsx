@@ -140,7 +140,7 @@ function Index() {
             <div key={n} className={`hero-stat hero-stat-${i + 1}`} style={{ ["--i" as string]: i }}>
               <span className="hero-stat-dot" aria-hidden="true" />
               <dt className="font-display text-[clamp(1.6rem,6vw,4.5rem)] font-black leading-none">{n}</dt>
-              <dd className="mt-2 text-[11px] md:text-sm">{l}{i === 2 && <CountryFlags />}</dd>
+              <dd className="mt-2 text-[11px] md:text-sm">{l}{i === 2 ? <CountryFlags /> : <span className="hero-stat-symbol" aria-hidden="true">{i === 0 ? <BadgeDollarSign /> : <Users />}</span>}</dd>
             </div>
           ))}
         </dl>

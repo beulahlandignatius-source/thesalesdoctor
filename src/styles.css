@@ -436,6 +436,20 @@ main img:hover { transform: scale(1.015); }
 .hero-stat-1 { background: var(--primary); color: var(--primary-foreground); }
 .hero-stat-2 { background: var(--blush); color: var(--foreground); }
 .hero-stat-3 { background: var(--ink); color: var(--ink-foreground); }
+.hero-stat-symbol { display: flex; align-items: center; height: 2.5rem; margin-top: .75rem; }
+.hero-stat-symbol svg { height: 2rem; width: 2rem; stroke-width: 1.5; }
+.country-flags { display: block; max-width: 100%; min-width: 0; height: 2.5rem; margin-top: .75rem; overflow: hidden; border-radius: .35rem; mask-image: linear-gradient(to right, transparent, var(--ink) 8%, var(--ink) 92%, transparent); }
+.country-flags-track { display: flex; width: max-content; height: 100%; animation: country-flags-scroll 45s linear infinite; }
+.country-flags-group { display: flex; flex-shrink: 0; align-items: center; gap: .65rem; padding-right: .65rem; }
+.country-flag { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 2rem; font-size: 1.65rem; line-height: 1; }
+.country-flags:hover .country-flags-track, .country-flags:focus .country-flags-track { animation-play-state: paused; }
+.country-flags:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+@keyframes country-flags-scroll { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .country-flags { overflow-x: auto; }
+  .country-flags-track { animation: none; }
+  .country-flags-group[aria-hidden="true"] { display: none; }
+}
 .farmora-home .hero-stat-1 dt { color: inherit !important; }
 .session-questions { display: grid; gap: 1rem; }
 .session-question { padding: 1.5rem; border-radius: 2rem .75rem 2rem 2rem; background: var(--surface-soft); border: 1px solid var(--border); transition: transform .3s, box-shadow .3s; }
