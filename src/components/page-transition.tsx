@@ -25,12 +25,18 @@ export function PageTransition({ children }: { children: ReactNode }) {
         duration: PAGE_TRANSITION.duration, easing: PAGE_TRANSITION.easing,
       }));
       const offset = direction === "backward" ? -PAGE_TRANSITION.distance : direction === "forward" ? PAGE_TRANSITION.distance : 0;
-      const candidates = Array.from(element.querySelectorAll<HTMLElement>("h1, main > section > h2, main > section > p, .studio-content h2, .studio-content p, main > section > figure"))
+      const phoneXray = window.matchMedia("(max-width: 639px)").matches && element.querySelector(".xray-fixed-opening, .mobile-assessment, .xray-preparing, .results-workspace");
+      // Phone X-Ray reveals whole content groups, not their nested headings twice.
+      // Scroll hosts and the action bar stay untransformed and immediately usable.
+      const selector = phoneXray
+        ? ".xray-fixed-opening .studio-content, .xray-welcome, .xray-details-toggle, .assessment-guide, .assessment-question, .xray-preparing > div"
+        : "h1, main > section > h2, main > section > p, .studio-content h2, .studio-content p, main > section > figure";
+      const candidates = Array.from(element.querySelectorAll<HTMLElement>(selector))
         .filter(node => { const rect = node.getBoundingClientRect(); return rect.width > 0 && rect.bottom > 0 && rect.top < window.innerHeight; })
         .slice(0, 8);
       candidates.forEach((node, order) => {
         animations.push(node.animate([
-          { opacity: .75, translate: `${offset}px 6px` },
+          { opacity: phoneXray ? .9 : .75, translate: `${phoneXray ? offset / 2 : offset}px ${phoneXray ? 4 : 6}px` },
           { opacity: 1, translate: "0px 0px" },
         ], {
           duration: PAGE_TRANSITION.revealDuration,

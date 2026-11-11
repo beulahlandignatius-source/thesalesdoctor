@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Restore the original logo splash and verify subtle reduced-motion-aware phone X-Ray transitions through contact, assessment and real scanning.
 - [x] Add tap-to-expand wording, refine phone X-Ray presentation, and verify introduction/contact sizing and validation across common phones.
 - [x] Remove opening/contact 1–3 pagers; verify fixed introduction and three contact fields on phones without changing larger screens.
 - [x] Make phone X-Ray pages screen-by-screen without losing content; preserve tablet/desktop and verify real assessment/results.
