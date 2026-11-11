@@ -1273,6 +1273,10 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .results-workspace .scan-complete .scan-doctor { height: 9rem; }
   .results-workspace .scan-complete .scan-doctor img { width: 8rem; height: 10rem; }
   .results-workspace .scan-complete .scan-route { display: block; }
+  .results-workspace .diagnostic-treatment .diagnostic-guide { display: none; }
+  .results-workspace .diagnostic-treatment p { font-size: .8125rem; line-height: 1.45; margin-top: .5rem; }
+  .visitor-pages .results-workspace .diagnostic-treatment h2 { font-size: 1.05rem; margin-top: .75rem; }
+  .results-workspace .diagnostic-treatment a { margin-top: .75rem; }
   .results-workspace .diagnostic-finding::before { display: none; }
   .results-workspace .diagnostic-treatment { padding: 1rem; }
   .clinic-splash-scene { height: 12rem; gap: .5rem; }

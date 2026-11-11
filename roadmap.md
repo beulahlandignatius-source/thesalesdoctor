@@ -1,6 +1,6 @@
 # Roadmap
-- [ ] Make phone X-Ray pages screen-by-screen without losing content; preserve tablet/desktop and verify real assessment/results.
-- [ ] Add mascot-led business scanning tied to real preparation status and a Sales Clinic dashboard/lifeline splash.
+- [x] Make phone X-Ray pages screen-by-screen without losing content; preserve tablet/desktop and verify real assessment/results.
+- [x] Add mascot-led business scanning tied to real preparation status and a Sales Clinic dashboard/lifeline splash.
 - [x] Reduce oversized visitor text and card spacing below 640px; verify 14 visitor pages at nine phone widths, unchanged tablet/desktop sizing, and consultation/X-Ray controls.
 - [x] Save personal enquiry/payment filter views in Cloud and verify save, recall, rename, delete and persistence on desktop/mobile.
 - [x] Add global admin search across enquiries, confirmed payments, payment screenshots and reviews; verify real enquiry navigation on desktop and mobile (payment/review tables currently have no matching records).
