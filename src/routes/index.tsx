@@ -8,7 +8,7 @@ import { Words, useMotionFx } from "@/components/motion";
 import { JourneyLine } from "@/components/journey-line";
 import { MascotCharacter } from "@/components/mascot-character";
 import { CalendarDays, ClipboardList, TrendingUp, BadgeDollarSign, Users, Globe2, Target, Zap, HeartPulse, Stethoscope, Wrench, Search, Activity, ArrowUpRight } from "lucide-react";
-import desk from "@/assets/dr-dan-desk.jpg";
+import desk from "@/assets/dr-dan-desk-clean.png";
 import portrait from "@/assets/dr-dan-portrait.jpg.asset.json";
 import standing from "@/assets/dr-dan-standing.jpg.asset.json";
 
@@ -226,7 +226,7 @@ function Index() {
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">If you want me working with you directly, on your outreach, your sales conversations, your follow-up and your offers, until winning clients is a skill you own, this is for you.</p>
             <figure className="relative mt-10 md:-mr-24">
               <div className="overflow-hidden">
-                <img src={desk} alt="Dr. Dan at his desk beside a Sales Dr. sash" className="aspect-[16/10] w-full object-cover" />
+                <img src={desk} alt="Dr. Dan seated at his desk with a stethoscope" className="aspect-[16/10] w-full object-cover" />
               </div>
               <blockquote className="relative -mt-10 ml-4 bg-ink p-6 text-ink-foreground md:-mt-24 md:ml-auto md:w-[78%] md:p-8">
                 <span className="absolute -top-7 left-5 font-display text-7xl leading-none text-primary" aria-hidden="true">“</span>
