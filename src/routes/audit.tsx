@@ -217,7 +217,7 @@ function Audit() {
 
   return (
     <div className={`min-h-dvh bg-background xray-ambient mobile-assessment ${step === 0 ? "assessment-contact-screen" : ""}`}>
-      <DiagnosticSweep />
+      <DiagnosticSweep repeat />
       <div className="assessment-workspace mx-auto flex min-h-dvh max-w-xl flex-col px-6 pb-32 pt-5 sm:pt-8">
         <header className="xray-bar flex items-center justify-between pr-14">
           <Button

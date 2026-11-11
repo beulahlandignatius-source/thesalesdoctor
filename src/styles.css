@@ -970,9 +970,19 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 .guide-scan-track { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--border); overflow: hidden; }
 .guide-scan-track span { display: block; height: 100%; width: 25%; background: var(--primary); animation: guide-track 3s linear infinite; }
 .guide-device-indicator { position: absolute; right: 22%; top: 24%; width: .4rem; height: .4rem; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 12%, transparent); animation: xray-ping 1.6s infinite; }
-.diagnostic-sweep { position: fixed; inset: 0; z-index: 15; pointer-events: none; overflow: hidden; }
+.diagnostic-sweep { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.mobile-assessment { position: relative; isolation: isolate; }
+.mobile-assessment .assessment-workspace { position: relative; z-index: 1; }
 .diagnostic-sweep span { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--primary); box-shadow: -10px 0 30px color-mix(in oklab, var(--primary) 20%, transparent); animation: diagnostic-scan 1.5s .3s ease-in-out both; }
 .sweep-repeat span { animation: diagnostic-scan 3.5s ease-in-out infinite; }
+.xray-brand-banner { background: var(--blush); }
+.xray-banner-symbol { position: absolute; right: 8%; top: 18%; width: 17rem; height: 17rem; border-radius: 2rem .75rem 2rem 2rem; background: var(--primary); color: var(--primary-foreground); display: grid; place-items: center; }
+.xray-banner-scanner { position: absolute; width: 75%; height: 75%; stroke-width: 1; }
+.xray-banner-chart { width: 38%; height: 38%; stroke-width: 1.5; }
+@media (min-width: 640px) and (max-width: 1023px) { .xray-banner-symbol { right: 4%; width: 10rem; height: 10rem; top: 2rem; opacity: .3; } }
+@media (max-width: 639px) {
+  .xray-fixed-opening .xray-banner-symbol { top: 0; right: 0; height: 64px; width: 100px; border-radius: 1rem .4rem 1rem 1rem; }
+}
 .diagnostic-finding { position: relative; animation: finding-reveal .7s ease both; }
 .diagnostic-finding::before { content: ""; position: absolute; left: -.8rem; top: -2rem; height: 2rem; width: .7rem; border-left: 1px solid var(--primary); border-bottom: 1px solid var(--primary); border-bottom-left-radius: .65rem; opacity: .5; }
 .diagnostic-finding:nth-of-type(1) { animation-delay: .15s; }

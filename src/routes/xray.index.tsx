@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import studio from "@/assets/diagnostic-studio.jpg";
-import { ArrowUpRight, Activity, Stethoscope, ScanSearch, Target } from "lucide-react";
+import { ArrowUpRight, Activity, Stethoscope, ScanSearch, ScanLine, ChartNoAxesCombined, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DiagnosticGuide } from "@/components/diagnostic-guide";
 import { useState } from "react";
@@ -30,26 +29,20 @@ function Index() {
   const [detailsOpen, setDetailsOpen] = useState(false);
   return (
     <div className={`xray-opening xray-fixed-opening min-h-dvh bg-background ${detailsOpen ? "xray-details-open" : ""}`}>
-      <section className="studio-hero relative isolate mx-3 mt-3 overflow-hidden rounded-[2rem] shadow-sm sm:mx-6 sm:rounded-[2.5rem]">
-        <img
-          src={studio}
-          alt=""
-          width={1536}
-          height={1024}
-          className="studio-image !rounded-none absolute inset-0 -z-10 h-full w-full object-cover"
-        />
+      <section className="studio-hero xray-brand-banner relative isolate mx-3 mt-3 overflow-hidden rounded-[2rem] shadow-sm sm:mx-6 sm:rounded-[2.5rem]">
+        <div className="xray-banner-symbol" aria-hidden="true"><ScanLine className="xray-banner-scanner" /><ChartNoAxesCombined className="xray-banner-chart" /></div>
         <div className="studio-content mx-auto max-w-6xl px-6 pb-9 sm:px-10">
           <div className="max-w-lg">
             <p className="eyebrow flex items-center gap-2">
               <Activity className="h-4 w-4" /> The Sales Doctor
             </p>
-            <h1 className="mt-3 font-display text-[40px] font-bold leading-tight text-studio-foreground sm:mt-4 sm:text-6xl">
+            <h1 className="mt-3 font-display text-[40px] font-bold leading-tight text-foreground sm:mt-4 sm:text-6xl">
               The Client <span className="whitespace-nowrap">X-Ray</span>
             </h1>
-            <h2 className="mt-3 text-xl font-medium text-studio-foreground sm:mt-4 sm:text-2xl">
+            <h2 className="mt-3 text-xl font-medium text-foreground sm:mt-4 sm:text-2xl">
               Why Aren't You Getting More Clients?
             </h2>
-            <p className="mt-3 max-w-sm text-base leading-relaxed text-studio-muted">
+            <p className="mt-3 max-w-sm text-base leading-relaxed text-muted-foreground">
               See exactly what's stopping you from getting consistent clients.
             </p>
             <Button asChild variant="premium" size="lg" className="mt-5 w-full sm:mt-7 sm:w-auto">
@@ -57,7 +50,7 @@ function Index() {
                 Get my X-Ray <ArrowUpRight className="ml-3 h-5 w-5" />
               </Link>
             </Button>
-            <p className="mt-4 text-xs text-studio-muted sm:mt-5">
+            <p className="mt-4 text-xs text-muted-foreground sm:mt-5">
               5–8 minutes · Free · Personalized diagnosis
             </p>
           </div>
