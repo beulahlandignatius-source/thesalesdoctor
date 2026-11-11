@@ -1166,8 +1166,7 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 .mobile-xray-controls, .mobile-option-controls, .phone-business-scan { display: none; }
 .xray-details-toggle { display: none; }
 .result-opening-screen > * + * { margin-top: 2rem; }
-.results-workspace > .mobile-xray-deck { display: block; }
-.results-workspace .mobile-xray-page > section { margin-top: 2rem; }
+.results-workspace > .results-content { display: block; }
 .business-scan { width: 100%; color: var(--foreground); }
 .scan-doctor { position: relative; height: 7rem; display: flex; justify-content: center; align-items: center; gap: .5rem; overflow: hidden; }
 .scan-doctor img { width: 7rem; height: 9rem; object-fit: contain; align-self: start; border-radius: 0; animation: scan-head 650ms ease both; }
@@ -1243,9 +1242,7 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .desktop-business-scan { display: none; }
   .xray-preparing { min-height: 0; height: calc(100dvh - 105px); overflow: auto; padding-block: 1rem; }
   .xray-preparing > div > img { display: none; }
-  .results-workspace { padding: 0; min-height: 0; }
-  .results-workspace > .mobile-xray-deck { display: flex; }
-  .results-workspace .mobile-xray-page > section { margin-top: 0; }
+  .results-workspace { padding: 0 .875rem 2rem; min-height: 0; }
   .results-workspace .result-opening-screen > img, .results-workspace .result-opening-screen > .diagnostic-guide { display: none; }
   .results-workspace .result-opening-screen > * + * { margin-top: .75rem; }
   .results-workspace .scan-doctor { height: 4rem; }
@@ -1257,7 +1254,6 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .results-workspace .diagnostic-result-title .mt-6 { margin-top: .5rem; }
   .results-workspace .diagnostic-finding { padding: 1rem .25rem; }
   .results-workspace .diagnostic-finding, .results-workspace .diagnostic-evidence { animation-delay: 0s; }
-  .results-workspace .mobile-xray-page { animation: guide-arrive .25s ease both; }
   .results-workspace .scan-complete .scan-doctor { height: 9rem; }
   .results-workspace .scan-complete .scan-doctor img { width: 8rem; height: 10rem; }
   .results-workspace .scan-complete .scan-route { display: block; }
@@ -1371,7 +1367,7 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 @media (max-width: 639px) {
   .mobile-assessment .assessment-question,
   .phone-business-scan .business-scan,
-  .results-workspace .mobile-xray-page,
+  .results-workspace .result-opening-screen,
   .xray-fixed-opening.xray-details-open .xray-intro-details {
     animation: phone-xray-arrive 280ms cubic-bezier(.22,1,.36,1) both;
   }
@@ -1381,6 +1377,6 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .mobile-assessment .assessment-question,
   .mobile-assessment .assessment-guide,
   .phone-business-scan .business-scan,
-  .results-workspace .mobile-xray-page,
+  .results-workspace .result-opening-screen,
   .xray-fixed-opening.xray-details-open .xray-intro-details { animation: none; }
 }

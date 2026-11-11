@@ -17,7 +17,6 @@ import { buildDiagnosisReport } from "@/lib/diagnosis-report";
 import { deliverFile } from "@/lib/download";
 import { DiagnosticGuide, DiagnosticSweep } from "@/components/diagnostic-guide";
 import { BusinessScan } from "@/components/business-scan";
-import { MobileXrayDeck } from "@/components/mobile-xray-deck";
 
 export const Route = createFileRoute("/results")({
   head: () => ({
@@ -131,7 +130,7 @@ function ResultView({ r }: { r: Result }) {
   const section = "diagnostic-finding border-t border-border pt-8";
   return (
     <div className="results-workspace min-h-dvh bg-background px-6 pb-10 pt-10">
-      <MobileXrayDeck className="mx-auto max-w-3xl space-y-8">
+      <div className="results-content mx-auto max-w-3xl space-y-8">
         <div className="phone-business-scan"><BusinessScan complete /></div>
         <div className="result-opening-screen">
         <img src={logo} alt="The Sales Doctor" className="mx-auto w-28" />
@@ -216,7 +215,7 @@ function ResultView({ r }: { r: Result }) {
             </Button>
           )}
         </section>
-      </MobileXrayDeck>
+      </div>
     </div>
   );
 }
