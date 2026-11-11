@@ -12,7 +12,7 @@ import { reviewSchema } from "@/lib/reviews";
 
 export const reviewsQuery = queryOptions({ queryKey: ["public-reviews"], queryFn: () => publicReviews(), staleTime: 60_000 });
 
-export function ClientReviews({ existing }: { existing: string[][] }) {
+export function ClientReviews() {
   const { data } = useSuspenseQuery(reviewsQuery);
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
@@ -20,10 +20,7 @@ export function ClientReviews({ existing }: { existing: string[][] }) {
   const [done, setDone] = useState(false);
   const [error, setError] = useState("");
   const save = useServerFn(submitReview);
-  const cards = [
-    ...existing.map(([body, name, role, photo]) => ({ body, name, role, rating: null as number | null, photoUrl: (photo ?? null) as string | null })),
-    ...data,
-  ];
+  const cards = data.map(r => ({ ...r, rating: r.source_key ? null : r.rating }));
   return <div className="mt-16 grid items-center gap-12 md:grid-cols-2">
     <div className="reviews-intro">
       <p className="eyebrow">Reviews</p>

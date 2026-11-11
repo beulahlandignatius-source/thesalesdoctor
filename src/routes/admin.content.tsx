@@ -33,7 +33,12 @@ function ContentAdmin() {
     const { error } = await supabase.from("site_overrides").upsert({ kind: "text", original: original.replace(/\s+/g, " ").trim(), replacement: replacement.replace(/\s+/g, " ").trim(), updated_at: new Date().toISOString() }, { onConflict: "kind,original" });
     setMsg(error ? "Couldn't save. Please try again." : "Saved. Visitors see it on their next visit."); await load();
   };
-  const remove = async (id: string) => { await supabase.from("site_overrides").delete().eq("id", id); await load(); };
+  const remove = async (id: string) => {
+    if (!window.confirm("Restore the original content and remove this change?")) return;
+    const { error } = await supabase.from("site_overrides").delete().eq("id", id);
+    setMsg(error ? "Couldn't restore this content. Please try again." : "Original content restored.");
+    if (!error) { setPreview(false); await load(); }
+  };
 
   return <div className="admin-page admin-editor-page space-y-8">
     <header className="flex flex-wrap items-end justify-between gap-4">
@@ -47,7 +52,7 @@ function ContentAdmin() {
         <label className="flex items-center gap-2 text-sm font-semibold">Page<select aria-label="Page to edit" value={page} onChange={e => setPage(e.target.value)} className="rounded-lg border border-border bg-background px-3 py-2 text-foreground">{EDIT_PAGES.map(([path, label]) => <option key={path} value={path}>{label}</option>)}</select></label>
         <Button variant="premium" onClick={() => setPreview(!preview)}><PenLine />{preview ? "Close page editor" : "Edit page"}</Button>
       </div>
-      {preview && <iframe key={page} src={page} title="Website page editor" className="h-[75dvh] min-h-96 w-full rounded-lg border border-border bg-background" />}
+      {preview && <iframe key={page} src={page} title="Website page editor" className="h-[60dvh] w-full rounded-lg border border-border bg-background md:h-[75dvh] md:min-h-96" />}
     </section>
 
     <section className="dashboard-card rounded-3xl border border-border bg-card p-5">
@@ -75,8 +80,9 @@ function EditRow({ row, onSave, onRemove }: { row: Row; onSave: (o: string, r: s
   return <li className="rounded-3xl border border-border bg-card p-4">
     <div className="flex items-start justify-between gap-3">
       <p className="text-xs text-muted-foreground">{row.kind === "image" ? <span className="inline-flex items-center gap-1"><ImageIcon className="h-3.5 w-3.5" /> Photo swapped</span> : <>Was: {row.original}</>}</p>
-      <button type="button" aria-label="Undo this change" onClick={() => onRemove(row.id)} className="shrink-0 rounded-full p-2 text-muted-foreground hover:bg-muted hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
+      <Button type="button" variant="ghost" size="icon" aria-label="Restore original content" title="Restore original content" onClick={() => onRemove(row.id)} className="shrink-0 text-muted-foreground"><Trash2 className="h-4 w-4" /></Button>
     </div>
+    {(row.replacement === "" || row.replacement === "__removed_image__") && <p className="mt-2 text-sm text-destructive">Deleted from the website. Restore the original using the button above.</p>}
     {row.kind === "text" && <div className="mt-2 flex flex-col gap-2 sm:flex-row"><textarea value={v} onChange={(e) => setV(e.target.value)} rows={2} className="min-w-0 flex-1 rounded-2xl border border-border bg-background p-3 text-sm" />
       <Button variant="outline" disabled={v === row.replacement || !v.trim()} onClick={() => onSave(row.original, v)}>Update</Button></div>}
   </li>;

@@ -1,4 +1,7 @@
 # Roadmap
+- [x] Add requested country flags and update sales figure to $135K+.
+- [x] Allow admins to edit/delete submitted and existing sample reviews, with confirmation and protected access; verified temporary record edit/delete.
+- [x] Add reversible deletion of wording/photos in the embedded page editor and verify desktop/mobile; verified deletion and restoration.
 - [x] Restore continuous phone results scrolling, preserving the compact contact form, existing assessment, and separate Calendly page; verify with real results.
 - [x] Restore the original logo splash and verify subtle reduced-motion-aware phone X-Ray transitions through contact, assessment and real scanning.
 - [x] Add tap-to-expand wording, refine phone X-Ray presentation, and verify introduction/contact sizing and validation across common phones.

@@ -4,6 +4,7 @@ import { btnClass, ExtLink } from "@/components/site";
 import { LINKS } from "@/lib/links";
 import blushJacket from "@/assets/dr-dan-blush-jacket.jpg";
 import { useMotionFx } from "@/components/motion";
+import { SALES_CLOSED_LABEL } from "@/lib/sales-figures";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/about")({
   component: About,
 });
 
-const STATS = [["$127K+", "in sales closed for clients and brands"], ["128+", "sales processes audited"], ["30+", "brands and clients served"], ["50+", "students closed their first high-ticket client"]];
+const STATS = [[SALES_CLOSED_LABEL, "in sales closed for clients and brands"], ["128+", "sales processes audited"], ["30+", "brands and clients served"], ["50+", "students closed their first high-ticket client"]];
 const STORY = [
   { icon: Brain, title: "The brain came first", body: "For years I dreamed of becoming a neurosurgeon. I spent countless hours learning neuroscience, psychology and why humans behave the way they do." },
   { icon: Megaphone, title: "Then marketing clicked", body: "I realised I could apply everything I knew about people to selling, positioning and business. It worked, for my clients and for me." },

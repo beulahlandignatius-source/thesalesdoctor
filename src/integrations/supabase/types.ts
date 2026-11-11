@@ -238,6 +238,7 @@ export type Database = {
           rating: number
           role: string
           screenshot_path: string | null
+          source_key: string | null
           status: string
         }
         Insert: {
@@ -249,6 +250,7 @@ export type Database = {
           rating: number
           role?: string
           screenshot_path?: string | null
+          source_key?: string | null
           status?: string
         }
         Update: {
@@ -260,6 +262,7 @@ export type Database = {
           rating?: number
           role?: string
           screenshot_path?: string | null
+          source_key?: string | null
           status?: string
         }
         Relationships: []

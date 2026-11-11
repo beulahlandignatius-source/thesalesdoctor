@@ -2,7 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { reviewSubmitSchema } from "./reviews";
+import { adminReviewEditSchema, reviewSubmitSchema } from "./reviews";
+import { existingTestimonials } from "./existing-reviews";
 
 export const submitReview = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => reviewSubmitSchema.parse(input))
@@ -34,7 +35,7 @@ export const publicReviews = createServerFn({ method: "GET" }).handler(async () 
     headers.set("apikey", key);
     return fetch(input, { ...init, headers });
   } } });
-  const { data, error } = await sb.from("client_reviews").select("id,name,role,rating,body,photo_path,screenshot_path").eq("status", "published").order("created_at", { ascending: false }).limit(100);
+  const { data, error } = await sb.from("client_reviews").select("id,name,role,rating,body,photo_path,screenshot_path,source_key").eq("status", "published").order("created_at", { ascending: false }).limit(100);
   if (error) throw new Error("Reviews are unavailable.");
   return signMedia(data ?? []);
 });
@@ -68,5 +69,30 @@ async function signMedia<T extends { photo_path: string | null; screenshot_path:
     const { data } = await supabaseAdmin.storage.from("review-media").createSignedUrls(paths, 3600);
     for (const d of data ?? []) if (d.path && d.signedUrl) urls.set(d.path, d.signedUrl);
   }
-  return rows.map(({ photo_path, screenshot_path, ...r }) => ({ ...r, photoUrl: photo_path ? urls.get(photo_path) ?? null : null, screenshotUrl: screenshot_path ? urls.get(screenshot_path) ?? null : null }));
+  return rows.map(({ photo_path, screenshot_path, ...r }) => {
+    const sourceKey = "source_key" in r && typeof r.source_key === "string" ? r.source_key : "";
+    const sample = existingTestimonials.find(([, name]) => `existing:${name}` === sourceKey);
+    return { ...r, photoUrl: photo_path ? urls.get(photo_path) ?? null : sample?.[3] ?? null, screenshotUrl: screenshot_path ? urls.get(screenshot_path) ?? null : null };
+  });
 }
+
+export const editReview = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => adminReviewEditSchema.parse(input))
+  .handler(async ({ context, data }) => {
+    const { data: allowed, error: authError } = await context.supabase.rpc("is_admin", { _user_id: context.userId });
+    if (authError || !allowed) throw new Error("Forbidden");
+    const { id, ...changes } = data;
+    const { data: row, error } = await context.supabase.from("client_reviews").update(changes).eq("id", id).select("id").single();
+    if (error || !row) throw new Error("Couldn’t save this review.");
+    return { ok: true };
+  });
+
+export const deleteReview = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+  .handler(async ({ context, data }) => {
+    const { data: allowed, error: authError } = await context.supabase.rpc("is_admin", { _user_id: context.userId });
+    if (authError || !allowed) throw new Error("Forbidden");
+    const { data: row, error } = await context.supabase.from("client_reviews").delete().eq("id", data.id).select("id").single();
+    if (error || !row) throw new Error("Couldn’t delete this review.");
+    return { ok: true };
+  });

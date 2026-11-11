@@ -3,12 +3,13 @@ export type OverrideRow = { kind: string; original: string; replacement: string 
 export type Maps = { text: Map<string, string>; image: Map<string, string> };
 
 export const norm = (s: string) => s.replace(/\s+/g, " ").trim();
+export const REMOVED_IMAGE = "__removed_image__";
 
 export function buildMaps(rows: OverrideRow[], imageUrl: (path: string) => string | undefined): Maps {
   const text = new Map<string, string>(); const image = new Map<string, string>();
   for (const r of rows) {
     if (r.kind === "text") text.set(norm(r.original), r.replacement);
-    else { const u = imageUrl(r.replacement); if (u) image.set(r.original, u); }
+    else { const u = r.replacement === REMOVED_IMAGE ? REMOVED_IMAGE : imageUrl(r.replacement); if (u) image.set(r.original, u); }
   }
   return { text, image };
 }
@@ -37,6 +38,7 @@ export function applyAll(root: HTMLElement, maps: Maps) {
     if (img.closest("[data-no-edit]")) return;
     const orig = img.dataset["origSrc"] ?? img.getAttribute("src") ?? "";
     const next = maps.image.get(orig);
+    if (next === REMOVED_IMAGE) { img.dataset["origSrc"] = orig; img.hidden = true; return; }
     if (next && img.getAttribute("src") !== next) { img.dataset["origSrc"] = orig; img.removeAttribute("srcset"); img.setAttribute("src", next); }
   });
 }

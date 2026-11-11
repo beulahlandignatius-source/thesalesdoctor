@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouterState, useNavigate } from "@tanstack/react-router";
-import { Pencil, X, ImageUp, Check, RotateCcw } from "lucide-react";
+import { Pencil, X, ImageUp, Check, RotateCcw, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { backend as supabase } from "@/lib/backend/client";
-import { applyAll, buildMaps, norm, originalText, type Maps, type OverrideRow } from "@/lib/site-content/engine";
+import { applyAll, buildMaps, norm, originalText, REMOVED_IMAGE, type Maps, type OverrideRow } from "@/lib/site-content/engine";
 import { getSiteOverrides } from "@/lib/site-content/overrides.functions";
 import { canShowPageEditor } from "@/lib/site-content/editor-scope";
 
@@ -112,8 +113,18 @@ export function SiteEditor() {
 
   const resetImage = async () => {
     if (!target) return; setBusy(true);
-    await supabase.from("site_overrides").delete().eq("kind", "image").eq("original", target.original);
+    const { error } = await supabase.from("site_overrides").delete().eq("kind", "image").eq("original", target.original);
+    if (error) { setBusy(false); setErr("Couldn't restore the photo. Please try again."); return; }
     window.location.reload();
+  };
+
+  const deleteContent = async () => {
+    if (!target || !window.confirm(`Delete this ${target.kind === "text" ? "wording" : "photo"}? You can restore it under Your changes in the dashboard.`)) return;
+    setBusy(true); setErr("");
+    const { error } = await supabase.from("site_overrides").upsert({ kind: target.kind, original: target.original, replacement: target.kind === "text" ? "" : REMOVED_IMAGE, updated_at: new Date().toISOString() }, { onConflict: "kind,original" });
+    setBusy(false);
+    if (error) return setErr("Couldn't delete this content. Please try again.");
+    setTarget(null); await load();
   };
 
   return <div data-no-edit>
@@ -140,6 +151,7 @@ export function SiteEditor() {
           <label className="site-editor-btn mt-4 w-full cursor-pointer justify-center"><ImageUp className="h-4 w-4" /> {busy ? "Uploading…" : "Upload new photo"}<input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => saveImage(e.target.files?.[0])} /></label>
           <button type="button" onClick={resetImage} className="site-editor-btn site-editor-ghost mt-2 w-full justify-center"><RotateCcw className="h-4 w-4" /> Use original photo</button>
         </>}
+        <Button variant="destructive" disabled={busy} className="mt-3 w-full" onClick={deleteContent}><Trash2 />Delete {target.kind === "text" ? "wording" : "photo"}</Button>
         {err && <p role="alert" className="mt-3 text-sm text-destructive">{err}</p>}
       </div>
     </div>}

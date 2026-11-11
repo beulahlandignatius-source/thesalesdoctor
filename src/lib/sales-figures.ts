@@ -1,0 +1,2 @@
+export const SALES_CLOSED_USD = 135_000;
+export const SALES_CLOSED_LABEL = `$${SALES_CLOSED_USD / 1000}K+`;

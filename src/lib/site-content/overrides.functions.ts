@@ -6,7 +6,7 @@ export const getSiteOverrides = createServerFn({ method: "GET" }).handler(async 
   const { data, error } = await supabaseAdmin.from("site_overrides").select("kind, original, replacement").limit(2000);
   if (error) { console.error("site overrides read failed", error); return { rows: [], urls: {} as Record<string, string> }; }
   const rows = (data ?? []).map((r) => ({ kind: r.kind, original: r.original, replacement: r.replacement }));
-  const paths = rows.filter((r) => r.kind === "image").map((r) => r.replacement);
+  const paths = rows.filter((r) => r.kind === "image" && r.replacement !== "__removed_image__").map((r) => r.replacement);
   const urls: Record<string, string> = {};
   if (paths.length) {
     const { data: signed } = await supabaseAdmin.storage.from("site-media").createSignedUrls(paths, 60 * 60);
