@@ -10,11 +10,18 @@ import { QUESTIONS } from "@/lib/audit";
 beforeEach(() => { localStorage.clear(); window.scrollTo = vi.fn(); mocks.start.mockResolvedValue({ id: "test", token: "test" }); mocks.save.mockResolvedValue({}); mocks.submit.mockResolvedValue({ submitted: true }); });
 afterEach(() => { cleanup(); vi.resetAllMocks(); delete window.__lovableEvents; });
 describe("X-Ray form analytics", () => {
+  it("preserves saved answers when reconnecting fails", async () => {
+    localStorage.setItem("client-xray-v2", JSON.stringify({ step: 1, session: { id: "test", token: "test" }, info: { name: "Test", email: "test@example.com", whatsapp: "123456789" }, answers: { q1: "Consulting" } }));
+    mocks.get.mockRejectedValue(new Error("offline"));
+    render(<Audit />);
+    await screen.findByRole("alert");
+    expect(JSON.parse(localStorage.getItem("client-xray-v2") ?? "{}").answers.q1).toBe("Consulting");
+  });
   it("takes an already submitted session to its completion page without replaying the scanner", async () => {
     localStorage.setItem("client-xray-v2", JSON.stringify({ step: 29, session: { id: "test", token: "test" }, info: { name: "Test", email: "test@example.com", whatsapp: "123456789" }, answers: {} }));
     mocks.get.mockResolvedValue({ completed: true });
     render(<Audit />);
-    await waitFor(() => expect(mocks.navigate).toHaveBeenCalledWith({ to: "/xray/complete", replace: true }));
+    await waitFor(() => expect(mocks.navigate).toHaveBeenCalledWith({ to: "/results", replace: true }));
     expect(screen.queryByRole("dialog")).toBeNull();
   });
   it("counts first contact edit once without collecting contact values", () => {

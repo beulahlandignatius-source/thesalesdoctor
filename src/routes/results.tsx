@@ -17,6 +17,7 @@ import { buildDiagnosisReport } from "@/lib/diagnosis-report";
 import { deliverFile } from "@/lib/download";
 import { DiagnosticGuide, DiagnosticSweep } from "@/components/diagnostic-guide";
 import { BusinessScan } from "@/components/business-scan";
+import { XrayCallPurpose } from "@/components/xray-call-purpose";
 
 export const Route = createFileRoute("/results")({
   head: () => ({
@@ -117,6 +118,7 @@ function Results() {
 }
 
 function ResultView({ r }: { r: Result }) {
+  const [booking, setBooking] = useState(false);
   const s = loadState();
   const serious = r.severity === "HIGH" || r.severity === "CRITICAL";
   const url = buildBookingUrl({
@@ -206,9 +208,7 @@ function ResultView({ r }: { r: Result }) {
             and decide what needs to change first.
           </p>
           {url ? (
-            <Button asChild variant="premium" className="mt-6 w-full">
-              <Link to="/xray/book">BOOK WITH DR. DAN</Link>
-            </Button>
+            booking ? <XrayCallPurpose /> : <Button variant="premium" className="mt-6 w-full" onClick={() => setBooking(true)}>BOOK WITH DR. DAN</Button>
           ) : (
             <Button variant="premium" disabled className="mt-6 w-full">
               BOOK WITH DR. DAN

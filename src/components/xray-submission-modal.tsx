@@ -34,7 +34,7 @@ export function XraySubmissionModal({ alreadyComplete = false, onComplete }: { a
           <div className="xray-machine-copy">
             <p className="text-xs font-semibold text-primary">{complete ? "SUBMISSION CONFIRMED" : "YOUR BUSINESS · IN FOCUS"}</p>
             <Dialog.Title className="xray-machine-title">{complete ? "Your X-Ray is Complete!" : "Your business, ready for a closer look."}</Dialog.Title>
-            <Dialog.Description className="xray-machine-description">{complete ? "Your business examination has been successfully submitted. Dr. Dan and the team will review your information and get back to you with the next steps." : "Your responses are saved for Dr. Dan and the team. This visual receipt does not generate a diagnosis or score."}</Dialog.Description>
+            <Dialog.Description className="xray-machine-description">{complete ? "Your business examination has been successfully submitted. Your X-Ray report is next." : "Your responses are saved. Your examination report will be prepared from your answers after this submission receipt."}</Dialog.Description>
             {!complete ? <div className="xray-machine-status">
               <p role="status" aria-live="polite" className="xray-machine-message">{messages[Math.min(4, Math.floor(progress / 20))]}</p>
               <div className="flex items-center justify-between text-xs text-muted-foreground"><span>Submission receipt</span><span>{Math.round(progress)}%</span></div>

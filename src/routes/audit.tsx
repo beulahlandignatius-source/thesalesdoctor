@@ -37,9 +37,9 @@ export function Audit() {
     if (!local.session) { setReady(true); return; }
     getAuditSession({ data: local.session }).then(r => {
       if (!active) return;
-      if (r.completed) { void nav({ to: "/xray/complete", replace: true }); return; }
+      if (r.completed) { void nav({ to: "/results", replace: true }); return; }
       setS(cur => ({ ...cur, info: r.info, answers: { ...r.answers, ...cur.answers }, step: Object.keys(local.answers).length ? local.step : r.step }));
-    }).catch(() => { if (active) setS(cur => ({ ...emptyState(), info: cur.info })); })
+    }).catch(() => { if (active) setError("We couldn't reconnect to your saved X-Ray. Your answers are still here. Please check your connection and try again."); })
       .finally(() => { if (active) setReady(true); });
     return () => { active = false; };
   }, []);
@@ -93,9 +93,9 @@ export function Audit() {
     else setS(cur => ({ ...cur, step: stepForPage(page - 1) }));
   };
   return <div className={`min-h-dvh bg-background xray-ambient mobile-assessment xray-topic-assessment ${page === 0 ? "assessment-contact-screen" : ""}`}>
-    {receipt && <XraySubmissionModal onComplete={() => { void nav({ to: "/xray/complete", replace: true }); }} />}
+    {receipt && <XraySubmissionModal onComplete={() => { void nav({ to: "/results", replace: true }); }} />}
     <DiagnosticSweep repeat />
-    <div ref={workspace} className="assessment-workspace mx-auto flex min-h-dvh max-w-3xl flex-col px-6 pb-32 pt-5 sm:pt-8">
+    <div ref={workspace} className="assessment-workspace mx-auto flex min-h-dvh max-w-3xl flex-col px-6 pb-32 pt-5 sm:pt-28">
       <header className="xray-bar flex items-center justify-between gap-3">
         <Link to="/xray" className="flex items-center gap-2 font-display text-sm font-semibold text-primary"><ScanLine className="h-4 w-4" /> Client X-Ray</Link>
         <span className="text-xs font-semibold tabular-nums text-muted-foreground">Stage {page + 1} of {AUDIT_PAGES.length}</span>
@@ -107,6 +107,7 @@ export function Audit() {
         <p className="eyebrow">{page === 0 ? "Before we begin" : `Business examination · ${String(page + 1).padStart(2, "0")}`}</p>
         <h1 ref={heading} tabIndex={-1} className="mt-3 font-display text-3xl font-semibold leading-tight sm:text-4xl">{topic.title}</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{topic.description}</p>
+        {page > 0 && <p className="mt-3 text-xs tabular-nums text-muted-foreground">{questions.filter(q => !!s.answers[q.id]?.trim()).length} of {questions.length} answered</p>}
         {page === 0 ? <div className="mt-6 space-y-4">
           {([["name", "Your name", "text"], ["email", "Email address", "email"], ["whatsapp", "WhatsApp number", "tel"]] as const).map(([key, label, type]) => <label key={key} htmlFor={`info-${key}`} className="block mobile-info-field">
             <span className="text-sm text-muted-foreground">{label}</span>

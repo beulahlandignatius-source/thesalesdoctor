@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Confirmed exact parity with all 29 original Thesalesdoctor questions/options; compacted grouped answers and preserved local answers on reconnect failures. Verified real submission, findings, PDF download and purpose-prefilled Calendly link at 411px and 1280px without importing the other design.
 - [x] Replace post-X-Ray return-home action with a completion page, required call-purpose selection and separate Calendly booking; verified real submissions, reload and prefilled calendar at 411px and 1280px.
 - [x] Add large post-save X-Ray scanner and human-review confirmation; verified complete saved responses, failure safeguards, repeated confirmation, 320/411/820/1280px and reduced motion without automated diagnosis.
 - [x] Group the existing X-Ray into six coherent topic pages; preserved all 29 business questions plus contact details, choices, validation, saved answers and analytics; verified back/refresh and real submission at 320, 411, 820 and 1280px with unchanged results/booking.

@@ -124,7 +124,6 @@ export const completeAudit = createServerFn({ method: "POST" })
       const { db, session } = await verify(data.id, data.token);
       const existing = await loadResult(db, data.id);
       if (existing) return { ok: true as const, ...existing };
-      if (session.completed_at) return { ok: false as const, submittedForReview: true };
       const { calculateScores } = await import("./audit");
       const { runDiagnosis, calculateSeverity } = await import("./diagnosis.server");
       const answers = await loadAnswers(db, data.id);
@@ -142,7 +141,7 @@ export const completeAudit = createServerFn({ method: "POST" })
       });
       if (error) throw error;
       await db.from("audit_sessions").update({
-        completed_at: new Date().toISOString(), primary_diagnosis: ai.primary_diagnosis,
+        completed_at: session.completed_at ?? new Date().toISOString(), primary_diagnosis: ai.primary_diagnosis,
         diagnosis_title: ai.diagnosis_title, severity, confidence: ai.confidence,
       }).eq("id", data.id);
       const result = await loadResult(db, data.id);
