@@ -81,9 +81,40 @@ export const editReview = createServerFn({ method: "POST" }).middleware([require
   .handler(async ({ context, data }) => {
     const { data: allowed, error: authError } = await context.supabase.rpc("is_admin", { _user_id: context.userId });
     if (authError || !allowed) throw new Error("Forbidden");
-    const { id, ...changes } = data;
-    const { data: row, error } = await context.supabase.from("client_reviews").update(changes).eq("id", id).select("id").single();
-    if (error || !row) throw new Error("Couldn’t save this review.");
+    const { id, photo, screenshot, ...changes } = data;
+    // Confirm the selected record exists through admin RLS before uploading.
+    if (photo || screenshot) {
+      const { data: existing, error: readError } = await context.supabase.from("client_reviews").select("id").eq("id", id).single();
+      if (readError || !existing) throw new Error("Couldn’t find this review.");
+    }
+    const mediaChanges: { photo_path?: string; screenshot_path?: string } = {};
+    const uploaded: string[] = [];
+    if (photo || screenshot) {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      try {
+        for (const [file, field, kind] of [[photo, "photo_path", "photos"], [screenshot, "screenshot_path", "screenshots"]] as const) {
+          if (!file) continue;
+          const bytes = Uint8Array.from(atob(file.base64), c => c.charCodeAt(0));
+          if (!bytes.length || bytes.length > 5 * 1024 * 1024) throw new Error("Images must be under 5MB.");
+          const path = `${kind}/${crypto.randomUUID()}.${file.contentType.split("/")[1]}`;
+          const { error: uploadError } = await supabaseAdmin.storage.from("review-media").upload(path, bytes, { contentType: file.contentType });
+          if (uploadError) throw new Error("Couldn’t upload this image.");
+          uploaded.push(path);
+          mediaChanges[field] = path;
+        }
+      } catch (error) {
+        if (uploaded.length) await supabaseAdmin.storage.from("review-media").remove(uploaded);
+        throw error;
+      }
+    }
+    const { data: row, error } = await context.supabase.from("client_reviews").update({ ...changes, ...mediaChanges }).eq("id", id).select("id").single();
+    if (error || !row) {
+      if (uploaded.length) {
+        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        await supabaseAdmin.storage.from("review-media").remove(uploaded);
+      }
+      throw new Error("Couldn’t save this review.");
+    }
     return { ok: true };
   });
 

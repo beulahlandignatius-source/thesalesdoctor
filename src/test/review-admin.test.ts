@@ -30,3 +30,12 @@ describe("administrator review permissions", () => {
     expect(eq).toHaveBeenCalledWith("id", "selected");
   });
 });
+describe("administrator review photo replacement", () => {
+  it("keeps existing photos when an administrator saves without a replacement", async () => {
+    const update = vi.fn().mockReturnValue({ eq: () => ({ select: () => ({ single: async () => ({ data: { id: "selected" }, error: null }) }) }) });
+    const from = vi.fn().mockReturnValue({ update });
+    const context = { userId: "admin", supabase: { rpc: vi.fn().mockResolvedValue({ data: true, error: null }), from } };
+    await (editReview as unknown as Function)({ context, data: { id: "selected", name: "Client", role: "", rating: 5, body: "Helpful session", photo: null, screenshot: null } });
+    expect(update).toHaveBeenCalledWith({ name: "Client", role: "", rating: 5, body: "Helpful session" });
+  });
+});

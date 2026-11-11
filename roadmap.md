@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Simplify disclosure to “Demo review”; verified admin headshot/screenshot replacement, persistent readback and phone/desktop controls with a temporary review, then deleted it. Client identities/nationalities require owner-provided photos rather than guesses from names or appearance.
 - [x] Verify scanner accessibility: real submissions at 411/1280px confirmed focus stays inside, Escape blocked during receipt, completion button focused and Enter opens report; reduced-motion settles without animation, status semantics and three tests pass.
 - [x] Add mascot travel to sessions and push/curtain reveals to mentorship quotes and service cards; verified images, bounded motion and links at 411/1280px plus reduced-motion at 320px.
 - [x] Add stationary topic progress with percentage and stages remaining; verified all stages at 320/411/1280px, real phone submission/report and 12 passing tests.

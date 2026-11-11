@@ -31,7 +31,7 @@ export function ClientReviews() {
       <div className="stack-badge review-avatar" aria-hidden="true">{r.photoUrl ? <img src={r.photoUrl} alt="" className="h-full w-full rounded-full object-cover" /> : <span className="font-display text-3xl font-bold">{r.name?.split(" ").map((p: string) => p[0]).join("").slice(0, 2)}</span>}<span className="stack-number">{i + 1}</span></div>
       {r.rating !== null && <div className="mt-6 flex justify-center gap-1 text-primary" aria-label={`${r.rating} out of 5 stars`}>{[1,2,3,4,5].map((n) => <Star key={n} className={`h-4 w-4 ${n <= r.rating ? "fill-current" : "opacity-25"}`} />)}</div>}
       <blockquote className="mt-6 whitespace-pre-wrap break-words text-lg font-semibold leading-relaxed">{r.body}</blockquote>
-      {r.source_key && <p className="mt-3 text-xs text-muted-foreground">Sample review · Stock portrait, not the client</p>}
+      {r.source_key && <p className="mt-3 text-xs text-muted-foreground">Demo review</p>}
       <p className="mt-auto pt-7 text-sm"><strong className="block">{r.name}</strong><span className="text-muted-foreground">{r.role}</span></p>
     </>)} />
     <Dialog open={open} onOpenChange={setOpen}>
@@ -68,7 +68,7 @@ export function ClientReviews() {
     </Dialog>
   </div>;
 }
-async function readImage(v: FormDataEntryValue | null) {
+export async function readImage(v: FormDataEntryValue | null) {
   if (!(v instanceof File) || v.size === 0) return null;
   if (v.size > 5 * 1024 * 1024) throw new Error("Images must be under 5MB.");
   if (!["image/jpeg", "image/png", "image/webp"].includes(v.type)) throw new Error("Images must be JPG, PNG or WebP under 5MB.");
@@ -77,13 +77,13 @@ async function readImage(v: FormDataEntryValue | null) {
   return { base64: btoa(bin), contentType: v.type as "image/jpeg" | "image/png" | "image/webp" };
 }
 
-function UploadTile({ name, label, hint, icon, round }: { name: string; label: string; hint: string; icon: React.ReactNode; round?: boolean }) {
+export function UploadTile({ name, label, hint, icon, round, initialPreview }: { name: string; label: string; hint: string; icon: React.ReactNode; round?: boolean; initialPreview?: string | null }) {
   const [preview, setPreview] = useState<string | null>(null);
   return <label className="relative flex cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-border bg-muted/40 p-4 text-center transition hover:border-primary">
-    {preview ? <img src={preview} alt="" className={`h-20 object-cover ${round ? "w-20 rounded-full" : "w-full rounded-xl"}`} /> : <span className="grid h-12 w-12 place-items-center rounded-full bg-primary/10 text-primary">{icon}</span>}
+    {(preview || initialPreview) ? <img src={preview || initialPreview || ""} alt="" className={`h-20 object-cover ${round ? "w-20 rounded-full" : "w-full rounded-xl"}`} /> : <span className="grid h-12 w-12 place-items-center rounded-full bg-primary/10 text-primary">{icon}</span>}
     <span className="text-sm font-semibold">{label}</span>
     <span className="text-xs text-muted-foreground">{preview ? "Tap to change" : hint}</span>
-    {preview && <button type="button" aria-label={`Remove ${label}`} className="absolute right-2 top-2 rounded-full bg-background p-1" onClick={(e) => { e.preventDefault(); const input = e.currentTarget.parentElement?.querySelector("input"); if (input) input.value = ""; setPreview(null); }}><X className="h-4 w-4" /></button>}
+    {preview && <Button type="button" variant="ghost" size="icon" aria-label={`Remove ${label}`} className="absolute right-2 top-2 rounded-full bg-background" onClick={(e) => { e.preventDefault(); const input = e.currentTarget.parentElement?.querySelector("input"); if (input) input.value = ""; setPreview(null); }}><X className="h-4 w-4" /></Button>}
     <input type="file" name={name} accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => { const f = e.target.files?.[0]; setPreview(f ? URL.createObjectURL(f) : null); }} />
   </label>;
 }
