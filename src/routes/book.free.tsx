@@ -32,13 +32,13 @@ export function Free() {
   return (
     <FormShell eyebrow="Free · 25 minutes" title="Book your free Client Acquisition Review"
       intro="A focused 25 minutes on your goals, what’s working, what’s holding you back, and your biggest opportunity to grow."
-      steps={["Tell me about your business (about 2 minutes).", "Message Dr. Dan on WhatsApp to arrange your free review.", "Show up. We’ll find what’s in the way."]}>
+      steps={["Tell me about your business (about 2 minutes).", "Choose your free review time on Calendly.", "Show up. We’ll find what’s in the way."]}>
       {submitted ? <div className="py-4 text-center" role="status">
         <CheckCircle2 className="mx-auto h-12 w-12 text-primary" aria-hidden="true" />
         <h2 ref={confirmation} tabIndex={-1} className="mt-5 font-display text-2xl font-bold outline-none">Your enquiry has been submitted.</h2>
-        <p className="mt-3 text-muted-foreground">Your details are saved. Next, message Dr. Dan on WhatsApp to arrange your free 25-minute Client Acquisition Review.</p>
-        <p className="mt-3 text-sm text-muted-foreground">Your appointment is not confirmed yet. You’ll agree on a time with Dr. Dan on WhatsApp.</p>
-        <ExtLink href={LINKS.whatsapp} className="mt-6 w-full" onClick={() => window.__lovableEvents?.track?.("project.consultation_whatsapp_clicked", { session: "free_review" })}>Continue to WhatsApp<ArrowUpRight className="h-4 w-4" /></ExtLink>
+        <p className="mt-3 text-muted-foreground">Your details are saved. Next, choose a time on Calendly for your free 25-minute Client Acquisition Review.</p>
+        <p className="mt-3 text-sm text-muted-foreground">Your appointment is not confirmed yet. Complete your booking on Calendly to confirm your time.</p>
+        <ExtLink href={LINKS.calendly} className="mt-6 w-full" onClick={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "free_review" })}>Continue to Calendly<ArrowUpRight className="h-4 w-4" /></ExtLink>
       </div> : (
         <form className="space-y-5" onSubmit={async (e) => {
           e.preventDefault();
