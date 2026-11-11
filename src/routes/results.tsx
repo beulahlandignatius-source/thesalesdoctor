@@ -153,6 +153,9 @@ function ResultView({ r }: { r: Result }) {
         </div>
 
         <ReportDownload r={r} />
+        <nav aria-label="Explore your X-Ray" className="mt-5 flex flex-wrap gap-2">
+          {[['xray-evidence', 'Why we believe this'], ['xray-impact', 'What this means'], ['xray-next', 'Your next move']].map(([id, label]) => <Button key={id} variant="outline" size="sm" onClick={() => document.getElementById(id ?? '')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' })}>{label}</Button>)}
+        </nav>
         </div>
 
         <section className={section}>
@@ -161,7 +164,7 @@ function ResultView({ r }: { r: Result }) {
           <p className="mt-3 text-muted-foreground">{r.business_impact}</p>
         </section>
 
-        <section className={section}>
+        <section className={`${section} scroll-mt-28`} id="xray-evidence">
           <h2 className={label}>Why we believe this</h2>
           <ul className="mt-3 space-y-3">
             {r.evidence.slice(0, 3).map((e) => (
@@ -173,7 +176,7 @@ function ResultView({ r }: { r: Result }) {
           </ul>
         </section>
 
-        <section className={section}>
+        <section className={`${section} scroll-mt-28`} id="xray-impact">
           <h2 className={label}>What this means</h2>
           <p className="mt-3 text-foreground">{MEANING[r.primary_diagnosis]}</p>
         </section>
@@ -190,7 +193,7 @@ function ResultView({ r }: { r: Result }) {
           </section>
         )}
 
-        <section className="diagnostic-finding diagnostic-treatment mt-4 rounded-[2rem] bg-card p-6">
+        <section id="xray-next" className="diagnostic-finding diagnostic-treatment mt-4 scroll-mt-28 rounded-[2rem] bg-card p-6">
           <DiagnosticGuide compact mood="welcome" message="Let's work on fixing this." />
           <p className={label}>Your next move</p>
           <p className="mt-3 text-foreground">

@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Made scanner 92–94% viewport height with completion in the same modal, deliberate report handoff and interactive findings navigation; verified real submissions and downloaded PDF at phone and desktop sizes.
 - [x] Redesign only the X-Ray opening with the existing Dr. Dan photo, brand-matched scan composition and expandable introduction; preserved copy and form destinations, verified 320/411/820/1280px.
 - [x] Confirmed exact parity with all 29 original Thesalesdoctor questions/options; compacted grouped answers and preserved local answers on reconnect failures. Verified real submission, findings, PDF download and purpose-prefilled Calendly link at 411px and 1280px without importing the other design.
 - [x] Replace post-X-Ray return-home action with a completion page, required call-purpose selection and separate Calendly booking; verified real submissions, reload and prefilled calendar at 411px and 1280px.
