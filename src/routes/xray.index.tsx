@@ -2,8 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight, Activity, Stethoscope, ScanSearch, ScanLine, ChartNoAxesCombined, Target, Clock3, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DiagnosticGuide } from "@/components/diagnostic-guide";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import portrait from "@/assets/dr-dan-portrait.jpg.asset.json";
+import { loadState } from "@/lib/audit";
+import { XrayRestart } from "@/components/xray-restart";
 
 export const Route = createFileRoute("/xray/")({
   head: () => ({
@@ -28,6 +30,8 @@ export const Route = createFileRoute("/xray/")({
 
 function Index() {
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [hasSession, setHasSession] = useState(false);
+  useEffect(() => { setHasSession(!!loadState().session); }, []);
   return (
     <div className={`xray-opening xray-photo-opening bg-background ${detailsOpen ? "xray-details-open" : ""}`}>
       <section className="xray-photo-hero relative isolate overflow-hidden">
@@ -59,6 +63,7 @@ function Index() {
       </section>
       <div className="xray-welcome mx-auto max-w-6xl px-6 py-6 sm:px-10">
         <DiagnosticGuide message="Let's scan. Let's take an X-ray of your business!" scanning />
+        {hasSession && <div className="mt-4 max-w-lg"><XrayRestart /></div>}
       </div>
       <section className="xray-introduction relative mx-auto max-w-6xl bg-background px-6 py-16 text-foreground sm:px-10 sm:py-24">
         <Button variant="ghost" className="xray-details-toggle" aria-expanded={detailsOpen} aria-controls="xray-intro-details" onClick={() => setDetailsOpen(!detailsOpen)}>

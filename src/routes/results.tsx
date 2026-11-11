@@ -18,6 +18,7 @@ import { deliverFile } from "@/lib/download";
 import { DiagnosticGuide, DiagnosticSweep } from "@/components/diagnostic-guide";
 import { BusinessScan } from "@/components/business-scan";
 import { XrayCallPurpose } from "@/components/xray-call-purpose";
+import { XrayRestart } from "@/components/xray-restart";
 
 export const Route = createFileRoute("/results")({
   head: () => ({
@@ -153,6 +154,7 @@ function ResultView({ r }: { r: Result }) {
         </div>
 
         <ReportDownload r={r} />
+        <div className="mt-3"><XrayRestart /></div>
         <nav aria-label="Explore your X-Ray" className="mt-5 flex flex-wrap gap-2">
           {[['xray-evidence', 'Why we believe this'], ['xray-impact', 'What this means'], ['xray-next', 'Your next move']].map(([id, label]) => <Button key={id} variant="outline" size="sm" onClick={() => document.getElementById(id ?? '')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' })}>{label}</Button>)}
         </nav>

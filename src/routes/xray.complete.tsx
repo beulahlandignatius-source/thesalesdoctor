@@ -4,6 +4,7 @@ import { CalendarDays, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { XrayCallPurpose } from "@/components/xray-call-purpose";
 import doctor from "@/assets/mascot-positive.png";
+import { XrayRestart } from "@/components/xray-restart";
 
 export const Route = createFileRoute("/xray/complete")({
   head: () => ({ meta: [
@@ -30,5 +31,6 @@ export function XrayComplete() {
     <section className="mt-8 border-t border-border pt-7">
       {!booking ? <Button variant="premium" size="lg" onClick={() => setBooking(true)}><CalendarDays /> Book a call <ArrowRight /></Button> : <XrayCallPurpose />}
     </section>
+    <div className="mt-5"><XrayRestart /></div>
   </main>;
 }
