@@ -41,13 +41,12 @@ function Mentor() {
           if (await save(e.currentTarget)) { setSent(true); window.scrollTo({ top: 0, behavior: "smooth" }); }
         }}>
           <div className="form-contact grid gap-5 sm:grid-cols-2">
-          <F label="Full name"><input name="name" required autoComplete="name" className={field} /></F>
-          <F label="Email address"><input name="email" type="email" required autoComplete="email" className={field} /></F>
-          <F label="WhatsApp number"><input name="phone" type="tel" required autoComplete="tel" placeholder="+234…" className={field} /></F>
+          <F compact label="Full name"><input name="name" required autoComplete="name" className={field} /></F>
+          <F compact label="Email address"><input name="email" type="email" required autoComplete="email" className={field} /></F>
+          <F compact label="WhatsApp number"><input name="phone" type="tel" required autoComplete="tel" placeholder="+234…" className={field} /></F>
           </div>
-          <F label="What do you currently do?"><input name="role" required placeholder="e.g. coach, consultant, freelancer" className={field} /></F>
-          <F label="What are you trying to achieve?"><textarea name="goal" required rows={3} className={field} /></F>
-          <F label="Why do you want to be mentored?"><textarea name="why" required rows={3} className={field} /></F>
+          <F compact label="What do you currently do?"><input name="role" required placeholder="e.g. coach, consultant, freelancer" className={field} /></F>
+          <F compact label="What are you trying to achieve?"><input name="goal" required className={field} /></F>
           <FormError msg={error} />
           <Button type="submit" disabled={busy} className={btnClass("primary", "md", "w-full")}>{busy ? "SAVING…" : "SEND MY ENQUIRY →"}</Button>
           <p className="text-center text-sm text-muted-foreground">Next you’ll continue to WhatsApp to message Dr. Dan directly.</p>
