@@ -119,7 +119,7 @@ export function Audit() {
           {questions.map(q => <XrayTopicQuestion key={q.id} question={q} answer={s.answers[q.id] ?? ""} busy={busy || !ready} onAnswer={value => setS(cur => ({ ...cur, answers: { ...cur.answers, [q.id]: value } }))} />)}
         </div>}
       </div>
-      {(page === 0 || page === 3) && <div className="assessment-guide mt-6"><DiagnosticGuide compact mood="examining" scanning={busy} message={page === 0 ? "Let's take an X-ray of your business!" : "Let's see what's happening inside your business."} /></div>}
+      {(page === 0 || page === 3) && <div className="assessment-guide mt-6"><DiagnosticGuide compact mood={busy ? "examining" : page === 0 ? "welcome" : "thinking"} scanning={busy} message={page === 0 ? "Let's take an X-ray of your business!" : "Let's see what's happening inside your business."} /></div>}
     </div>
     <div className="assessment-actions fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/95 backdrop-blur">
       <div className="mx-auto max-w-3xl px-5 pb-3 pt-3">

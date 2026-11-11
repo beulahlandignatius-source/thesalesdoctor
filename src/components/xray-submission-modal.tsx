@@ -3,7 +3,9 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Activity, ArrowRight, Check, ScanLine, Target, TrendingUp, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import doctor from "@/assets/mascot-examining.png";
-import positive from "@/assets/mascot-positive.png";
+import thinking from "@/assets/mascot-thinking.png";
+import findings from "@/assets/mascot-findings.png";
+import celebrating from "@/assets/mascot-celebrating.png";
 
 const messages = ["Receiving your business information...", "Examining your business structure...", "Reviewing your sales process...", "Checking potential growth bottlenecks...", "Preparing your examination report..."];
 
@@ -11,6 +13,7 @@ const messages = ["Receiving your business information...", "Examining your busi
 export function XraySubmissionModal({ alreadyComplete = false, onComplete }: { alreadyComplete?: boolean; onComplete: () => void }) {
   const [progress, setProgress] = useState(alreadyComplete ? 100 : 0);
   const complete = progress >= 100;
+  const doctorPose = complete ? celebrating : progress >= 80 ? findings : progress >= 40 ? thinking : doctor;
   const [leaving, setLeaving] = useState(false);
   const title = useRef<HTMLHeadingElement>(null);
   const reportButton = useRef<HTMLButtonElement>(null);
@@ -36,7 +39,7 @@ export function XraySubmissionModal({ alreadyComplete = false, onComplete }: { a
             <div className="xray-machine-grid" />
             <div className="xray-machine-cross corner-tl" /><div className="xray-machine-cross corner-tr" /><div className="xray-machine-cross corner-bl" /><div className="xray-machine-cross corner-br" />
             <div className="xray-machine-modules">{[Users, Target, TrendingUp, Activity].map((Icon, index) => <span key={index}><Icon /></span>)}</div>
-            <img src={complete ? positive : doctor} alt="" className="xray-machine-doctor" />
+            <img src={doctorPose} alt="" className="xray-machine-doctor" />
             {!complete && <div className="xray-machine-beam" />}
             <span className="xray-machine-visual-label">{complete ? "RESPONSES RECEIVED" : "BUSINESS EXAMINATION"}</span>
           </div>
