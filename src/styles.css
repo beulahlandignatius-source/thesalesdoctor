@@ -1164,6 +1164,7 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 /* Same X-Ray content, phone-sized screens; never clip zoomed text or a keyboard. */
 .mobile-xray-deck, .mobile-xray-pages, .mobile-xray-page, .result-opening-screen { display: contents; }
 .mobile-xray-controls, .mobile-option-controls, .phone-business-scan { display: none; }
+.xray-details-toggle { display: none; }
 .result-opening-screen > * + * { margin-top: 2rem; }
 .results-workspace > .mobile-xray-deck { display: block; }
 .results-workspace .mobile-xray-page > section { margin-top: 2rem; }
@@ -1243,7 +1244,6 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .mobile-assessment .assessment-question .mt-6 { margin-top: .75rem; }
   .mobile-assessment .assessment-question .space-y-4 > * + * { margin-top: .5rem; }
   .mobile-assessment .field { padding: .65rem .75rem; }
-  .mobile-assessment .info-offscreen { display: none; }
   .mobile-assessment textarea { height: 6rem; }
   .mobile-assessment .xray-option { padding: .6rem .75rem !important; gap: .5rem; min-height: 44px !important; }
   .mobile-assessment .xray-option > span:nth-child(2) { font-size: .8125rem; line-height: 1.4; }
@@ -1299,4 +1299,40 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .scan-doctor img, .scan-route img, .business-scan-beam, .splash-chart i, .splash-lifeline path { animation: none; }
   .splash-lifeline path { stroke-dashoffset: 0; }
   .business-scan-beam { display: none; }
+}
+
+@media (max-width: 639px) {
+  .xray-fixed-opening { height: calc(100dvh - 105px); min-height: 0; overflow: auto; padding: 0 .875rem .75rem; }
+  .xray-fixed-opening .studio-content { padding: 72px 1rem .75rem; }
+  .xray-fixed-opening .studio-image { height: 92px; }
+  .xray-fixed-opening .xray-welcome { padding: .5rem 0; }
+  .xray-fixed-opening .guide-featured { flex-direction: row; gap: .5rem; }
+  .xray-fixed-opening .guide-featured .guide-portrait { width: 3.5rem; height: 3.5rem; flex-shrink: 0; }
+  .xray-fixed-opening .guide-speech { padding: .5rem; flex: 1; }
+  .xray-fixed-opening .guide-name { display: none; }
+  .xray-fixed-opening .guide-message { font-size: .75rem; line-height: 1.4; }
+  .xray-fixed-opening .xray-introduction { padding: 0; }
+  .xray-details-toggle { display: flex; width: 100%; min-height: 44px; justify-content: space-between; white-space: normal; text-align: left; font-size: .8125rem; color: var(--primary); border-top: 1px solid var(--border); border-radius: 0; }
+  .xray-fixed-opening .xray-intro-details { display: none; }
+  .xray-fixed-opening.xray-details-open .xray-intro-details { display: block; }
+  .assessment-contact-screen .assessment-question { flex: 0; }
+  .assessment-contact-screen .assessment-guide { margin-top: .25rem; }
+  .assessment-contact-screen .guide-name { display: none; }
+  .assessment-contact-screen .guide-portrait { width: 2rem; }
+  .assessment-contact-screen .guide-compact { grid-template-columns: 2rem minmax(0,1fr); }
+  .assessment-contact-screen .assessment-question { margin-top: .25rem; padding-top: .25rem; }
+  .assessment-contact-screen .assessment-question .mt-6 { margin-top: .5rem; }
+  .assessment-contact-screen .assessment-question .space-y-4 > * + * { margin-top: .375rem; }
+  .assessment-contact-screen .field { min-height: 44px; padding: .5rem .75rem; }
+  .assessment-contact-screen .mobile-info-field > span { font-size: .75rem; }
+}
+@media (max-width: 639px) and (max-height: 700px) {
+  .xray-fixed-opening .studio-content { padding-top: 44px; }
+  .xray-fixed-opening .studio-image { height: 64px; }
+  .xray-fixed-opening .studio-content p:last-child { font-size: .625rem; }
+  .assessment-contact-screen .assessment-guide { display: none; }
+  .assessment-contact-screen .assessment-question > .eyebrow { display: none; }
+  .assessment-contact-screen .assessment-question .space-y-4 > * + * { margin-top: .25rem; }
+  .assessment-contact-screen .field { margin-top: .125rem; height: 44px; }
+  .assessment-contact-screen .assessment-workspace { padding-bottom: 0; }
 }

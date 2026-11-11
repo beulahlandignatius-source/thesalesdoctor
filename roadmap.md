@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Remove opening/contact 1–3 pagers; verify fixed introduction and three contact fields on phones without changing larger screens.
 - [x] Make phone X-Ray pages screen-by-screen without losing content; preserve tablet/desktop and verify real assessment/results.
 - [x] Add mascot-led business scanning tied to real preparation status and a Sales Clinic dashboard/lifeline splash.
 - [x] Reduce oversized visitor text and card spacing below 640px; verify 14 visitor pages at nine phone widths, unchanged tablet/desktop sizing, and consultation/X-Ray controls.

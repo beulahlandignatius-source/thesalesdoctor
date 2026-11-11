@@ -3,7 +3,7 @@ import studio from "@/assets/diagnostic-studio.jpg";
 import { ArrowUpRight, Activity, Stethoscope, ScanSearch, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DiagnosticGuide } from "@/components/diagnostic-guide";
-import { MobileXrayDeck } from "@/components/mobile-xray-deck";
+import { useState } from "react";
 
 export const Route = createFileRoute("/xray/")({
   head: () => ({
@@ -27,8 +27,9 @@ export const Route = createFileRoute("/xray/")({
 });
 
 function Index() {
+  const [detailsOpen, setDetailsOpen] = useState(false);
   return (
-    <MobileXrayDeck className="xray-opening min-h-dvh bg-background">
+    <div className={`xray-opening xray-fixed-opening min-h-dvh bg-background ${detailsOpen ? "xray-details-open" : ""}`}>
       <section className="studio-hero relative isolate mx-3 mt-3 overflow-hidden rounded-[2rem] shadow-sm sm:mx-6 sm:rounded-[2.5rem]">
         <img
           src={studio}
@@ -62,10 +63,14 @@ function Index() {
           </div>
         </div>
       </section>
-      <div className="mx-auto max-w-6xl px-6 py-6 sm:px-10">
+      <div className="xray-welcome mx-auto max-w-6xl px-6 py-6 sm:px-10">
         <DiagnosticGuide message="Let's scan. Let's take an X-ray of your business!" scanning />
       </div>
       <section className="xray-introduction relative mx-auto max-w-6xl bg-background px-6 py-16 text-foreground sm:px-10 sm:py-24">
+        <Button variant="ghost" className="xray-details-toggle" aria-expanded={detailsOpen} aria-controls="xray-intro-details" onClick={() => setDetailsOpen(!detailsOpen)}>
+          This isn't a generic marketing quiz. <span aria-hidden="true">{detailsOpen ? "−" : "+"}</span>
+        </Button>
+        <div id="xray-intro-details" className="xray-intro-details">
         <p className="eyebrow flex items-center gap-2"><Activity className="h-4 w-4" /> Diagnosis</p>
         <h2 className="mt-4 max-w-2xl font-display text-[clamp(2rem,5vw,4.25rem)] font-black leading-[0.95] tracking-tight">
           This isn't a generic <span className="text-primary">marketing quiz.</span>
@@ -84,8 +89,9 @@ function Index() {
             <p className="proof-label !max-w-none font-semibold">Built by Dr. Dan Odotukpono, The Sales Doctor.</p>
           </article>
         </div>
+        </div>
       </section>
-    </MobileXrayDeck>
+    </div>
   );
 }
 

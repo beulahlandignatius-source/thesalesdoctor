@@ -48,7 +48,6 @@ function Audit() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [optionPage, setOptionPage] = useState(0);
-  const [infoPage, setInfoPage] = useState(0);
   const heading = useRef<HTMLHeadingElement>(null);
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(
@@ -217,7 +216,7 @@ function Audit() {
   const remaining = Math.max(0, TOTAL - step - 1);
 
   return (
-    <div className="min-h-dvh bg-background xray-ambient mobile-assessment">
+    <div className={`min-h-dvh bg-background xray-ambient mobile-assessment ${step === 0 ? "assessment-contact-screen" : ""}`}>
       <DiagnosticSweep />
       <div className="assessment-workspace mx-auto flex min-h-dvh max-w-xl flex-col px-6 pb-32 pt-5 sm:pt-8">
         <header className="xray-bar flex items-center justify-between pr-14">
@@ -283,7 +282,7 @@ function Audit() {
                     ["whatsapp", "WhatsApp number", "tel"],
                   ] as const
                 ).map(([k, label, type]) => (
-                  <label key={k} htmlFor={`info-${k}`} className={`block mobile-info-field ${["name", "email", "whatsapp"][infoPage] === k ? "info-visible" : "info-offscreen"}`}>
+                  <label key={k} htmlFor={`info-${k}`} className="block mobile-info-field">
                     <span className="text-sm text-muted-foreground">{label}</span>
                     <input
                       id={`info-${k}`}
@@ -299,11 +298,6 @@ function Audit() {
                   </label>
                 ))}
               </div>
-              <nav className="mobile-option-controls" aria-label="Contact details">
-                <Button variant="ghost" size="sm" disabled={infoPage === 0} onClick={() => setInfoPage(infoPage - 1)} aria-label="Previous contact field"><ArrowLeft /></Button>
-                <span>{infoPage + 1} / 3</span>
-                <Button variant="ghost" size="sm" disabled={infoPage === 2} onClick={() => setInfoPage(infoPage + 1)} aria-label="Next contact field"><ArrowRight /></Button>
-              </nav>
             </>
           ) : (
             <>
