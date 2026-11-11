@@ -28,7 +28,7 @@ function Clinic() {
   const navigate = useNavigate();
   return (
     <FormShell eyebrow={`Private Sales Clinic · ${CLINIC_PRICE}`} title="Book your Private Sales Clinic"
-      introduction={<ClinicBonuses />} nextLabel="BOOK MY SALES CLINIC"
+      introduction={<ClinicBonuses />}
       intro="A deep working session on your numbers, your process and your target. We don’t just find the gap. We work out how to close it."
       steps={["Share your goals and where you are now.", "Confirm payment and choose your 90-minute slot.", "We work through it together. You leave with a plan."]}>
       {who ? (
