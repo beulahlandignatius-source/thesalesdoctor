@@ -1630,7 +1630,15 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 @keyframes quote-shove { from { translate: 0 0; } to { translate: 6px -2px; } }
 @keyframes quote-wave { from { rotate: -4deg; } to { rotate: 4deg; } }
 @media (prefers-reduced-motion: reduce) { .quote-pusher-card, .quote-pusher-actor { transition: none; } .quote-pusher-actor { display: none; } }
-@media (max-width: 767px) { .quote-pusher-actor { right: calc(100% - var(--push-size) * .62); } }
+@media (max-width: 767px) {
+  .quote-pusher { --push-size: 120px; }
+  .quote-pusher-card { transition: translate 1.4s cubic-bezier(.3,.8,.3,1), opacity .5s ease, margin-left .7s cubic-bezier(.3,.8,.3,1); }
+  .quote-pusher[data-phase="idle"] .quote-pusher-card, .quote-pusher[data-phase="push"] .quote-pusher-card { margin-left: calc(var(--push-size) * .7); }
+  .quote-pusher-actor, .quote-pusher[data-phase="idle"] .quote-pusher-actor { right: auto; left: -1rem; }
+  .quote-pusher[data-phase="idle"] .quote-pusher-actor { left: -60vw; }
+  .quote-pusher[data-phase="push"] .quote-pusher-actor { bottom: 8px; }
+  .quote-pusher[data-phase="wave"] .quote-pusher-actor, .quote-pusher[data-phase="gone"] .quote-pusher-actor { left: 0; right: auto; }
+}
 /* Bigger, zoomed-in X-Ray hero mascot */
 .xray-photo-mascot { overflow: hidden; }
 .xray-photo-mascot img { padding-top: 2.5rem; transform: scale(1.3); transform-origin: center 45%; }
