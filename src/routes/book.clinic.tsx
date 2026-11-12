@@ -86,7 +86,7 @@ function Clinic() {
               <p className="font-semibold">Paid? Choose your 90-minute slot.</p>
             </div>
           </div>
-          <PaidDialog who={who} onDone={() => navigate({ to: "/book/schedule", search: { session: "clinic", name: who.name, email: who.email } })} />
+          <PaidDialog who={who} onDone={() => { window.__lovableEvents?.track?.("project.calendly_booking_clicked", { source: "private_clinic" }); void navigate({ to: "/book/schedule", search: { session: "clinic", name: who.name, email: who.email } }); }} />
         </div>
       ) : (
         <form className="space-y-5" onSubmit={async (e) => {

@@ -49,6 +49,31 @@
         }
       }
     },
+    "project.calendly_booking_clicked": {
+      "event_schema_version": 1,
+      "description": "A visitor clicked through to Calendly after the Free Review, Private Sales Clinic, or Client X-Ray form.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source"
+        ],
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": [
+              "free_review",
+              "private_clinic",
+              "client_xray"
+            ]
+          }
+        }
+      }
+    },
     "project.consultation_booking_opened": {
       "event_schema_version": 1,
       "description": "A visitor clicked through to Calendly to pick a consultation time.",

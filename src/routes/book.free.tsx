@@ -39,7 +39,7 @@ export function Free() {
         <h2 ref={confirmation} tabIndex={-1} className="mt-5 font-display text-2xl font-bold outline-none">Your enquiry has been submitted.</h2>
         <p className="mt-3 text-muted-foreground">Your details are saved. Next, choose a time on Calendly for your free 25-minute Client Acquisition Review.</p>
         <p className="mt-3 text-sm text-muted-foreground">Your appointment is not confirmed yet. Complete your booking on Calendly to confirm your time.</p>
-        <ExtLink href={calendlyUrl(submitted.name, submitted.email)} className="mt-6 w-full" onClick={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "free_review" })}>Continue to Calendly<ArrowUpRight className="h-4 w-4" /></ExtLink>
+        <ExtLink href={calendlyUrl(submitted.name, submitted.email)} className="mt-6 w-full" onClick={() => { window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "free_review" }); window.__lovableEvents?.track?.("project.calendly_booking_clicked", { source: "free_review" }); }}>Continue to Calendly<ArrowUpRight className="h-4 w-4" /></ExtLink>
       </div> : (
         <form className="space-y-5" onSubmit={async (e) => {
           e.preventDefault();

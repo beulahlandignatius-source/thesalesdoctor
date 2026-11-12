@@ -16,6 +16,6 @@ export function XrayCallPurpose() {
         </label>)}
       </div>
     </fieldset>
-    {purpose ? <Button asChild variant="premium" size="lg" className="mt-5"><Link to="/xray/book" search={{ purpose }}>Continue to Calendly <ArrowRight /></Link></Button> : <Button variant="premium" size="lg" disabled className="mt-5">Continue to Calendly <ArrowRight /></Button>}
+    {purpose ? <Button asChild variant="premium" size="lg" className="mt-5"><Link to="/xray/book" search={{ purpose }} onClick={() => window.__lovableEvents?.track?.("project.calendly_booking_clicked", { source: "client_xray" })}>Continue to Calendly <ArrowRight /></Link></Button> : <Button variant="premium" size="lg" disabled className="mt-5">Continue to Calendly <ArrowRight /></Button>}
   </div>;
 }
