@@ -10,6 +10,34 @@ import { QUESTIONS } from "@/lib/audit";
 beforeEach(() => { localStorage.clear(); window.scrollTo = vi.fn(); mocks.start.mockResolvedValue({ id: "test", token: "test" }); mocks.save.mockResolvedValue({}); mocks.submit.mockResolvedValue({ submitted: true }); });
 afterEach(() => { cleanup(); vi.resetAllMocks(); delete window.__lovableEvents; });
 describe("X-Ray form analytics", () => {
+  it("advances from contact immediately while session creation is still pending", async () => {
+    let resolve: (value: { id: string; token: string }) => void = () => {};
+    mocks.start.mockReturnValue(new Promise(r => { resolve = r; }));
+    render(<Audit />);
+    fireEvent.change(screen.getByLabelText("Your name"), { target: { value: "Test" } });
+    fireEvent.change(screen.getByLabelText("Email address"), { target: { value: "test@example.com" } });
+    fireEvent.change(screen.getByLabelText("WhatsApp number"), { target: { value: "123456789" } });
+    fireEvent.click(screen.getByRole("button", { name: "Next stage" }));
+    expect(screen.getByText("What do you currently sell?")).toBeInTheDocument();
+    expect(JSON.parse(localStorage.getItem("client-xray-v2") ?? "{}").step).toBe(1);
+    expect(screen.queryByText("Saving…")).toBeNull();
+    resolve({ id: "test", token: "test" });
+    await waitFor(() => expect(JSON.parse(localStorage.getItem("client-xray-v2") ?? "{}").session.id).toBe("test"));
+  });
+  it("advances to the next topic before its answers finish saving", async () => {
+    const answers = Object.fromEntries(QUESTIONS.map(q => [q.id, q.type === "text" ? "Test" : q.options[0]]));
+    localStorage.setItem("client-xray-v2", JSON.stringify({ step: 1, session: { id: "test", token: "test" }, info: { name: "Test", email: "test@example.com", whatsapp: "123456789" }, answers }));
+    mocks.get.mockResolvedValue({ completed: false, info: { name: "Test", email: "test@example.com", whatsapp: "123456789" }, answers, step: 1 });
+    let resolve: () => void = () => {};
+    mocks.save.mockReturnValue(new Promise<void>(r => { resolve = r; }));
+    render(<Audit />);
+    await waitFor(() => expect(screen.getByRole("button", { name: "Next stage" })).toBeEnabled());
+    fireEvent.click(screen.getByRole("button", { name: "Next stage" }));
+    expect(screen.getByText("If someone visits your profile/page today, how quickly would they understand what you do?")).toBeInTheDocument();
+    expect(screen.queryByText("Saving…")).toBeNull();
+    await waitFor(() => expect(mocks.save).toHaveBeenCalledOnce());
+    resolve();
+  });
   it("preserves saved answers when reconnecting fails", async () => {
     localStorage.setItem("client-xray-v2", JSON.stringify({ step: 1, session: { id: "test", token: "test" }, info: { name: "Test", email: "test@example.com", whatsapp: "123456789" }, answers: { q1: "Consulting" } }));
     mocks.get.mockRejectedValue(new Error("offline"));

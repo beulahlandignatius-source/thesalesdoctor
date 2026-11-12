@@ -31,11 +31,13 @@ export function Audit() {
   const workspace = useRef<HTMLDivElement>(null);
   const formStarted = useRef(false);
   const submitting = useRef(false);
+  const pendingSaves = useRef<Promise<void>>(Promise.resolve());
+  const sessionRef = useRef<AuditState["session"]>(undefined);
   const [qi, setQi] = useState(0);
   const advanceTimer = useRef<number | undefined>(undefined);
   useEffect(() => {
     let active = true;
-    const local = loadState(); setS(local);
+    const local = loadState(); setS(local); sessionRef.current = local.session;
     if (!local.session) { setReady(true); return; }
     getAuditSession({ data: local.session }).then(r => {
       if (!active) return;
@@ -74,21 +76,40 @@ export function Audit() {
     if (!formStarted.current) { formStarted.current = true; window.__lovableEvents?.track?.("project.xray_form_started", {}); }
     setS(cur => ({ ...cur, info: { ...cur.info, [key]: value } }));
   };
+  const ensureSession = async (snapshot: AuditState) => {
+    if (sessionRef.current) return sessionRef.current;
+    const info = { name: snapshot.info.name.trim(), email: snapshot.info.email.trim(), whatsapp: snapshot.info.whatsapp.trim() };
+    const session = await startAuditSession({ data: { info } });
+    sessionRef.current = session;
+    setS(cur => { const updated = { ...cur, session }; saveState(updated); return updated; });
+    window.__lovableEvents?.track?.("project.xray_started", {});
+    return session;
+  };
   const next = async () => {
     window.clearTimeout(advanceTimer.current);
     if (page > 0 && !lastInPage) { if (currentValid) setQi(qIndex + 1); return; }
     if (!ready || !canContinue || submitting.current || receipt) return;
-    submitting.current = true; setBusy(true); setError("");
+    setError("");
+    if (page === 0 || !isLast) {
+      const snapshot = s;
+      const nextStep = stepForPage(page + 1);
+      setQi(0);
+      setS(cur => { const updated = { ...cur, step: nextStep }; saveState(updated); return updated; });
+      pendingSaves.current = pendingSaves.current.then(async () => {
+        const session = await ensureSession(snapshot);
+        if (page === 0) {
+          await updateAuditInfo({ data: { ...session, info: { name: snapshot.info.name.trim(), email: snapshot.info.email.trim(), whatsapp: snapshot.info.whatsapp.trim() } } });
+        } else {
+          await saveAuditAnswers({ data: { ...session, step: nextStep, answers: questions.map(q => ({ questionId: q.id, answer: snapshot.answers[q.id] ?? "" })) } });
+        }
+      }).catch(() => setError("Your answers are kept on this device. We couldn't sync them yet. Please check your connection; we'll retry when you continue."));
+      return;
+    }
+    submitting.current = true; setBusy(true);
     try {
-      if (page === 0) {
-        const info = { name: s.info.name.trim(), email: s.info.email.trim(), whatsapp: s.info.whatsapp.trim() };
-        let session = s.session;
-        if (session) await updateAuditInfo({ data: { ...session, info } });
-        else { session = await startAuditSession({ data: { info } }); window.__lovableEvents?.track?.("project.xray_started", {}); }
-        setQi(0); setS(cur => ({ ...cur, session, step: stepForPage(1) }));
-      } else {
-        const ref = s.session;
-        if (!ref) throw new Error("Missing assessment session");
+      await pendingSaves.current;
+      const ref = await ensureSession(s);
+      await updateAuditInfo({ data: { ...ref, info: { name: s.info.name.trim(), email: s.info.email.trim(), whatsapp: s.info.whatsapp.trim() } } });
         const nextStep = isLast ? QUESTIONS.length : stepForPage(page + 1);
         // The existing answer endpoint and original question IDs remain authoritative.
         // Re-sync all answers on final submission; empty multi-selections clear stored answers.
@@ -101,7 +122,6 @@ export function Audit() {
           try { localStorage.removeItem("client-xray-diagnosis"); } catch {}
           setReceipt("scanning");
         } else { setQi(0); setS(cur => ({ ...cur, step: nextStep })); }
-      }
     } catch { setError(page === 0 ? "Something went wrong. Please try again." : "We couldn't save your answers. Please check your connection and try again."); }
     finally { submitting.current = false; setBusy(false); }
   };
@@ -161,7 +181,7 @@ export function Audit() {
         {error && <p role="alert" className="mb-3 text-sm text-destructive">{error}</p>}
         <div className="flex items-center gap-3">
           <Button onClick={back} variant="outline" disabled={busy} className="h-12 shrink-0"><ArrowLeft className="h-4 w-4" /> Back</Button>
-          <Button variant="premium" onClick={() => void next()} disabled={!canContinue || busy || !ready} className="xray-continue group h-12 min-w-0 flex-1 text-sm">{busy ? "Saving…" : isLast && lastInPage ? "See my X-Ray" : lastInPage ? "Next stage" : "Next question"}<span className="xray-continue-arrow ml-2"><ArrowRight className="h-4 w-4" /></span></Button>
+          <Button variant="premium" onClick={() => void next()} disabled={!canContinue || busy || !ready} aria-busy={busy} className="xray-continue group h-12 min-w-0 flex-1 text-sm">{isLast && lastInPage ? "See my X-Ray" : lastInPage ? "Next stage" : "Next question"}<span className="xray-continue-arrow ml-2"><ArrowRight className="h-4 w-4" /></span></Button>
         </div>
       </div>
     </div>
