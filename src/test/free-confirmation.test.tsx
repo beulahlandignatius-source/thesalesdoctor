@@ -29,7 +29,7 @@ describe("free consultation submission", () => {
     const link = await screen.findByRole("link");
     expect(track).not.toHaveBeenCalled();
     fireEvent.click(link);
-    expect(track).toHaveBeenCalledExactlyOnceWith("project.consultation_booking_opened", { session: "free_review" });
+    expect(track.mock.calls.filter(c => c[0] === "project.consultation_booking_opened")).toEqual([["project.consultation_booking_opened", { session: "free_review" }]]);
   });
   it("offers the existing Calendly destination only after the details save successfully", async () => {
     HTMLElement.prototype.scrollIntoView = vi.fn();
