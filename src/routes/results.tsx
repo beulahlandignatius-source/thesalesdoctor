@@ -15,8 +15,7 @@ import {
 } from "@/lib/result-presentation";
 import { buildDiagnosisReport } from "@/lib/diagnosis-report";
 import { deliverFile } from "@/lib/download";
-import { DiagnosticGuide, DiagnosticSweep } from "@/components/diagnostic-guide";
-import { BusinessScan } from "@/components/business-scan";
+import { DiagnosticGuide } from "@/components/diagnostic-guide";
 import { XrayCallPurpose } from "@/components/xray-call-purpose";
 import { XrayRestart } from "@/components/xray-restart";
 
@@ -85,12 +84,11 @@ function Results() {
   if (status === "done" && result) return <ResultView r={result} />;
   return (
     <div className="xray-preparing flex min-h-dvh items-center justify-center bg-background px-6">
-      {status === "loading" && <DiagnosticSweep repeat />}
       <div className="max-w-sm text-center">
         <img
           src={logo}
           alt="The Sales Doctor"
-          className={`mx-auto w-36 ${status === "loading" ? "animate-pulse" : ""}`}
+          className="mx-auto w-36"
         />
         {status === "error" ? (
           <>
@@ -103,14 +101,10 @@ function Results() {
           </>
         ) : (
           <>
-            <div className="phone-business-scan"><BusinessScan /></div>
-            <div className="desktop-business-scan">
-            <DiagnosticGuide mood="examining" message="Let's see what's happening inside your business." scanning />
-            <div className="mx-auto mt-10 h-10 w-10 animate-spin rounded-full border-4 border-muted border-t-primary" />
+            <div aria-hidden="true" className="mx-auto mt-10 h-10 w-10 motion-safe:animate-spin rounded-full border-4 border-muted border-t-primary" />
             <p role="status" className="mt-6 font-display text-2xl text-primary">
               Your X-Ray is being prepared...
             </p>
-            </div>
           </>
         )}
       </div>
@@ -134,7 +128,6 @@ function ResultView({ r }: { r: Result }) {
   return (
     <div className="results-workspace min-h-dvh bg-background px-6 pb-10 pt-10">
       <div className="results-content mx-auto max-w-3xl space-y-8">
-        <div className="phone-business-scan"><BusinessScan complete /></div>
         <div className="result-opening-screen">
         <img src={logo} alt="The Sales Doctor" className="mx-auto w-28" />
         <p className={`${label} text-center`}>Your client acquisition diagnosis</p>
