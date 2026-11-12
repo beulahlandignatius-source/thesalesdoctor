@@ -1,3 +1,4 @@
+import { calendlyUrl } from "@/lib/links";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, ArrowUpRight } from "lucide-react";
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/book/free")({
 });
 
 export function Free() {
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState<{ name: string; email: string } | null>(null);
   const confirmation = useRef<HTMLHeadingElement>(null);
   const { save, busy, error } = useEnquiry("free_review");
   useEffect(() => {
@@ -38,12 +39,12 @@ export function Free() {
         <h2 ref={confirmation} tabIndex={-1} className="mt-5 font-display text-2xl font-bold outline-none">Your enquiry has been submitted.</h2>
         <p className="mt-3 text-muted-foreground">Your details are saved. Next, choose a time on Calendly for your free 25-minute Client Acquisition Review.</p>
         <p className="mt-3 text-sm text-muted-foreground">Your appointment is not confirmed yet. Complete your booking on Calendly to confirm your time.</p>
-        <ExtLink href={LINKS.calendly} className="mt-6 w-full" onClick={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "free_review" })}>Continue to Calendly<ArrowUpRight className="h-4 w-4" /></ExtLink>
+        <ExtLink href={calendlyUrl(submitted.name, submitted.email)} className="mt-6 w-full" onClick={() => window.__lovableEvents?.track?.("project.consultation_booking_opened", { session: "free_review" })}>Continue to Calendly<ArrowUpRight className="h-4 w-4" /></ExtLink>
       </div> : (
         <form className="space-y-5" onSubmit={async (e) => {
           e.preventDefault();
           const who = await save(e.currentTarget);
-          if (who) setSubmitted(true);
+          if (who) setSubmitted({ name: who.name, email: who.email });
         }}>
           <div className="form-contact grid gap-5 sm:grid-cols-2">
           <F compact label="Full name"><input name="name" required autoComplete="name" className={field} /></F>

@@ -38,7 +38,7 @@ describe("free consultation submission", () => {
     const form = container.querySelector("form");
     if (!form) throw new Error("Form missing");
     fireEvent.submit(form);
-    await waitFor(() => expect(screen.getByRole("link")).toHaveAttribute("href", "https://calendly.com/thesalesdoctor2/thesalesclinic"));
+    await waitFor(() => expect(screen.getByRole("link")).toHaveAttribute("href", "https://calendly.com/thesalesdoctor2/thesalesclinic?name=Test+client&email=test%40example.com"));
     expect(container.querySelector("form")).toBeNull();
   });
   it("keeps the form and does not offer the next step when saving fails", async () => {
