@@ -1,4 +1,3 @@
-import { F, field } from "@/components/form-bits";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { startAuditSession, updateAuditInfo, saveAuditAnswer, getAuditSession, submitAuditForReview } from "@/lib/audit-session.functions";
@@ -114,14 +113,15 @@ export function Audit() {
       <div key={page} className="assessment-question mt-5 animate-in fade-in duration-300">
         <p className="text-sm leading-relaxed text-muted-foreground">{topic.description}</p>
         {page > 0 && <p className="mt-3 text-xs tabular-nums text-muted-foreground">{questions.filter(q => !!s.answers[q.id]?.trim()).length} of {questions.length} answered</p>}
-        {page === 0 ? <div className="mt-6 space-y-3">
-          {([["name", "Your name", "text"], ["email", "Email address", "email"], ["whatsapp", "WhatsApp number", "tel"]] as const).map(([key, label, type]) => <F key={key} label={label} compact>
-            <input id={`info-${key}`} type={type} required autoComplete={key === "whatsapp" ? "tel" : key} maxLength={key === "email" ? 255 : 100} disabled={busy || !ready} value={s.info[key]} onChange={e => setInfo(key, e.target.value)} onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); void next(); } }} placeholder={key === "whatsapp" ? "+234 800 000 0000" : undefined} className={field} onBlur={e => {
+        {page === 0 ? <div className="mt-6 space-y-4">
+          {([["name", "Your name", "text"], ["email", "Email address", "email"], ["whatsapp", "WhatsApp number", "tel"]] as const).map(([key, label, type]) => <label key={key} htmlFor={`info-${key}`} className="block mobile-info-field">
+            <span className="text-sm text-muted-foreground">{label}</span>
+            <input id={`info-${key}`} type={type} required autoComplete={key === "whatsapp" ? "tel" : key} maxLength={key === "email" ? 255 : 100} disabled={busy || !ready} value={s.info[key]} onChange={e => setInfo(key, e.target.value)} onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); void next(); } }} placeholder={key === "whatsapp" ? "+234 800 000 0000" : undefined} className="field mt-1" onBlur={e => {
               const value = e.currentTarget.value.trim();
               const valid = key === "name" ? !!value : key === "email" ? /^\S+@\S+\.\S+$/.test(value) : value.replace(/\D/g, "").length >= 7;
               if (!valid) window.__lovableEvents?.track?.("project.xray_validation_error", { stage: "contact", field: key, reason: value ? "invalid_format" : "required" });
             }} />
-          </F>)}
+          </label>)}
         </div> : <div className="xray-topic-fields mt-8">
           {questions.map(q => <XrayTopicQuestion key={q.id} question={q} answer={s.answers[q.id] ?? ""} busy={busy || !ready} onAnswer={value => setS(cur => ({ ...cur, answers: { ...cur.answers, [q.id]: value } }))} />)}
         </div>}
