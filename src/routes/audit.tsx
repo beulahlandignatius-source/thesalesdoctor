@@ -99,12 +99,19 @@ export function Audit() {
     <div ref={workspace} className="assessment-workspace mx-auto flex min-h-dvh max-w-3xl flex-col px-6 pb-32 pt-5 sm:pt-28">
       <header className="xray-bar flex items-center justify-between gap-3">
         <Link to="/xray" className="flex items-center gap-2 font-display text-sm font-semibold text-primary"><ScanLine className="h-4 w-4" /> Client X-Ray</Link>
-        <span className="text-xs font-semibold tabular-nums text-muted-foreground">Stage {page + 1} of {AUDIT_PAGES.length}</span>
       </header>
-      <div key={page} className="assessment-question mt-8 animate-in fade-in duration-300">
-        <p className="eyebrow">{page === 0 ? "Before we begin" : `Business examination · ${String(page + 1).padStart(2, "0")}`}</p>
-        <h1 ref={heading} tabIndex={-1} className="mt-3 font-display text-3xl font-semibold leading-tight sm:text-4xl">{topic.title}</h1>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{topic.description}</p>
+        <div className="assessment-progress mt-5" aria-live="polite" aria-atomic="true">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 text-xs">
+            <h1 ref={heading} tabIndex={-1} className="min-w-0 font-display text-lg font-semibold leading-snug text-foreground sm:text-2xl">{topic.title} <span className="whitespace-nowrap text-xs font-normal text-muted-foreground">· {page + 1}/{AUDIT_PAGES.length}</span></h1>
+            <span className="shrink-0 font-semibold tabular-nums text-primary">{progress.percent}% complete</span>
+          </div>
+          <div role="progressbar" aria-label="Assessment progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress.percent} aria-valuetext={`${progress.percent}% complete. Stage ${page + 1} of ${AUDIT_PAGES.length}: ${topic.title}. ${progress.remaining} stages remaining including this one.`} className="mt-2 flex gap-1.5">
+            {AUDIT_PAGES.map((stage, index) => <span key={stage.title} className={`h-1.5 min-w-0 flex-1 rounded-full transition-colors motion-reduce:transition-none ${index < page || receipt ? "bg-primary" : index === page ? "bg-primary/35" : "bg-muted"}`} />)}
+          </div>
+          <p className="mt-1.5 text-xs text-muted-foreground">{receipt ? "All stages submitted" : isLast ? "Final stage" : `${progress.remaining} stages remaining, including this one`}</p>
+        </div>
+      <div key={page} className="assessment-question mt-5 animate-in fade-in duration-300">
+        <p className="text-sm leading-relaxed text-muted-foreground">{topic.description}</p>
         {page > 0 && <p className="mt-3 text-xs tabular-nums text-muted-foreground">{questions.filter(q => !!s.answers[q.id]?.trim()).length} of {questions.length} answered</p>}
         {page === 0 ? <div className="mt-6 space-y-4">
           {([["name", "Your name", "text"], ["email", "Email address", "email"], ["whatsapp", "WhatsApp number", "tel"]] as const).map(([key, label, type]) => <label key={key} htmlFor={`info-${key}`} className="block mobile-info-field">
@@ -123,16 +130,6 @@ export function Audit() {
     </div>
     <div className="assessment-actions fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/95 backdrop-blur">
       <div className="mx-auto max-w-3xl px-5 pb-3 pt-3">
-        <div className="mb-3" aria-live="polite" aria-atomic="true">
-          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 text-xs">
-            <p className="min-w-0 truncate font-semibold text-foreground">{topic.title} <span className="font-normal text-muted-foreground">· {page + 1}/{AUDIT_PAGES.length}</span></p>
-            <span className="shrink-0 font-semibold tabular-nums text-primary">{progress.percent}% complete</span>
-          </div>
-          <div role="progressbar" aria-label="Assessment progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress.percent} aria-valuetext={`${progress.percent}% complete. Stage ${page + 1} of ${AUDIT_PAGES.length}: ${topic.title}. ${progress.remaining} stages remaining including this one.`} className="mt-2 flex gap-1.5">
-            {AUDIT_PAGES.map((stage, index) => <span key={stage.title} className={`h-1.5 min-w-0 flex-1 rounded-full transition-colors motion-reduce:transition-none ${index < page || receipt ? "bg-primary" : index === page ? "bg-primary/35" : "bg-muted"}`} />)}
-          </div>
-          <p className="mt-1.5 text-xs text-muted-foreground">{receipt ? "All stages submitted" : isLast ? "Final stage" : `${progress.remaining} stages remaining, including this one`}</p>
-        </div>
         {error && <p role="alert" className="mb-3 text-sm text-destructive">{error}</p>}
         <div className="flex items-center gap-3">
           <Button onClick={back} variant="outline" disabled={busy} className="h-12 shrink-0"><ArrowLeft className="h-4 w-4" /> Back</Button>
