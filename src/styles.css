@@ -1636,3 +1636,35 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 .xray-photo-mascot img { padding-top: 2.5rem; transform: scale(1.3); transform-origin: center 45%; }
 @media (max-width: 639px) { .xray-photo-mascot img { padding-top: 2.75rem; transform: scale(1.3); transform-origin: center 25%; } }
 .xray-flip-photo { opacity: 0; }
+
+/* Home "Your session": big storytelling mascot */
+.session-guide { position: relative; height: clamp(260px, 62vw, 340px); margin-top: 1rem; pointer-events: none; }
+.session-guide-actor { position: absolute; left: 50%; bottom: 14px; width: clamp(200px, 52vw, 280px); aspect-ratio: 1; translate: -50% 0; transition: translate .9s cubic-bezier(.34,1.4,.5,1), rotate .6s ease; z-index: 2; }
+.session-guide-actor img { width: 100%; height: 100%; object-fit: contain; animation: guide-pose .45s cubic-bezier(.34,1.6,.5,1); filter: drop-shadow(0 18px 24px color-mix(in oklab, var(--primary) 28%, transparent)); }
+.session-guide-shadow { position: absolute; left: 50%; bottom: 8px; width: 46%; height: 16px; translate: -50% 0; border-radius: 50%; background: color-mix(in oklab, var(--foreground) 16%, transparent); filter: blur(4px); transition: width .6s ease, opacity .6s ease; }
+.session-guide-glow { position: absolute; inset: 12% 8% 0; border-radius: 50%; background: radial-gradient(circle at 50% 60%, color-mix(in oklab, var(--primary) 22%, transparent), transparent 65%); animation: guide-glow 3s ease-in-out infinite; }
+.session-guide-ring { position: absolute; left: 50%; bottom: 10px; width: 60%; height: 30px; translate: -50% 0; border: 2px solid var(--primary); border-radius: 50%; opacity: 0; animation: guide-ring 1.4s ease-out; }
+.session-guide-bubble { position: absolute; top: 0; left: 50%; z-index: 3; max-width: 92%; translate: -50% 0; padding: .55rem 1rem; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); font-family: var(--font-display, inherit); font-weight: 800; font-size: .85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 10px 24px -10px var(--primary); animation: guide-bubble .5s cubic-bezier(.34,1.6,.5,1); }
+.session-guide-bubble::after { content: ""; position: absolute; left: 50%; bottom: -6px; width: 12px; height: 12px; translate: -50% 0; rotate: 45deg; background: inherit; }
+.session-guide[data-move="idle"] .session-guide-actor { translate: -50% -140%; opacity: 0; }
+.session-guide[data-move="drop"] .session-guide-actor img { animation: guide-drop .9s cubic-bezier(.34,1.5,.5,1); }
+.session-guide[data-move="ponder"] .session-guide-actor { translate: -70% 0; rotate: -4deg; }
+.session-guide[data-move="shove"] .session-guide-actor { translate: -20% 0; }
+.session-guide[data-move="shove"] .session-guide-actor img { animation: guide-shove .4s ease-in-out infinite alternate; }
+.session-guide[data-move="point"] .session-guide-actor { translate: -40% 0; rotate: 3deg; }
+.session-guide[data-move="jump"] .session-guide-actor img { animation: guide-jump .65s cubic-bezier(.3,.7,.4,1) 3; }
+.session-guide[data-move="jump"] .session-guide-shadow { width: 30%; opacity: .5; }
+.session-guide-burst { position: absolute; left: 50%; top: 42%; z-index: 1; }
+.session-guide-burst i { position: absolute; width: 8px; height: 22px; border-radius: 4px; background: var(--primary); rotate: var(--a); transform-origin: 50% 0; animation: guide-burst 1s ease-out forwards; }
+.session-guide-burst i:nth-child(even) { background: var(--milk-gold, var(--accent)); }
+.session-question { transition: transform .5s cubic-bezier(.34,1.4,.5,1); }
+.session-question[data-guided] { transform: translateX(14px) scale(1.02); }
+@keyframes guide-pose { from { scale: .85; opacity: .3; } to { scale: 1; opacity: 1; } }
+@keyframes guide-drop { 0% { translate: 0 -120%; } 70% { translate: 0 6%; scale: 1.05 .92; } 100% { translate: 0 0; } }
+@keyframes guide-shove { from { translate: 0 0; } to { translate: 10px -3px; } }
+@keyframes guide-jump { 0%,100% { translate: 0 0; } 50% { translate: 0 -22%; rotate: 6deg; } }
+@keyframes guide-glow { 50% { scale: 1.08; opacity: .7; } }
+@keyframes guide-ring { 0% { opacity: .8; scale: .4; } 100% { opacity: 0; scale: 1.3; } }
+@keyframes guide-bubble { from { opacity: 0; translate: -50% 12px; scale: .8; } to { opacity: 1; translate: -50% 0; scale: 1; } }
+@keyframes guide-burst { 0% { translate: 0 0; opacity: 1; } 100% { translate: 0 90px; opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .session-guide *, .session-guide-actor { animation: none !important; transition: none !important; } .session-question[data-guided] { transform: none; } }
