@@ -156,7 +156,7 @@ function Index() {
           <div className="md:col-span-4">
             <p className="eyebrow">Your session</p>
             <h2 className="mt-4 text-5xl font-black uppercase leading-[0.9] tracking-tight md:text-7xl">3 questions we answer</h2>
-            <div className="mt-6 text-primary"><SessionGuide titles={questions.map(q => q[1])} outro="Let's find your next step." /><p className="text-sm font-semibold">Let's find your next step.</p></div>
+            <div className="mt-6 text-primary"><SessionGuide titles={questions.map(q => q[1] ?? "")} outro="Let's find your next step." /><p className="text-sm font-semibold">Let's find your next step.</p></div>
           </div>
           <ol className="session-questions md:col-span-8">
             {questions.map(([n, t, d], i) => (
