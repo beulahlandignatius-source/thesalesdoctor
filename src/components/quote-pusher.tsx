@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import push from "@/assets/mascot-push.png";
 import wave from "@/assets/mascot-wave-free.png";
 
-type Phase = "idle" | "push" | "wave" | "gone";
+type Phase = "idle" | "push" | "jump" | "wave" | "gone";
 
 /** Dr. Dan's mascot shoves the quote into place, waves, then steps away. Decorative only. */
 export function QuotePusher({ children, className = "" }: { children: ReactNode; className?: string }) {
@@ -17,7 +17,7 @@ export function QuotePusher({ children, className = "" }: { children: ReactNode;
       if (!entries.some(e => e.isIntersecting)) return;
       io.disconnect();
       setPhase("push");
-      timers.push(window.setTimeout(() => setPhase("wave"), 1500), window.setTimeout(() => setPhase("gone"), 4200));
+      timers.push(window.setTimeout(() => setPhase("jump"), 1800), window.setTimeout(() => setPhase("wave"), 2500), window.setTimeout(() => setPhase("gone"), 4600));
     }, { threshold: 0.35 });
     io.observe(el);
     return () => { io.disconnect(); timers.forEach(clearTimeout); };

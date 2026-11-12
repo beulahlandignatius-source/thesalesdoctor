@@ -13,7 +13,7 @@ export function SessionGuide({ titles, outro }: { titles: string[]; outro: strin
   const beats: Beat[] = [
     { img: wave, move: "drop", q: null, bubble: outro, ms: 2200 },
     { img: thinking, move: "ponder", q: 0, bubble: titles[0] ?? null, ms: 2400 },
-    { img: push, move: "shove", q: 1, bubble: titles[1] ?? null, ms: 2400 },
+    { img: push, move: "shove", q: 1, bubble: null, ms: 2400 },
     { img: explaining, move: "point", q: 2, bubble: titles[2] ?? null, ms: 2400 },
     { img: celebrating, move: "jump", q: null, bubble: outro, ms: 2600 },
   ];
@@ -22,7 +22,7 @@ export function SessionGuide({ titles, outro }: { titles: string[]; outro: strin
     const el = host.current; if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setI(0); return; }
     let t: number | undefined; let on = false; let idx = -1;
-    const step = () => { idx = (idx + 1) % beats.length; setI(idx); t = window.setTimeout(step, beats[idx]!.ms); };
+    const step = () => { idx = (idx + 1) % beats.length; const next = beats[idx]; if (!next) return; setI(idx); t = window.setTimeout(step, next.ms); };
     const io = new IntersectionObserver(([e]) => {
       if (e?.isIntersecting && !on) { on = true; step(); }
       else if (!e?.isIntersecting && on) { on = false; window.clearTimeout(t); }
@@ -30,10 +30,18 @@ export function SessionGuide({ titles, outro }: { titles: string[]; outro: strin
     io.observe(el);
     return () => { io.disconnect(); window.clearTimeout(t); };
   }, []);
-  const beat = i >= 0 ? beats[i]! : null;
+  const beat = i >= 0 ? beats[i] : null;
   useEffect(() => {
     const section = host.current?.closest("section");
     section?.querySelectorAll(".session-question").forEach((li, n) => li.toggleAttribute("data-guided", beat?.q === n));
+    const card = section?.querySelector<HTMLElement>(".session-question:nth-child(2)");
+    if (!card || !section || beat?.move !== "shove") return;
+    card.classList.remove("fx-reveal");
+    card.classList.add("fx-in");
+    const actor = document.createElement("img");
+    actor.src = push; actor.alt = ""; actor.className = "session-card-pusher"; actor.setAttribute("aria-hidden", "true");
+    card.append(actor);
+    return () => actor.remove();
   }, [beat]);
   return <div ref={host} className="session-guide" data-move={beat?.move ?? "idle"} aria-hidden="true">
     <span className="session-guide-glow" />

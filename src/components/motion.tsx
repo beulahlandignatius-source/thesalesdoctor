@@ -48,7 +48,7 @@ export function useMotionFx() {
     // Staggered scroll reveals for cards and rows.
     const revealEls = Array.from(document.querySelectorAll<HTMLElement>(".farmora-home .session-question, .farmora-home .who-bento-tile, .farmora-home .mentorship-benefit, .farmora-home .proof-tile, .farmora-home section h2, .farmora-home section .eyebrow, .editorial-motion .service-card, .editorial-motion .principle-tile, .editorial-motion .about-step, .editorial-motion .about-stat"));
     const rio = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("fx-in"); rio.unobserve(e.target); } }), { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
-    revealEls.forEach((el) => { const sib = el.parentElement ? Array.from(el.parentElement.children).indexOf(el) : 0; el.style.setProperty("--fx-delay", `${Math.min(sib, 5) * 90}ms`); el.classList.add("fx-reveal"); rio.observe(el); });
+    revealEls.forEach((el) => { const sib = el.parentElement ? Array.from(el.parentElement.children).indexOf(el) : 0; el.style.setProperty("--fx-delay", `${Math.min(sib, 5) * 90}ms`); if (el.matches(".service-card, .who-bento-tile, .principle-tile, .about-step")) el.classList.add(sib % 2 ? "fx-from-right" : "fx-from-left"); el.classList.add("fx-reveal"); rio.observe(el); });
     // Subtle parallax for floating décor.
     const para = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"));
     let praf = 0;

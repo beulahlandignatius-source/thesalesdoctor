@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Align quote/session pushes with actual card edges, add alternating service and editorial card entrances; ten sizes (320–1280px) passed contact-edge, text-clearance and overflow checks, plus reduced motion and seven tests.
 - [x] Show both session offers side by side on tablet/desktop and stack full-width cards on phones; verified 320–1280px, no overflow, large booking targets and both forms opening.
 - [x] Keep only the latest post-submission scanner; removed duplicate results scanning and verified real phone submission, findings, PDF download, booking and desktop reload; 12 tests passed.
 - [x] Refine phone X-Ray sizing, use a white form background, and move a single sticky progress summary above the questions; verified 320–639px phones plus tablet/desktop, real contact save/back/reload and 12 passing tests.

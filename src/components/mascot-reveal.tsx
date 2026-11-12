@@ -24,7 +24,7 @@ const STORIES: Record<Mode, { beats: Beat[]; length: number; loop: boolean; reve
 
 export function MascotReveal({ targets, mode = "push" }: { targets: string; mode?: Mode }) {
   const lane = useRef<HTMLDivElement>(null);
-  const [beat, setBeat] = useState<Beat>(STORIES[mode].beats[0]!);
+  const [beat, setBeat] = useState<Beat>(STORIES[mode].beats[0] ?? { state: "welcome", at: 0, x: 0 });
   useEffect(() => {
     const host = lane.current;
     const section = host?.closest("section");
@@ -33,9 +33,18 @@ export function MascotReveal({ targets, mode = "push" }: { targets: string; mode
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const timers: number[] = [];
     const items = Array.from(section.querySelectorAll<HTMLElement>(targets));
-    const reveal = () => items.forEach((el, i) => el.animate(
-      mode === "curtain" ? [{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }] : [{ translate: "-32px 0", opacity: .5 }, { translate: "0 0", opacity: 1 }],
-      { duration: 850, delay: i * 140, easing: "cubic-bezier(.22,1,.36,1)", fill: "backwards" }));
+    const animations: Animation[] = [];
+    const reveal = () => items.forEach((el, i) => {
+      el.classList.remove("fx-reveal");
+      const observer = new IntersectionObserver(entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        observer.disconnect();
+        animations.push(el.animate([{ translate: `${i % 2 === 0 ? -64 : 64}px 0`, opacity: .25 }, { translate: "0 0", opacity: 1 }],
+          { duration: 850, delay: (i % 3) * 120, easing: "cubic-bezier(.22,1,.36,1)" }));
+      }, { threshold: .15 });
+      observers.push(observer); observer.observe(el);
+    });
+    const observers: IntersectionObserver[] = [];
     const play = () => {
       story.beats.forEach(b => timers.push(window.setTimeout(() => setBeat(b), b.at)));
       timers.push(window.setTimeout(reveal, story.revealAt));
@@ -44,11 +53,11 @@ export function MascotReveal({ targets, mode = "push" }: { targets: string; mode
     const observer = new IntersectionObserver(entries => {
       if (!entries.some(e => e.isIntersecting)) return;
       observer.disconnect();
-      if (reduce) { setBeat(story.beats[story.beats.length - 1]!); return; }
+      if (reduce) { const last = story.beats.at(-1); if (last) setBeat(last); return; }
       play();
     }, { threshold: .2 });
     observer.observe(host);
-    return () => { observer.disconnect(); timers.forEach(clearTimeout); };
+    return () => { observer.disconnect(); observers.forEach(io => io.disconnect()); animations.forEach(a => a.cancel()); timers.forEach(clearTimeout); };
   }, [targets, mode]);
   return <div ref={lane} className={`mascot-reveal-lane mascot-reveal-${mode}`} aria-hidden="true">
     <div className="mascot-reveal-actor" data-out={beat.out ? "" : undefined} style={{ left: `calc(${beat.x} * (100% - var(--actor-size)))` }}>

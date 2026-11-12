@@ -1614,31 +1614,26 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 @media (max-width: 639px) { .xray-photo-mascot { width: 100%; height: 330px; bottom: auto; overflow: hidden; } .xray-photo-mascot img { height: 330px; padding-top: 3.75rem; } }
 @media (prefers-reduced-motion: reduce) { .xray-photo-mascot { display: none; } .xray-flip-photo { animation: none; opacity: 1 !important; } }
 
-/* Home quote: mascot pushes the quote in, waves, leaves */
-.quote-pusher { --push-size: clamp(120px, 30vw, 200px); }
-.quote-pusher-card { transition: translate 1.4s cubic-bezier(.3,.8,.3,1), opacity .5s ease; }
-.quote-pusher[data-phase="idle"] .quote-pusher-card { translate: -70% 0; opacity: 0; }
-.quote-pusher-actor { position: absolute; z-index: 2; pointer-events: none; width: var(--push-size); height: var(--push-size); bottom: 0; right: calc(100% - var(--push-size) * .18); transition: right 1.4s cubic-bezier(.3,.8,.3,1), bottom .6s cubic-bezier(.3,1.5,.5,1), opacity .6s ease, translate .6s ease; }
-.quote-pusher-actor img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity .25s ease; filter: drop-shadow(0 12px 18px color-mix(in oklab, var(--foreground) 22%, transparent)); }
+/* Card and pushing hands travel as one unit; the jump has its own landing space. */
+.quote-pusher { --push-size: 180px; --push-space: 176px; padding-top: calc(var(--push-size) * .8); }
+.quote-pusher-card { margin-left: var(--push-space); translate: 0 0; transition: margin-left .7s ease; }
+.quote-pusher::after { content: ""; display: block; clear: both; }
+.quote-pusher-actor { position: absolute; z-index: 2; pointer-events: none; width: var(--push-size); height: var(--push-size); left: 0; top: calc(var(--push-size) * .8 + 12px); transform-origin: bottom center; }
+.quote-pusher-actor img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity .2s ease; filter: drop-shadow(0 8px 12px color-mix(in oklab, var(--foreground) 16%, transparent)); }
 .quote-pusher-wave { opacity: 0; }
-.quote-pusher[data-phase="idle"] .quote-pusher-actor { right: calc(170% - var(--push-size) * .18); opacity: 0; }
-.quote-pusher[data-phase="push"] .quote-pusher-push { animation: quote-shove .45s ease-in-out infinite alternate; }
-.quote-pusher[data-phase="wave"] .quote-pusher-actor, .quote-pusher[data-phase="gone"] .quote-pusher-actor { right: calc(100% - var(--push-size) * .9); bottom: calc(100% - var(--push-size) * .12); }
-.quote-pusher[data-phase="wave"] .quote-pusher-push, .quote-pusher[data-phase="gone"] .quote-pusher-push { opacity: 0; }
-.quote-pusher[data-phase="wave"] .quote-pusher-wave { opacity: 1; animation: quote-wave .5s ease-in-out 3 alternate; transform-origin: bottom center; }
-.quote-pusher[data-phase="gone"] .quote-pusher-actor { opacity: 0; translate: 0 30px; }
-@keyframes quote-shove { from { translate: 0 0; } to { translate: 6px -2px; } }
-@keyframes quote-wave { from { rotate: -4deg; } to { rotate: 4deg; } }
-@media (prefers-reduced-motion: reduce) { .quote-pusher-card, .quote-pusher-actor { transition: none; } .quote-pusher-actor { display: none; } }
-@media (max-width: 767px) {
-  .quote-pusher { --push-size: 120px; }
-  .quote-pusher-card { transition: translate 1.4s cubic-bezier(.3,.8,.3,1), opacity .5s ease, margin-left .7s cubic-bezier(.3,.8,.3,1); }
-  .quote-pusher[data-phase="idle"] .quote-pusher-card, .quote-pusher[data-phase="push"] .quote-pusher-card { margin-left: calc(var(--push-size) * .7); }
-  .quote-pusher-actor, .quote-pusher[data-phase="idle"] .quote-pusher-actor { right: auto; left: -1rem; }
-  .quote-pusher[data-phase="idle"] .quote-pusher-actor { left: -60vw; }
-  .quote-pusher[data-phase="push"] .quote-pusher-actor { bottom: 8px; }
-  .quote-pusher[data-phase="wave"] .quote-pusher-actor, .quote-pusher[data-phase="gone"] .quote-pusher-actor { left: 0; right: auto; }
-}
+.quote-pusher[data-phase="push"] { animation: quote-contact-push 1.8s cubic-bezier(.4,0,.25,1) both; }
+.quote-pusher[data-phase="jump"] .quote-pusher-actor { animation: quote-hop .7s cubic-bezier(.3,.7,.3,1) both; }
+.quote-pusher[data-phase="jump"] .quote-pusher-push, .quote-pusher[data-phase="wave"] .quote-pusher-push, .quote-pusher[data-phase="gone"] .quote-pusher-push { opacity: 0; }
+.quote-pusher[data-phase="jump"] .quote-pusher-wave, .quote-pusher[data-phase="wave"] .quote-pusher-wave { opacity: 1; }
+.quote-pusher[data-phase="wave"] .quote-pusher-actor { translate: var(--push-space) calc(-1 * var(--push-size) * 1.02); }
+.quote-pusher[data-phase="wave"] .quote-pusher-wave { animation: quote-wave .5s ease-in-out 3 alternate; transform-origin: bottom center; }
+.quote-pusher[data-phase="gone"] .quote-pusher-actor { translate: var(--push-space) calc(-1 * var(--push-size) * 1.02); opacity: 0; transition: opacity .5s ease; }
+.quote-pusher[data-phase="gone"] .quote-pusher-card { margin-left: 0; }
+@keyframes quote-contact-push { 0% { translate: -12px 0; } 35% { translate: -10px 0; } 80%,100% { translate: 0 0; } }
+@keyframes quote-hop { 0% { translate: 0 0; rotate: 0deg; } 50% { translate: calc(var(--push-space) * .5) calc(-1 * var(--push-size) * 1.2); rotate: -8deg; } 100% { translate: var(--push-space) calc(-1 * var(--push-size) * 1.02); rotate: 0deg; } }
+@keyframes quote-wave { from { rotate: -3deg; } to { rotate: 3deg; } }
+@media (max-width: 767px) { .quote-pusher { --push-size: 104px; --push-space: 100px; } .quote-pusher-card blockquote { padding: 1rem; } }
+@media (prefers-reduced-motion: reduce) { .quote-pusher { padding-top: 0; animation: none !important; } .quote-pusher-card { margin-left: 0; transition: none; } .quote-pusher-actor { display: none; } }
 /* Bigger, zoomed-in X-Ray hero mascot */
 .xray-photo-mascot { overflow: hidden; }
 .xray-photo-mascot img { padding-top: 2.5rem; transform: scale(1.3); transform-origin: center 45%; }
@@ -1676,3 +1671,21 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 @keyframes guide-bubble { from { opacity: 0; translate: -50% 12px; scale: .8; } to { opacity: 1; translate: -50% 0; scale: 1; } }
 @keyframes guide-burst { 0% { translate: 0 0; opacity: 1; } 100% { translate: 0 90px; opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .session-guide *, .session-guide-actor { animation: none !important; transition: none !important; } .session-question[data-guided] { transform: none; } }
+
+/* Pushing happens at the actual question edge, not in the detached mascot lane. */
+.session-question { position: relative; }
+.session-card-pusher { position: absolute; pointer-events: none; z-index: 2; width: 144px; height: 144px; object-fit: contain; left: -140px; top: 8px; }
+.session-question:nth-child(2)[data-guided] { animation: session-contact-push 2.4s cubic-bezier(.4,0,.25,1); transform: none; }
+.session-guide[data-move="shove"] .session-guide-actor { opacity: 0; }
+.session-guide[data-move="shove"] .session-guide-shadow { opacity: 0; }
+@keyframes session-contact-push { 0%,15% { translate: -12px 0; } 65%,100% { translate: 0 0; } }
+.fx-reveal.fx-from-left:not(.fx-in) { translate: -48px 0; }
+.fx-reveal.fx-from-right:not(.fx-in) { translate: 48px 0; }
+.fx-reveal.fx-from-left.fx-in, .fx-reveal.fx-from-right.fx-in { translate: 0 0; transition: translate .85s cubic-bezier(.22,1,.36,1), opacity .85s ease, transform .85s ease; }
+@media (max-width: 767px) {
+  .session-question:nth-child(2) { margin-left: 100px; display: block; padding: 1rem; }
+  .session-question:nth-child(2) .session-number { margin-bottom: .75rem; }
+  .session-card-pusher { width: 104px; height: 104px; left: -100px; top: 8px; }
+  .session-question:nth-child(2)[data-guided] { animation: session-contact-push 2.4s cubic-bezier(.4,0,.25,1); }
+}
+@media (prefers-reduced-motion: reduce) { .session-card-pusher { display: none; } .session-question:nth-child(2) { margin-left: 0; animation: none !important; } .fx-reveal { translate: none !important; } }
