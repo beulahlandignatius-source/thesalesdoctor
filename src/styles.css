@@ -1613,3 +1613,21 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 @keyframes xray-flip-back { 0%,46% { transform: rotateY(90deg); opacity: 0 } 52%,88% { transform: rotateY(0); opacity: 1 } 94%,100% { transform: rotateY(90deg); opacity: 0 } }
 @media (max-width: 639px) { .xray-photo-mascot { width: 100%; height: 330px; bottom: auto; overflow: hidden; } .xray-photo-mascot img { height: 330px; padding-top: 3.75rem; } }
 @media (prefers-reduced-motion: reduce) { .xray-photo-mascot { display: none; } .xray-flip-photo { animation: none; } }
+
+/* Home quote: mascot pushes the quote in, waves, leaves */
+.quote-pusher { --push-size: clamp(120px, 30vw, 200px); }
+.quote-pusher-card { transition: translate 1.4s cubic-bezier(.3,.8,.3,1), opacity .5s ease; }
+.quote-pusher[data-phase="idle"] .quote-pusher-card { translate: -70% 0; opacity: 0; }
+.quote-pusher-actor { position: absolute; z-index: 2; pointer-events: none; width: var(--push-size); height: var(--push-size); bottom: 0; right: calc(100% - var(--push-size) * .18); transition: right 1.4s cubic-bezier(.3,.8,.3,1), bottom .6s cubic-bezier(.3,1.5,.5,1), opacity .6s ease, translate .6s ease; }
+.quote-pusher-actor img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity .25s ease; filter: drop-shadow(0 12px 18px color-mix(in oklab, var(--foreground) 22%, transparent)); }
+.quote-pusher-wave { opacity: 0; }
+.quote-pusher[data-phase="idle"] .quote-pusher-actor { right: calc(170% - var(--push-size) * .18); opacity: 0; }
+.quote-pusher[data-phase="push"] .quote-pusher-push { animation: quote-shove .45s ease-in-out infinite alternate; }
+.quote-pusher[data-phase="wave"] .quote-pusher-actor, .quote-pusher[data-phase="gone"] .quote-pusher-actor { right: calc(100% - var(--push-size) * .9); bottom: calc(100% - var(--push-size) * .12); }
+.quote-pusher[data-phase="wave"] .quote-pusher-push, .quote-pusher[data-phase="gone"] .quote-pusher-push { opacity: 0; }
+.quote-pusher[data-phase="wave"] .quote-pusher-wave { opacity: 1; animation: quote-wave .5s ease-in-out 3 alternate; transform-origin: bottom center; }
+.quote-pusher[data-phase="gone"] .quote-pusher-actor { opacity: 0; translate: 0 30px; }
+@keyframes quote-shove { from { translate: 0 0; } to { translate: 6px -2px; } }
+@keyframes quote-wave { from { rotate: -4deg; } to { rotate: 4deg; } }
+@media (prefers-reduced-motion: reduce) { .quote-pusher-card, .quote-pusher-actor { transition: none; } .quote-pusher-actor { display: none; } }
+@media (max-width: 767px) { .quote-pusher-actor { right: calc(100% - var(--push-size) * .62); } }

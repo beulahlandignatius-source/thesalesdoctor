@@ -8,6 +8,7 @@ import { Words, useMotionFx } from "@/components/motion";
 import { JourneyLine } from "@/components/journey-line";
 import { MascotCharacter } from "@/components/mascot-character";
 import { MascotReveal } from "@/components/mascot-reveal";
+import { QuotePusher } from "@/components/quote-pusher";
 import { CalendarDays, ClipboardList, TrendingUp, BadgeDollarSign, Users, Globe2, Target, Zap, HeartPulse, Stethoscope, Wrench, Search, Activity, ArrowUpRight } from "lucide-react";
 import desk from "@/assets/dr-dan-desk-clean.png";
 import portrait from "@/assets/dr-dan-portrait.jpg.asset.json";
@@ -229,12 +230,11 @@ function Index() {
               <div className="overflow-hidden">
                 <img src={desk} alt="Dr. Dan seated at his desk with a stethoscope" className="aspect-[16/10] w-full object-cover" />
               </div>
-              <blockquote className="relative -mt-10 ml-4 bg-ink p-6 text-ink-foreground md:-mt-24 md:ml-auto md:w-[78%] md:p-8">
+              <QuotePusher className="-mt-10 ml-4 md:-mt-24 md:ml-auto md:w-[78%]"><blockquote className="relative bg-ink p-6 text-ink-foreground md:p-8">
                 <span className="absolute -top-7 left-5 font-display text-7xl leading-none text-primary" aria-hidden="true">“</span>
                 <p className="text-lg leading-relaxed md:text-xl">“I closed over $135,000 in sales for clients while I was in medical school and building a US-incorporated tech company. No website. No big audience. Just a system that works. I’ve taught it to 150+ people so far. You’re next.”</p>
                 <figcaption className="mt-5 font-display text-xs font-bold uppercase tracking-[0.18em] text-ink-foreground/60">Dr. Dan Odotukpono · The Sales Doctor</figcaption>
-              </blockquote>
-              <MascotReveal targets="blockquote" />
+              </blockquote></QuotePusher>
             </figure>
           </div>
           <div className="mentorship-benefits md:col-span-4 md:col-start-9 md:pt-24">
