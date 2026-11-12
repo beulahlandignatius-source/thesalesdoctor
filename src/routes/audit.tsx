@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { startAuditSession, updateAuditInfo, saveAuditAnswer, getAuditSession, submitAuditForReview } from "@/lib/audit-session.functions";
+import { startAuditSession, updateAuditInfo, saveAuditAnswers, getAuditSession, submitAuditForReview } from "@/lib/audit-session.functions";
 import { XraySubmissionModal } from "@/components/xray-submission-modal";
 import { QUESTIONS, loadState, saveState, emptyState, type AuditState, type BasicInfo } from "@/lib/audit";
 import { AUDIT_PAGES, pageForStep, stepForPage, questionsForPage, pageAnswersValid, stageProgress } from "@/lib/audit-pages";
@@ -75,7 +75,7 @@ export function Audit() {
         // The existing answer endpoint and original question IDs remain authoritative.
         // Re-sync all answers on final submission; empty multi-selections clear stored answers.
         const toSave = isLast ? QUESTIONS.filter(q => s.answers[q.id] !== undefined) : questions;
-        await Promise.all(toSave.map(q => saveAuditAnswer({ data: { ...ref, questionId: q.id, answer: s.answers[q.id] ?? "", step: nextStep } })));
+        await saveAuditAnswers({ data: { ...ref, step: nextStep, answers: toSave.map(q => ({ questionId: q.id, answer: s.answers[q.id] ?? "" })) } });
         if (isLast) {
           await submitAuditForReview({ data: ref });
           window.__lovableEvents?.track?.("project.xray_form_submitted", {});

@@ -73,6 +73,35 @@ export const saveAuditAnswer = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const saveAuditAnswers = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) =>
+    ref.extend({ answers: z.array(z.object({ questionId: z.string().max(20), answer: z.string().max(1000) })).max(60), step: z.number().int().min(0).max(100) }).parse(d))
+  .handler(async ({ data }) => {
+    const { db, session } = await verify(data.id, data.token);
+    if (session.completed_at) return { ok: true };
+    const { QUESTIONS, MULTI_SEP } = await import("./audit");
+    const upserts: { session_id: string; question_id: string; answer: string; score: number | null }[] = [];
+    const clears: string[] = [];
+    for (const a of data.answers) {
+      const q = QUESTIONS.find((x) => x.id === a.questionId);
+      if (!q) throw new Error("Unknown question");
+      if (a.answer === "") { clears.push(q.id); continue; }
+      if (q.type !== "text") {
+        const parts = q.type === "choice" && q.multi ? a.answer.split(MULTI_SEP) : [a.answer];
+        if (!parts.every((p) => q.options.includes(p))) throw new Error("Invalid answer");
+      }
+      const idx = q.type === "scale" ? q.options.indexOf(a.answer) : -1;
+      upserts.push({ session_id: data.id, question_id: q.id, answer: a.answer, score: idx >= 0 ? idx + 1 : null });
+    }
+    const [up, del, prog] = await Promise.all([
+      upserts.length ? db.from("audit_answers").upsert(upserts, { onConflict: "session_id,question_id" }) : Promise.resolve({ error: null }),
+      clears.length ? db.from("audit_answers").delete().eq("session_id", data.id).in("question_id", clears) : Promise.resolve({ error: null }),
+      db.from("audit_sessions").update({ current_step: data.step }).eq("id", data.id),
+    ]);
+    if (up.error || del.error || prog.error) throw new Error("Could not save answers");
+    return { ok: true };
+  });
+
 async function loadAnswers(db: Awaited<ReturnType<typeof verify>>["db"], id: string) {
   const { data, error } = await db.from("audit_answers").select("question_id, answer").eq("session_id", id);
   if (error) throw new Error("Could not read saved answers");

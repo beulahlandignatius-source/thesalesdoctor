@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ start: vi.fn(), save: vi.fn(), navigate: vi.fn(), get: vi.fn(), submit: vi.fn() }));
 vi.mock("@tanstack/react-router", async (original) => ({ ...await original<typeof import("@tanstack/react-router")>(), useNavigate: () => mocks.navigate, Link: ({ children }: { children: React.ReactNode }) => <span>{children}</span> }));
-vi.mock("@/lib/audit-session.functions", () => ({ startAuditSession: mocks.start, saveAuditAnswer: mocks.save, getAuditSession: mocks.get, updateAuditInfo: vi.fn(), submitAuditForReview: mocks.submit }));
+vi.mock("@/lib/audit-session.functions", () => ({ startAuditSession: mocks.start, saveAuditAnswers: mocks.save, getAuditSession: mocks.get, updateAuditInfo: vi.fn(), submitAuditForReview: mocks.submit }));
 vi.mock("@/components/xray-submission-modal", () => ({ XraySubmissionModal: () => <div role="dialog">Receipt</div> }));
 vi.mock("@/components/diagnostic-guide", () => ({ DiagnosticGuide: () => null, DiagnosticSweep: () => null }));
 import { Audit } from "@/routes/audit";
