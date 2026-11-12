@@ -97,7 +97,7 @@ function Services() {
         <div className="flex items-start justify-between gap-3"><span className="service-icon"><Icon className="h-5 w-5" aria-hidden="true" /></span><span className="service-tag">{s.tag}</span></div>
         <h3 className="mt-6 font-display text-2xl font-bold">{s.title}</h3><p className="mt-3 text-sm leading-relaxed opacity-80">{s.body}</p>
         <ul className="mt-5 space-y-2 text-sm">{s.points.map(point => <li key={point} className="flex gap-2"><span className="service-dot" aria-hidden="true" />{point}</li>)}</ul>
-        <div className="mt-auto pt-6"><Button asChild variant="link" className="!text-current service-cta !h-auto !min-h-0 !rounded-none !px-0 !text-left !whitespace-normal"><a href={"href" in s && s.href ? s.href : LINKS.whatsapp} target="_blank" rel="noopener noreferrer"><WhatsAppIcon />Ask on WhatsApp<ArrowUpRight aria-hidden="true" /></a></Button></div>
+        <div className="mt-auto pt-6"><Button asChild variant="link" className="!text-current service-cta !h-auto !min-h-0 !rounded-none !px-0 !text-left !whitespace-normal"><a href={"href" in s && s.href ? s.href : LINKS.whatsapp} target="_blank" rel="noopener noreferrer" onClick={() => window.__lovableEvents?.track?.("project.service_whatsapp_clicked", { service: ["full_audit", "sales_funnel_engine", "mentorship"][i] ?? "other" })}><WhatsAppIcon />Ask on WhatsApp<ArrowUpRight aria-hidden="true" /></a></Button></div>
       </article>; })}</div>
     </section>
   </main>;

@@ -122,6 +122,19 @@
         }
       }
     },
+    "project.mentorship_enquiry_submitted": {
+      "event_schema_version": 1,
+      "description": "A mentorship enquiry was saved successfully, just before opening WhatsApp.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      }
+    },
     "project.payment_started": {
       "event_schema_version": 1,
       "description": "A visitor clicked a Private Sales Clinic pay button (Stripe USD or Flutterwave NGN).",
@@ -194,6 +207,32 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {}
+      }
+    },
+    "project.service_whatsapp_clicked": {
+      "event_schema_version": 1,
+      "description": "A visitor clicked Ask on WhatsApp on a Services page offer.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "service"
+        ],
+        "properties": {
+          "service": {
+            "type": "string",
+            "enum": [
+              "full_audit",
+              "sales_funnel_engine",
+              "mentorship",
+              "other"
+            ]
+          }
+        }
       }
     },
     "project.xray_completed": {
