@@ -6,7 +6,7 @@ import { completeAudit } from "@/lib/audit-session.functions";
 import { buildBookingUrl } from "@/lib/booking";
 import { Button } from "@/components/ui/button";
 
-import { Download, RefreshCw } from "lucide-react";
+import { Download, RefreshCw, ScanLine, ArrowUpRight, Activity } from "lucide-react";
 import {
   MEANING,
   costText,
@@ -123,36 +123,49 @@ function ResultView({ r }: { r: Result }) {
     diagnosis: r.diagnosis_title,
     severity: r.severity,
   });
-  const label = "text-xs font-semibold uppercase text-muted-foreground";
+  const label = "report-label text-xs font-semibold uppercase text-muted-foreground";
   const section = "diagnostic-finding border-t border-border pt-8";
   return (
-    <div className="results-workspace min-h-dvh bg-background px-6 pb-10 pt-10">
-      <div className="results-content mx-auto max-w-3xl space-y-8">
+    <div className="results-workspace report-workspace min-h-dvh bg-background px-6 pb-10 pt-10">
+      <div className="results-content mx-auto max-w-5xl space-y-8">
         <div className="result-opening-screen">
-        <img src={logo} alt="The Sales Doctor" className="mx-auto w-28" />
-        <p className={`${label} text-center`}>Your client acquisition diagnosis</p>
-        <DiagnosticGuide compact mood="findings" message="Hmm, I've spotted something." />
+        <div className="report-masthead">
+          <img src={logo} alt="The Sales Doctor" className="w-28" />
+          <p className={label}><ScanLine aria-hidden="true" />Your client acquisition diagnosis</p>
+        </div>
 
-        <div className="diagnostic-result-title rounded-[2rem] bg-card px-5 py-10 text-center">
+        <div className="diagnostic-result-title report-diagnosis">
+          <div className="report-diagnosis-copy">
           <p className={label}>Your biggest problem</p>
-          <h1 className="mt-3 break-words font-display text-4xl font-bold uppercase leading-tight text-primary">
+          <h1 className="mt-3 break-words font-display text-4xl font-bold leading-tight">
             {r.diagnosis_title}
           </h1>
-          <p className={`${label} mt-6`}>Severity</p>
+          </div>
+          <div className="report-severity">
+          <Activity aria-hidden="true" className="report-severity-icon" />
+          <p className={label}>Severity</p>
           <span
-            className={`mt-2 inline-block rounded-full px-5 py-1.5 text-sm font-semibold ${serious ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`}
+            className={`report-severity-value ${serious ? "report-severity-serious" : ""}`}
           >
             {r.severity}
           </span>
+          <div className="report-severity-track" aria-hidden="true">
+            {['LOW', 'MODERATE', 'HIGH', 'CRITICAL'].map((level, index, levels) => <span key={level} data-active={index <= levels.indexOf(r.severity)} />)}
+          </div>
+          </div>
         </div>
 
+        <div className="report-body-layout">
+        <aside className="report-tools">
+        <DiagnosticGuide compact mood="findings" message="Hmm, I've spotted something." />
         <ReportDownload r={r} />
         <div className="mt-3"><XrayRestart /></div>
-        <nav aria-label="Explore your X-Ray" className="mt-5 flex flex-wrap gap-2">
-          {[['xray-evidence', 'Why we believe this'], ['xray-impact', 'What this means'], ['xray-next', 'Your next move']].map(([id, label]) => <Button key={id} variant="outline" size="sm" onClick={() => document.getElementById(id ?? '')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' })}>{label}</Button>)}
+        <nav aria-label="Explore your X-Ray" className="report-jump-nav">
+          {[['xray-evidence', 'Why we believe this'], ['xray-impact', 'What this means'], ['xray-next', 'Your next move']].map(([id, label]) => <Button key={id} variant="ghost" onClick={() => document.getElementById(id ?? '')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' })}>{label}<ArrowUpRight aria-hidden="true" /></Button>)}
         </nav>
-        </div>
+        </aside>
 
+        <div className="report-findings">
         <section className={section}>
           <h2 className={label}>What's happening</h2>
           <p className="mt-3 text-xl font-medium text-foreground">{r.one_sentence_diagnosis}</p>
@@ -164,8 +177,8 @@ function ResultView({ r }: { r: Result }) {
           <ul className="mt-3 space-y-3">
             {r.evidence.slice(0, 3).map((e) => (
               <li key={e} className="diagnostic-evidence flex gap-3 text-foreground">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                {e}
+                <ScanLine aria-hidden="true" className="report-evidence-icon" />
+                <span>{e}</span>
               </li>
             ))}
           </ul>
@@ -188,7 +201,7 @@ function ResultView({ r }: { r: Result }) {
           </section>
         )}
 
-        <section id="xray-next" className="diagnostic-finding diagnostic-treatment mt-4 scroll-mt-28 rounded-[2rem] bg-card p-6">
+        <section id="xray-next" className="diagnostic-finding diagnostic-treatment report-next mt-4 scroll-mt-28">
           <DiagnosticGuide compact mood="welcome" message="Let's work on fixing this." />
           <p className={label}>Your next move</p>
           <p className="mt-3 text-foreground">
@@ -213,6 +226,9 @@ function ResultView({ r }: { r: Result }) {
             </Button>
           )}
         </section>
+        </div>
+        </div>
+        </div>
       </div>
     </div>
   );

@@ -1714,3 +1714,67 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .xray-topic-assessment .xray-topic-fields > div, .xray-topic-assessment .assessment-question > .mt-6 { padding: .875rem; border-radius: 1.125rem; }
 }
 @media (prefers-reduced-motion: reduce) { .xray-topic-assessment .xray-option, .xray-topic-assessment .field { transition: none; } }
+
+/* Report-only editorial layout; diagnosis content and other X-Ray screens stay unchanged. */
+.report-workspace { padding-top: 2rem; }
+.report-workspace .result-opening-screen { display: block; border: 0 !important; box-shadow: none !important; }
+.report-workspace .report-masthead { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+.report-masthead .report-label { display: flex; align-items: center; gap: .65rem; }
+.report-masthead .report-label svg { width: 1.25rem; height: 1.25rem; color: var(--primary); flex-shrink: 0; }
+.report-workspace .report-diagnosis { display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 2rem; padding: 2.5rem 0; margin-top: 0; border-bottom: 1px solid var(--border); border-top: 0; border-radius: 0; background: transparent; text-align: left; box-shadow: none; }
+.report-diagnosis-copy { align-self: center; min-width: 0; }
+.report-workspace .report-diagnosis h1 { font-size: 2.75rem; line-height: 1.12; font-weight: 700; color: var(--foreground); max-width: 20ch; }
+.report-diagnosis-copy > .report-label { color: var(--primary); }
+.report-severity { border-left: 1px solid var(--border); padding-left: 2rem; align-self: stretch; display: flex; flex-direction: column; justify-content: center; gap: .65rem; }
+.report-severity-icon { width: 2rem; height: 2rem; color: var(--primary); }
+.report-severity-value { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--foreground); }
+.report-severity-serious { color: var(--primary); }
+.report-severity-track { display: flex; gap: 4px; margin-top: .25rem; }
+.report-severity-track span { height: 6px; flex: 1; background: var(--muted); border-radius: 2px; }
+.report-severity-track span[data-active=true] { background: var(--primary); }
+.report-workspace .report-body-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 3rem; margin-top: 2rem; align-items: start; }
+.report-tools { position: sticky; top: 7rem; min-width: 0; }
+.report-tools .diagnostic-guide { margin-bottom: 1.5rem; }
+.report-tools .guide-speech { box-shadow: none; border-radius: 8px; }
+.report-tools > div > button { white-space: normal; height: auto; min-height: 3rem; border-radius: 8px; padding: .75rem; }
+.report-tools > div > p { font-size: .75rem; }
+.report-jump-nav { display: grid; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.report-jump-nav button { justify-content: space-between; text-align: left; white-space: normal; min-height: 44px; height: auto; font-size: .8125rem; border-radius: 6px; padding: .75rem .5rem; gap: .5rem; }
+.report-jump-nav button svg { flex-shrink: 0; color: var(--primary); }
+.report-findings { min-width: 0; }
+.report-workspace .report-findings .diagnostic-finding { padding: 1.75rem 0; border-top: 1px solid var(--border); }
+.report-workspace .report-findings .diagnostic-finding:first-child { padding-top: 0; border-top: 0; }
+.report-workspace .report-findings .diagnostic-finding::before { display: none; }
+.report-findings h2.report-label { color: var(--primary); font-size: .75rem; }
+.report-findings p, .report-findings li { line-height: 1.75; }
+.report-findings > section:first-child > p:first-of-type { font-size: 1.3rem; font-weight: 600; line-height: 1.5; }
+.report-workspace .diagnostic-evidence { border: 1px solid var(--border); padding: 1rem; background: var(--card); border-radius: 8px; font-size: .9375rem; }
+.report-evidence-icon { height: 1.125rem; width: 1.125rem; flex-shrink: 0; margin-top: .25rem; color: var(--primary); }
+.report-workspace .report-findings .report-next { padding: 1.75rem; background: var(--milk-soft); border-top: 3px solid var(--primary); border-radius: 0 0 8px 8px; margin-top: .5rem; }
+.report-next .diagnostic-guide { margin-bottom: 1rem; }
+.report-next .guide-speech { background: var(--background); }
+.report-workspace .report-next button { min-height: 3.25rem; white-space: normal; height: auto; border-radius: 8px; }
+.dark .report-next { background: var(--secondary); }
+@media (max-width: 767px) {
+  .report-workspace { padding: 1.25rem 1rem 2.5rem; }
+  .report-workspace .report-masthead { gap: 1rem; }
+  .report-masthead img { width: 5.5rem; }
+  .report-masthead .report-label { font-size: .625rem; max-width: 13rem; line-height: 1.5; }
+  .report-workspace .report-diagnosis { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding: 1.75rem 0; }
+  .report-workspace .report-diagnosis h1 { font-size: 1.875rem; line-height: 1.2; max-width: none; }
+  .report-severity { display: grid; grid-template-columns: auto auto 1fr; align-items: center; gap: .65rem; border-left: 0; padding: .875rem 1rem; background: var(--muted); border-radius: 8px; }
+  .report-severity-icon { width: 1.25rem; height: 1.25rem; }
+  .report-severity-value { font-size: .9375rem; text-align: right; }
+  .report-severity-track { grid-column: 1 / -1; }
+  .report-workspace .report-body-layout { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; margin-top: 1.25rem; }
+  .report-tools { position: static; }
+  .report-workspace .report-tools .diagnostic-guide { display: none; }
+  .report-jump-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin-top: 1rem; padding-top: 1rem; }
+  .report-jump-nav button { flex-direction: column; align-items: flex-start; justify-content: space-between; font-size: .6875rem; padding: .625rem; border: 1px solid var(--border); min-height: 68px; }
+  .report-jump-nav button svg { width: 1rem; height: 1rem; }
+  .report-workspace .report-findings .diagnostic-finding { padding-block: 1.5rem; }
+  .report-workspace .report-findings > section:first-child > p:first-of-type { font-size: 1.125rem; }
+  .report-workspace .report-findings p, .report-workspace .report-findings li { font-size: .9375rem; line-height: 1.7; }
+  .report-workspace .report-findings .report-next { padding: 1.25rem; }
+  .report-workspace .report-next h2:not(.report-label) { font-size: 1.25rem; line-height: 1.35; }
+}
