@@ -35,6 +35,7 @@ export function Audit() {
   const sessionRef = useRef<AuditState["session"]>(undefined);
   const [qi, setQi] = useState(0);
   const advanceTimer = useRef<number | undefined>(undefined);
+  const continueBtn = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     let active = true;
     const local = loadState(); setS(local); sessionRef.current = local.session;
@@ -148,11 +149,9 @@ export function Audit() {
           <div role="progressbar" aria-label="Assessment progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress.percent} aria-valuetext={`${progress.percent}% complete. Stage ${page + 1} of ${AUDIT_PAGES.length}: ${topic.title}. ${progress.remaining} stages remaining including this one.`} className="mt-2 flex gap-1.5">
             {AUDIT_PAGES.map((stage, index) => <span key={stage.title} className={`h-1.5 min-w-0 flex-1 rounded-full transition-colors motion-reduce:transition-none ${index < page || receipt ? "bg-primary" : index === page ? "bg-primary/35" : "bg-muted"}`} />)}
           </div>
-          <p className="mt-1.5 text-xs text-muted-foreground">{receipt ? "All stages submitted" : isLast ? "Final stage" : `${progress.remaining} stages remaining, including this one`}</p>
         </div>
       <div key={page} className="assessment-question mt-5 animate-in fade-in duration-300">
         <p className="text-sm leading-relaxed text-muted-foreground">{topic.description}</p>
-        {page > 0 && <p className="mt-3 text-xs tabular-nums text-muted-foreground">{questions.filter(q => !!s.answers[q.id]?.trim()).length} of {questions.length} answered in this stage</p>}
         {page === 0 ? <div className="mt-6 space-y-4">
           {([["name", "Your name", "text"], ["email", "Email address", "email"], ["whatsapp", "WhatsApp number", "tel"]] as const).map(([key, label, type]) => <label key={key} htmlFor={`info-${key}`} className="block mobile-info-field">
             <span className="text-sm text-muted-foreground">{label}</span>
@@ -164,12 +163,12 @@ export function Audit() {
           </label>)}
         </div> : <div className="xray-topic-fields mt-8">
           {current && <div key={current.id} className="animate-in fade-in slide-in-from-right-4 duration-300 motion-reduce:animate-none">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary tabular-nums">Question {QUESTIONS.findIndex(q => q.id === current.id) + 1} of {QUESTIONS.length} <span className="font-normal normal-case tracking-normal text-muted-foreground">· {qIndex + 1}/{questions.length} in this stage</span></p>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary tabular-nums">Question {QUESTIONS.findIndex(q => q.id === current.id) + 1} of {QUESTIONS.length}</p>
             <XrayTopicQuestion question={current} answer={s.answers[current.id] ?? ""} busy={busy || !ready} onAnswer={value => {
               setS(cur => ({ ...cur, answers: { ...cur.answers, [current.id]: value } }));
               const single = current.type === "choice" && !current.multi;
               window.clearTimeout(advanceTimer.current);
-              if (single && value && qIndex < questions.length - 1) advanceTimer.current = window.setTimeout(() => setQi(qIndex + 1), 350);
+              if (single && value) advanceTimer.current = window.setTimeout(() => { if (qIndex < questions.length - 1) setQi(qIndex + 1); else if (!isLast) continueBtn.current?.click(); }, 350);
             }} />
           </div>}
         </div>}
@@ -181,7 +180,7 @@ export function Audit() {
         {error && <p role="alert" className="mb-3 text-sm text-destructive">{error}</p>}
         <div className="flex items-center gap-3">
           <Button onClick={back} variant="outline" disabled={busy} className="h-12 shrink-0"><ArrowLeft className="h-4 w-4" /> Back</Button>
-          <Button variant="premium" onClick={() => void next()} disabled={!canContinue || busy || !ready} aria-busy={busy} className="xray-continue group h-12 min-w-0 flex-1 text-sm">{isLast && lastInPage ? "See my X-Ray" : lastInPage ? "Next stage" : "Next question"}<span className="xray-continue-arrow ml-2"><ArrowRight className="h-4 w-4" /></span></Button>
+          <Button ref={continueBtn} variant="premium" onClick={() => void next()} disabled={!canContinue || busy || !ready} aria-busy={busy} className="xray-continue group h-12 min-w-0 flex-1 text-sm">{isLast && lastInPage ? "See my X-Ray" : lastInPage ? "Next stage" : "Next question"}<span className="xray-continue-arrow ml-2"><ArrowRight className="h-4 w-4" /></span></Button>
         </div>
       </div>
     </div>
