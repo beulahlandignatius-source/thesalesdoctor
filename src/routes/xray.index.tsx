@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DiagnosticGuide } from "@/components/diagnostic-guide";
 import { useEffect, useState } from "react";
 import portrait from "@/assets/dr-dan-portrait.jpg.asset.json";
+import mascotHero from "@/assets/dr-dan-mascot-scanner.png";
 import { loadState } from "@/lib/audit";
 import { XrayRestart } from "@/components/xray-restart";
 
@@ -36,7 +37,7 @@ function Index() {
   return (
     <div className={`xray-opening xray-photo-opening bg-background ${detailsOpen ? "xray-details-open" : ""}`}>
       <section className={`xray-photo-hero relative isolate overflow-hidden ${scanPaused ? "hero-scan-paused" : ""}`}>
-        <img src={portrait.url} alt="Dr. Dan Odotukpono, The Sales Doctor, with his stethoscope" className="xray-photo-subject" fetchPriority="high" />
+        <img src={portrait.url} alt="Dr. Dan Odotukpono, The Sales Doctor, with his stethoscope" className="xray-photo-subject xray-flip-photo" fetchPriority="high" />
         <div className="xray-hero-scan" aria-hidden="true">
           <div className="xray-hero-scan-view">
             <img src={portrait.url} alt="" className="xray-scan-photo" />
@@ -45,6 +46,7 @@ function Index() {
           </div>
           <div className="xray-hero-scan-beam" />
         </div>
+        <div className="xray-photo-mascot" aria-hidden="true"><img src={mascotHero} alt="" /></div>
         <div className="xray-photo-shade" aria-hidden="true" />
         <Button variant="outline" size="icon" className="xray-hero-scan-control min-h-11 min-w-11" aria-label={scanPaused ? "Play hero scanning animation" : "Pause hero scanning animation"} aria-pressed={scanPaused} onClick={() => setScanPaused(!scanPaused)}>{scanPaused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}</Button>
         <div className="xray-photo-instrument" aria-hidden="true"><ScanLine /><ChartNoAxesCombined /><div className="xray-photo-beam" /></div>
