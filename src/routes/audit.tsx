@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { startAuditSession, updateAuditInfo, saveAuditAnswers, getAuditSession, submitAuditForReview } from "@/lib/audit-session.functions";
 import { XraySubmissionModal } from "@/components/xray-submission-modal";
-import { QUESTIONS, loadState, saveState, emptyState, type AuditState, type BasicInfo } from "@/lib/audit";
+import { OPTIONAL_IDS, QUESTIONS, loadState, saveState, emptyState, type AuditState, type BasicInfo } from "@/lib/audit";
 import { AUDIT_PAGES, pageForStep, stepForPage, questionsForPage, pageAnswersValid, stageProgress } from "@/lib/audit-pages";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, ScanLine } from "lucide-react";
@@ -31,6 +31,8 @@ export function Audit() {
   const workspace = useRef<HTMLDivElement>(null);
   const formStarted = useRef(false);
   const submitting = useRef(false);
+  const [qi, setQi] = useState(0);
+  const advanceTimer = useRef<number | undefined>(undefined);
   useEffect(() => {
     let active = true;
     const local = loadState(); setS(local);
@@ -44,21 +46,37 @@ export function Audit() {
     return () => { active = false; };
   }, []);
   useEffect(() => { if (ready) saveState(s); }, [s, ready]);
+  const resumed = useRef(false);
+  useEffect(() => {
+    if (!ready || resumed.current) return;
+    resumed.current = true;
+    const qs = questionsForPage(pageForStep(s.step));
+    const open = qs.findIndex(q => !OPTIONAL_IDS.has(q.id) && !s.answers[q.id]?.trim());
+    setQi(open >= 0 ? open : Math.max(0, qs.length - 1));
+  }, [ready]);
   const page = pageForStep(s.step);
   const topic = AUDIT_PAGES[page] ?? AUDIT_PAGES[0];
   const questions = questionsForPage(page);
   const isLast = page === AUDIT_PAGES.length - 1;
   const progress = stageProgress(receipt ? AUDIT_PAGES.length : page);
   const infoValid = !!s.info.name.trim() && /^\S+@\S+\.\S+$/.test(s.info.email.trim()) && s.info.whatsapp.replace(/\D/g, "").length >= 7;
-  const canContinue = page === 0 ? infoValid : pageAnswersValid(page, s.answers);
+  const qIndex = Math.min(qi, Math.max(0, questions.length - 1));
+  const current = questions[qIndex];
+  const lastInPage = page === 0 || qIndex >= questions.length - 1;
+  const currentValid = !current || OPTIONAL_IDS.has(current.id) || !!s.answers[current.id]?.trim();
+  const canContinue = page === 0 ? infoValid : lastInPage ? pageAnswersValid(page, s.answers) : currentValid;
+  useEffect(() => () => window.clearTimeout(advanceTimer.current), []);
   useEffect(() => {
     if (ready) { workspace.current?.scrollTo?.(0, 0); heading.current?.focus({ preventScroll: true }); window.scrollTo(0, 0); }
   }, [page, ready]);
+  useEffect(() => { if (ready && page > 0) workspace.current?.scrollTo?.(0, 0); }, [qIndex]);
   const setInfo = (key: keyof BasicInfo, value: string) => {
     if (!formStarted.current) { formStarted.current = true; window.__lovableEvents?.track?.("project.xray_form_started", {}); }
     setS(cur => ({ ...cur, info: { ...cur.info, [key]: value } }));
   };
   const next = async () => {
+    window.clearTimeout(advanceTimer.current);
+    if (page > 0 && !lastInPage) { if (currentValid) setQi(qIndex + 1); return; }
     if (!ready || !canContinue || submitting.current || receipt) return;
     submitting.current = true; setBusy(true); setError("");
     try {
@@ -67,7 +85,7 @@ export function Audit() {
         let session = s.session;
         if (session) await updateAuditInfo({ data: { ...session, info } });
         else { session = await startAuditSession({ data: { info } }); window.__lovableEvents?.track?.("project.xray_started", {}); }
-        setS(cur => ({ ...cur, session, step: stepForPage(1) }));
+        setQi(0); setS(cur => ({ ...cur, session, step: stepForPage(1) }));
       } else {
         const ref = s.session;
         if (!ref) throw new Error("Missing assessment session");
@@ -82,16 +100,18 @@ export function Audit() {
           saveState(s);
           try { localStorage.removeItem("client-xray-diagnosis"); } catch {}
           setReceipt("scanning");
-        } else setS(cur => ({ ...cur, step: nextStep }));
+        } else { setQi(0); setS(cur => ({ ...cur, step: nextStep })); }
       }
     } catch { setError(page === 0 ? "Something went wrong. Please try again." : "We couldn't save your answers. Please check your connection and try again."); }
     finally { submitting.current = false; setBusy(false); }
   };
   const back = () => {
     if (busy) return;
+    window.clearTimeout(advanceTimer.current);
     setError("");
+    if (page > 0 && qIndex > 0) { setQi(qIndex - 1); return; }
     if (page === 0) nav({ to: "/xray" });
-    else setS(cur => ({ ...cur, step: stepForPage(page - 1) }));
+    else { setQi(Math.max(0, questionsForPage(page - 1).length - 1)); setS(cur => ({ ...cur, step: stepForPage(page - 1) })); }
   };
   return <div className={`min-h-dvh bg-background xray-ambient mobile-assessment xray-topic-assessment ${page === 0 ? "assessment-contact-screen" : ""}`}>
     {receipt && <XraySubmissionModal onComplete={() => { void nav({ to: "/results", replace: true }); }} />}
@@ -112,7 +132,7 @@ export function Audit() {
         </div>
       <div key={page} className="assessment-question mt-5 animate-in fade-in duration-300">
         <p className="text-sm leading-relaxed text-muted-foreground">{topic.description}</p>
-        {page > 0 && <p className="mt-3 text-xs tabular-nums text-muted-foreground">{questions.filter(q => !!s.answers[q.id]?.trim()).length} of {questions.length} answered</p>}
+        {page > 0 && <p className="mt-3 text-xs tabular-nums text-muted-foreground">{questions.filter(q => !!s.answers[q.id]?.trim()).length} of {questions.length} answered in this stage</p>}
         {page === 0 ? <div className="mt-6 space-y-4">
           {([["name", "Your name", "text"], ["email", "Email address", "email"], ["whatsapp", "WhatsApp number", "tel"]] as const).map(([key, label, type]) => <label key={key} htmlFor={`info-${key}`} className="block mobile-info-field">
             <span className="text-sm text-muted-foreground">{label}</span>
@@ -123,7 +143,15 @@ export function Audit() {
             }} />
           </label>)}
         </div> : <div className="xray-topic-fields mt-8">
-          {questions.map(q => <XrayTopicQuestion key={q.id} question={q} answer={s.answers[q.id] ?? ""} busy={busy || !ready} onAnswer={value => setS(cur => ({ ...cur, answers: { ...cur.answers, [q.id]: value } }))} />)}
+          {current && <div key={current.id} className="animate-in fade-in slide-in-from-right-4 duration-300 motion-reduce:animate-none">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary tabular-nums">Question {QUESTIONS.findIndex(q => q.id === current.id) + 1} of {QUESTIONS.length} <span className="font-normal normal-case tracking-normal text-muted-foreground">· {qIndex + 1}/{questions.length} in this stage</span></p>
+            <XrayTopicQuestion question={current} answer={s.answers[current.id] ?? ""} busy={busy || !ready} onAnswer={value => {
+              setS(cur => ({ ...cur, answers: { ...cur.answers, [current.id]: value } }));
+              const single = current.type === "choice" && !current.multi;
+              window.clearTimeout(advanceTimer.current);
+              if (single && value && qIndex < questions.length - 1) advanceTimer.current = window.setTimeout(() => setQi(qIndex + 1), 350);
+            }} />
+          </div>}
         </div>}
       </div>
       {(page === 0 || page === 3) && <div className="assessment-guide mt-6"><DiagnosticGuide compact mood={busy ? "examining" : page === 0 ? "welcome" : "thinking"} scanning={busy} message={page === 0 ? "Let's take an X-ray of your business!" : "Let's see what's happening inside your business."} /></div>}
@@ -133,7 +161,7 @@ export function Audit() {
         {error && <p role="alert" className="mb-3 text-sm text-destructive">{error}</p>}
         <div className="flex items-center gap-3">
           <Button onClick={back} variant="outline" disabled={busy} className="h-12 shrink-0"><ArrowLeft className="h-4 w-4" /> Back</Button>
-          <Button variant="premium" onClick={() => void next()} disabled={!canContinue || busy || !ready} className="xray-continue group h-12 min-w-0 flex-1 text-sm">{busy ? "Saving…" : isLast ? "See my X-Ray" : "Continue"}<span className="xray-continue-arrow ml-2"><ArrowRight className="h-4 w-4" /></span></Button>
+          <Button variant="premium" onClick={() => void next()} disabled={!canContinue || busy || !ready} className="xray-continue group h-12 min-w-0 flex-1 text-sm">{busy ? "Saving…" : isLast && lastInPage ? "See my X-Ray" : lastInPage ? "Next stage" : "Next question"}<span className="xray-continue-arrow ml-2"><ArrowRight className="h-4 w-4" /></span></Button>
         </div>
       </div>
     </div>
