@@ -38,7 +38,7 @@ function Mentor() {
       ) : (
         <form className="space-y-5" onSubmit={async (e) => {
           e.preventDefault();
-          if (await save(e.currentTarget)) { setSent(true); window.scrollTo({ top: 0, behavior: "smooth" }); }
+          if (await save(e.currentTarget)) { setSent(true); window.location.assign(LINKS.whatsapp); }
         }}>
           <div className="form-contact grid gap-5 sm:grid-cols-2">
           <F compact label="Full name"><input name="name" required autoComplete="name" className={field} /></F>
