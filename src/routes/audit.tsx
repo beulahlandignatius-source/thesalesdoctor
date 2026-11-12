@@ -6,7 +6,7 @@ import { OPTIONAL_IDS, QUESTIONS, loadState, saveState, emptyState, type AuditSt
 import { AUDIT_PAGES, pageForStep, stepForPage, questionsForPage, pageAnswersValid, stageProgress } from "@/lib/audit-pages";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, ScanLine } from "lucide-react";
-import { DiagnosticGuide, DiagnosticSweep } from "@/components/diagnostic-guide";
+import { DiagnosticSweep } from "@/components/diagnostic-guide";
 import { XrayTopicQuestion } from "@/components/xray-topic-question";
 
 export const Route = createFileRoute("/audit")({
@@ -182,7 +182,6 @@ export function Audit() {
         </div>
       </div>
     </div>
-      {(page === 0 || page === 3) && <div className="assessment-guide mt-6"><DiagnosticGuide compact mood={busy ? "examining" : page === 0 ? "welcome" : "thinking"} scanning={busy} message={page === 0 ? "Let's take an X-ray of your business!" : "Let's see what's happening inside your business."} /></div>}
     </div>
   </div>;
 }
