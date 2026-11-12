@@ -7,9 +7,49 @@ vi.mock("@/components/xray-submission-modal", () => ({ XraySubmissionModal: () =
 vi.mock("@/components/diagnostic-guide", () => ({ DiagnosticGuide: () => null, DiagnosticSweep: () => null }));
 import { Audit } from "@/routes/audit";
 import { QUESTIONS } from "@/lib/audit";
+import { AUDIT_PAGES } from "@/lib/audit-pages";
 beforeEach(() => { localStorage.clear(); window.scrollTo = vi.fn(); mocks.start.mockResolvedValue({ id: "test", token: "test" }); mocks.save.mockResolvedValue({}); mocks.submit.mockResolvedValue({ submitted: true }); });
 afterEach(() => { cleanup(); vi.resetAllMocks(); delete window.__lovableEvents; });
 describe("X-Ray form analytics", () => {
+  const resumeAt = (id: string) => {
+    const index = QUESTIONS.findIndex(q => q.id === id);
+    const orderedIds = AUDIT_PAGES.flatMap(page => page.ids);
+    const previousIds = orderedIds.slice(0, orderedIds.indexOf(id));
+    const answers = Object.fromEntries(QUESTIONS.filter(q => previousIds.includes(q.id)).map(q => [q.id, q.type === "text" ? "Consulting" : q.options[0]]));
+    localStorage.setItem("client-xray-v2", JSON.stringify({ step: index + 1, info: { name: "Test", email: "test@example.com", whatsapp: "123456789" }, answers }));
+    render(<Audit />);
+  };
+  it.each(["q3", "q6", "q8"])("automatically advances single-answer question %s, including scales and topic boundaries", async id => {
+    resumeAt(id);
+    const question = QUESTIONS.find(q => q.id === id);
+    if (!question || question.type === "text") throw new Error("Expected a single-answer question");
+    const orderedIds = AUDIT_PAGES.flatMap(page => page.ids);
+    const nextQuestion = QUESTIONS.find(q => q.id === orderedIds[orderedIds.indexOf(id) + 1]);
+    const option = question.options[0];
+    if (!nextQuestion || !option) throw new Error("Expected an answer and a following question");
+    fireEvent.click(await screen.findByRole("button", { name: option }));
+    await waitFor(() => expect(screen.getByText(nextQuestion.text)).toBeInTheDocument());
+  });
+  it("keeps typed answers on their question until Next", async () => {
+    resumeAt("q1");
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Consulting" } });
+    await new Promise(resolve => setTimeout(resolve, 450));
+    expect(screen.getByRole("textbox")).toHaveValue("Consulting");
+    fireEvent.click(screen.getByRole("button", { name: "Next question" }));
+    expect(screen.getByText("Who do you primarily sell to?")).toBeInTheDocument();
+  });
+  it("keeps multiple selections until Next and preserves them when going back", async () => {
+    resumeAt("q15");
+    fireEvent.click(await screen.findByRole("button", { name: "Price" }));
+    fireEvent.click(screen.getByRole("button", { name: "Trust" }));
+    await new Promise(resolve => setTimeout(resolve, 450));
+    expect(screen.getByRole("button", { name: "Price" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Trust" })).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(screen.getByRole("button", { name: "Next question" }));
+    expect(screen.getByText("When someone shows interest, what normally happens next?")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Back" }));
+    expect(screen.getByRole("button", { name: "Trust" })).toHaveAttribute("aria-pressed", "true");
+  });
   it("advances from contact immediately while session creation is still pending", async () => {
     let resolve: (value: { id: string; token: string }) => void = () => {};
     mocks.start.mockReturnValue(new Promise(r => { resolve = r; }));

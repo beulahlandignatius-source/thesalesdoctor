@@ -166,16 +166,14 @@ export function Audit() {
             <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary tabular-nums">Question {QUESTIONS.findIndex(q => q.id === current.id) + 1} of {QUESTIONS.length}</p>
             <XrayTopicQuestion question={current} answer={s.answers[current.id] ?? ""} busy={busy || !ready} onAnswer={value => {
               setS(cur => ({ ...cur, answers: { ...cur.answers, [current.id]: value } }));
-              const single = current.type === "choice" && !current.multi;
+              const single = current.type === "scale" || (current.type === "choice" && !current.multi);
               window.clearTimeout(advanceTimer.current);
               if (single && value) advanceTimer.current = window.setTimeout(() => { if (qIndex < questions.length - 1) setQi(qIndex + 1); else if (!isLast) continueBtn.current?.click(); }, 350);
             }} />
           </div>}
         </div>}
       </div>
-      {(page === 0 || page === 3) && <div className="assessment-guide mt-6"><DiagnosticGuide compact mood={busy ? "examining" : page === 0 ? "welcome" : "thinking"} scanning={busy} message={page === 0 ? "Let's take an X-ray of your business!" : "Let's see what's happening inside your business."} /></div>}
-    </div>
-    <div className="assessment-actions fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/95 backdrop-blur">
+    <div className="assessment-actions mt-4 border-t border-border bg-background/95">
       <div className="mx-auto max-w-3xl px-5 pb-3 pt-3">
         {error && <p role="alert" className="mb-3 text-sm text-destructive">{error}</p>}
         <div className="flex items-center gap-3">
@@ -183,6 +181,8 @@ export function Audit() {
           <Button ref={continueBtn} variant="premium" onClick={() => void next()} disabled={!canContinue || busy || !ready} aria-busy={busy} className="xray-continue group h-12 min-w-0 flex-1 text-sm">{isLast && lastInPage ? "See my X-Ray" : lastInPage ? "Next stage" : "Next question"}<span className="xray-continue-arrow ml-2"><ArrowRight className="h-4 w-4" /></span></Button>
         </div>
       </div>
+    </div>
+      {(page === 0 || page === 3) && <div className="assessment-guide mt-6"><DiagnosticGuide compact mood={busy ? "examining" : page === 0 ? "welcome" : "thinking"} scanning={busy} message={page === 0 ? "Let's take an X-ray of your business!" : "Let's see what's happening inside your business."} /></div>}
     </div>
   </div>;
 }

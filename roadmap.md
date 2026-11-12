@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Fix single-answer auto-advance including rating scales; navigation sits 16px below questions without overlap at 320–1280px. Real contact, auto-advance across topics, Back and saved-answer reload verified; 14 tests passed.
 - [x] Advance X-Ray stages immediately without “Saving…”; delayed-connection phone/desktop checks advanced in 0.06–0.07s, saved real sessions, preserved typed answers after reload, and 14 tests passed including final-save safeguards.
 - [x] Align quote/session pushes with actual card edges, add alternating service and editorial card entrances; ten sizes (320–1280px) passed contact-edge, text-clearance and overflow checks, plus reduced motion and seven tests.
 - [x] Show both session offers side by side on tablet/desktop and stack full-width cards on phones; verified 320–1280px, no overflow, large booking targets and both forms opening.

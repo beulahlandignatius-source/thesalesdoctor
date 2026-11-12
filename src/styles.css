@@ -1705,6 +1705,9 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 .xray-topic-assessment .mobile-info-field > span { font-weight: 600; color: var(--foreground); font-size: .8rem; letter-spacing: .01em; }
 .xray-topic-assessment .assessment-actions { background: color-mix(in oklab, var(--assessment-paper) 92%, transparent); box-shadow: 0 -18px 40px -30px color-mix(in oklab, var(--foreground) 35%, transparent); }
 .xray-topic-assessment .assessment-actions .rounded-md, .xray-topic-assessment .assessment-actions button { border-radius: 999px; }
+.xray-topic-assessment .assessment-actions { position: static; flex-shrink: 0; box-shadow: none; }
+.xray-topic-assessment .assessment-actions > div { padding-inline: 0; }
+.xray-topic-assessment .assessment-workspace { padding-bottom: 1.5rem; }
 .dark .xray-topic-assessment .assessment-progress, .dark .xray-topic-assessment .xray-option, .dark .xray-topic-assessment .field { background: var(--card) !important; }
 @media (max-width: 639px) {
   .xray-topic-assessment .assessment-progress { padding: .6rem .75rem; border-radius: 1rem; }
