@@ -1689,3 +1689,25 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
   .session-question:nth-child(2)[data-guided] { animation: session-contact-push 2.4s cubic-bezier(.4,0,.25,1); }
 }
 @media (prefers-reduced-motion: reduce) { .session-card-pusher { display: none; } .session-question:nth-child(2) { margin-left: 0; animation: none !important; } .fx-reveal { translate: none !important; } }
+
+/* Premium X-Ray form layer: presentation only */
+.xray-topic-assessment .assessment-progress { border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 1.25rem; padding: .875rem 1rem; background: linear-gradient(180deg, var(--assessment-paper), color-mix(in oklab, var(--primary) 3%, var(--assessment-paper))); box-shadow: 0 12px 30px -22px color-mix(in oklab, var(--primary) 45%, transparent); }
+.xray-topic-assessment .assessment-progress [role="progressbar"] > span { height: .3rem; }
+.xray-topic-assessment .assessment-question { border-top: 0; }
+.xray-topic-assessment .xray-topic-fields > div, .xray-topic-assessment .assessment-question > .mt-6 { position: relative; border: 1px solid var(--border); border-radius: 1.5rem; padding: clamp(1rem, 3vw, 1.75rem); background: var(--card); box-shadow: 0 1px 0 color-mix(in oklab, var(--foreground) 4%, transparent), 0 24px 48px -32px color-mix(in oklab, var(--primary) 35%, transparent); overflow: hidden; }
+.xray-topic-assessment .xray-topic-fields > div::before, .xray-topic-assessment .assessment-question > .mt-6::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: linear-gradient(90deg, var(--primary), color-mix(in oklab, var(--primary) 20%, transparent)); }
+.xray-topic-assessment .xray-topic-fields > div > p:first-child { display: inline-flex; align-items: center; gap: .4rem; border-radius: 999px; padding: .25rem .65rem; background: color-mix(in oklab, var(--primary) 8%, transparent); letter-spacing: .08em; }
+.xray-topic-assessment .xray-option { border: 1px solid var(--border) !important; background: var(--assessment-paper) !important; transition: border-color .2s, box-shadow .2s, transform .2s, background-color .2s; }
+.xray-topic-assessment .xray-option:hover:not(:disabled) { border-color: color-mix(in oklab, var(--primary) 45%, var(--border)) !important; box-shadow: 0 10px 24px -18px color-mix(in oklab, var(--primary) 60%, transparent); }
+.xray-topic-assessment .answer-card-on { background: color-mix(in oklab, var(--primary) 7%, var(--assessment-paper)) !important; border-color: var(--primary) !important; box-shadow: inset 3px 0 0 var(--primary), 0 12px 26px -20px color-mix(in oklab, var(--primary) 70%, transparent); }
+.xray-topic-assessment .field { border-radius: 1rem; background: var(--assessment-paper); transition: border-color .2s, box-shadow .2s; }
+.xray-topic-assessment .field:focus { border-color: var(--primary); box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 12%, transparent); outline: none; }
+.xray-topic-assessment .mobile-info-field > span { font-weight: 600; color: var(--foreground); font-size: .8rem; letter-spacing: .01em; }
+.xray-topic-assessment .assessment-actions { background: color-mix(in oklab, var(--assessment-paper) 92%, transparent); box-shadow: 0 -18px 40px -30px color-mix(in oklab, var(--foreground) 35%, transparent); }
+.xray-topic-assessment .assessment-actions .rounded-md, .xray-topic-assessment .assessment-actions button { border-radius: 999px; }
+.dark .xray-topic-assessment .assessment-progress, .dark .xray-topic-assessment .xray-option, .dark .xray-topic-assessment .field { background: var(--card) !important; }
+@media (max-width: 639px) {
+  .xray-topic-assessment .assessment-progress { padding: .6rem .75rem; border-radius: 1rem; }
+  .xray-topic-assessment .xray-topic-fields > div, .xray-topic-assessment .assessment-question > .mt-6 { padding: .875rem; border-radius: 1.125rem; }
+}
+@media (prefers-reduced-motion: reduce) { .xray-topic-assessment .xray-option, .xray-topic-assessment .field { transition: none; } }
