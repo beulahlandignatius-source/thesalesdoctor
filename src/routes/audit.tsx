@@ -149,6 +149,8 @@ export function Audit() {
           <div role="progressbar" aria-label="Assessment progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress.percent} aria-valuetext={`${progress.percent}% complete. Stage ${page + 1} of ${AUDIT_PAGES.length}: ${topic.title}. ${progress.remaining} stages remaining including this one.`} className="mt-2 flex gap-1.5">
             {AUDIT_PAGES.map((stage, index) => <span key={stage.title} className={`h-1.5 min-w-0 flex-1 rounded-full transition-colors motion-reduce:transition-none ${index < page || receipt ? "bg-primary" : index === page ? "bg-primary/35" : "bg-muted"}`} />)}
           </div>
+          <svg viewBox="0 0 300 40" className="footer-ecg xray-assessment-ecg" aria-hidden="true" preserveAspectRatio="none"><path d="M0 26 H60 L70 26 L78 8 L86 36 L94 18 L102 26 H160 L170 26 L178 4 L186 38 L194 20 L202 26 H300" className="footer-ecg-trace" /><path d="M0 26 H60 L70 26 L78 8 L86 36 L94 18 L102 26 H160 L170 26 L178 4 L186 38 L194 20 L202 26 H300" className="footer-ecg-beat" pathLength={100} />
+          </svg>
         </div>
       <div key={page} className="assessment-question mt-5 animate-in fade-in duration-300">
         <p className="text-sm leading-relaxed text-muted-foreground">{topic.description}</p>

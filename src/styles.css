@@ -1707,11 +1707,23 @@ body.site-editing img:not([data-no-edit] *):hover { cursor: pointer; }
 .xray-topic-assessment .assessment-actions .rounded-md, .xray-topic-assessment .assessment-actions button { border-radius: 999px; }
 .xray-topic-assessment .assessment-actions { position: static; flex-shrink: 0; box-shadow: none; }
 .xray-topic-assessment .assessment-actions > div { padding-inline: 0; }
+.xray-topic-assessment .xray-assessment-ecg { display: block; width: 100%; height: 1.5rem; margin-top: .7rem; padding: .2rem .5rem; border-radius: 1rem .35rem 1rem 1rem; background: var(--ink); box-shadow: inset 0 0 1.5rem color-mix(in oklab, var(--primary) 18%, transparent); }
+.xray-topic-assessment .xray-assessment-ecg .footer-ecg-trace { opacity: .35; }
+.xray-topic-assessment .xray-assessment-ecg .footer-ecg-beat { opacity: 1; stroke-width: 3; filter: drop-shadow(0 0 4px var(--primary)); }
+body:has(.xray-photo-opening) .companion-launch { border: 2px solid var(--primary); background: var(--primary); box-shadow: 0 0 0 3px var(--background), 0 0 0 5px color-mix(in oklab, var(--primary) 35%, transparent), var(--shadow-nav); }
+body:has(.xray-photo-opening) .companion-launch::before { position: absolute; inset: .32rem; border-radius: 50%; background: var(--background); box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--primary) 35%, transparent); content: ""; }
+body:has(.xray-photo-opening) .companion-launch:hover { background: var(--primary); }
+body:has(.xray-photo-opening) .companion-launch:focus-visible { outline: 3px solid var(--primary); outline-offset: 5px; }
+body:has(.xray-photo-opening) .companion-launch .companion-character { position: relative; z-index: 1; }
+body:has(.xray-photo-opening) .companion-launch-dot { z-index: 2; border: 2px solid var(--primary); box-sizing: content-box; }
+body:has(.xray-photo-opening) .companion-nudge { border-color: color-mix(in oklab, var(--primary) 55%, var(--ink)); background: var(--ink); color: var(--ink-foreground); }
+body:has(.xray-photo-opening) .companion-nudge button { color: var(--ink-foreground); }
 .xray-topic-assessment .assessment-workspace { padding-bottom: 1.5rem; }
 .dark .xray-topic-assessment .assessment-progress, .dark .xray-topic-assessment .xray-option, .dark .xray-topic-assessment .field { background: var(--card) !important; }
 @media (max-width: 639px) {
   .xray-topic-assessment .assessment-progress { padding: .6rem .75rem; border-radius: 1rem; }
   .xray-topic-assessment .xray-topic-fields > div, .xray-topic-assessment .assessment-question > .mt-6 { padding: .875rem; border-radius: 1.125rem; }
+  body:has(.xray-photo-opening) .companion-launch, body:has(.xray-photo-opening) .companion-launch .companion-character { width: 3.75rem; height: 3.75rem; }
 }
 @media (prefers-reduced-motion: reduce) { .xray-topic-assessment .xray-option, .xray-topic-assessment .field { transition: none; } }
 
