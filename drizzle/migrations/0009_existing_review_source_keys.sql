@@ -1,2 +1,0 @@
-ALTER TABLE public.client_reviews ADD COLUMN source_key text UNIQUE;
-COMMENT ON COLUMN public.client_reviews.source_key IS 'Identifies existing approved demonstration reviews imported from the homepage; ordinary submitted reviews leave this null.';

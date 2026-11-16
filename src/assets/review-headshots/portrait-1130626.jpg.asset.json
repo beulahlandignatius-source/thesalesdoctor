@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "89920a58-eb03-4caf-8cd2-535a9d18c130",
-  "project_id": "c3824028-5d32-4247-90e6-0c77288525b6",
-  "url": "/__l5e/assets-v1/89920a58-eb03-4caf-8cd2-535a9d18c130/portrait-1130626.jpg",
-  "r2_key": "a/v1/c3824028-5d32-4247-90e6-0c77288525b6/89920a58-eb03-4caf-8cd2-535a9d18c130/portrait-1130626.jpg",
-  "original_filename": "portrait-1130626.jpg",
-  "size": 33036,
   "content_type": "image/jpeg",
-  "created_at": "2026-11-11T18:39:59Z"
+  "created_at": "2026-11-11T18:39:59Z",
+  "original_filename": "portrait-1130626.jpg",
+  "project_id": "96cca12d-0c55-457f-bdd5-b03795a34138",
+  "r2_key": "a/v1/96cca12d-0c55-457f-bdd5-b03795a34138/89920a58-eb03-4caf-8cd2-535a9d18c130/portrait-1130626.jpg",
+  "size": 33036,
+  "url": "/__l5e/assets-v1/89920a58-eb03-4caf-8cd2-535a9d18c130/portrait-1130626.jpg",
+  "version": 1
 }

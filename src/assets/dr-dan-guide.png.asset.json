@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "debab27b-897d-4ec4-875e-119430da75c0",
-  "project_id": "c3824028-5d32-4247-90e6-0c77288525b6",
-  "url": "/__l5e/assets-v1/debab27b-897d-4ec4-875e-119430da75c0/dr-dan-guide.png",
-  "r2_key": "a/v1/c3824028-5d32-4247-90e6-0c77288525b6/debab27b-897d-4ec4-875e-119430da75c0/dr-dan-guide.png",
-  "original_filename": "dr-dan-guide.png",
-  "size": 938035,
   "content_type": "image/png",
-  "created_at": "2026-11-10T21:54:10Z"
+  "created_at": "2026-11-10T21:54:10Z",
+  "original_filename": "dr-dan-guide.png",
+  "project_id": "96cca12d-0c55-457f-bdd5-b03795a34138",
+  "r2_key": "a/v1/96cca12d-0c55-457f-bdd5-b03795a34138/debab27b-897d-4ec4-875e-119430da75c0/dr-dan-guide.png",
+  "size": 938035,
+  "url": "/__l5e/assets-v1/debab27b-897d-4ec4-875e-119430da75c0/dr-dan-guide.png",
+  "version": 1
 }
