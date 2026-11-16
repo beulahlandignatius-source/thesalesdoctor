@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Make Stripe/Flutterwave checkout links and screenshot submission explicit in the clinic payment step; keep screenshot review in admin separate from provider-confirmed payments. Nine targeted tests pass; an authenticated admin preview was unavailable because the requesting account has no app auth user, and creating one would affect the shared production backend.
 - [x] Refine only the X-Ray report presentation; real submission/report checked at 320/411/820/1280px without overflow or page errors, PDF downloaded, call-purpose selection opened the separate booking page, dark theme checked, and eight report tests passed.
 - [x] Fix single-answer auto-advance including rating scales; navigation sits 16px below questions without overlap at 320–1280px. Real contact, auto-advance across topics, Back and saved-answer reload verified; 14 tests passed.
 - [x] Advance X-Ray stages immediately without “Saving…”; delayed-connection phone/desktop checks advanced in 0.06–0.07s, saved real sessions, preserved typed answers after reload, and 14 tests passed including final-save safeguards.

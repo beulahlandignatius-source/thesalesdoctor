@@ -9,10 +9,10 @@ import { SavedViews } from "@/components/admin/SavedViews";
 
 export const Route = createFileRoute("/admin/payments")({
   head: () => ({ meta: [
-    { title: "Payment screenshots | The Sales Clinic Admin" },
-    { name: "description", content: "Review payment screenshots uploaded by Private Sales Clinic visitors." },
-    { property: "og:title", content: "Payment screenshots | The Sales Clinic Admin" },
-    { property: "og:description", content: "Private payment screenshot review for The Sales Clinic." },
+    { title: "Payments & screenshots | The Sales Clinic Admin" },
+    { name: "description", content: "Review customer-uploaded Private Sales Clinic payment screenshots." },
+    { property: "og:title", content: "Payments & screenshots | The Sales Clinic Admin" },
+    { property: "og:description", content: "Review payment screenshots separately from provider-confirmed payments." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
     { name: "robots", content: "noindex" },
@@ -41,7 +41,7 @@ function Payments() {
   });
   const rows = (data ?? []).filter((r) => record ? r.id === record : (!filter || r.status === filter) && (!provider || r.provider === provider));
   return <div className="admin-page admin-payment-page">
-    <h1 className="text-3xl font-extrabold">Payment screenshots</h1>
+    <h1 className="text-3xl font-extrabold">Payments &amp; screenshots</h1>
     {record && <Button variant="outline" className="mt-4" asChild><Link to="/admin/payments" search={{}}>Show all screenshots</Link></Button>}
     <p className="mt-3 flex max-w-2xl gap-2 rounded-2xl bg-secondary p-4 text-sm"><Info className="h-4 w-4 shrink-0 text-primary" />Screenshots are uploaded by visitors and are not proof of payment. Check the payment in Stripe or Flutterwave before marking it verified. Paid clinic counts on the Overview come only from Stripe and Flutterwave directly.</p>
     {!record && <><div className="admin-filter-grid mt-6">
