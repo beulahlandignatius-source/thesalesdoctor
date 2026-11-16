@@ -18,12 +18,14 @@ export const Route = createFileRoute("/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(reviewsQuery),
   head: () => ({
     meta: [
-      { title: "The Sales Clinic | Dr. Dan, The Sales Doctor" },
-      { name: "description", content: "What would it take to get you to your next revenue target? Book a free 25-min review or a 90-min Private Sales Clinic with Dr. Dan." },
-      { property: "og:title", content: "The Sales Clinic | Dr. Dan, The Sales Doctor" },
-      { property: "og:description", content: "Pinpoint exactly what has to change to hit your next revenue target." },
+      { title: "Dr. Dan Odotukpono | Sales & Marketing Consultant" },
+      { name: "description", content: "Build a clearer path to paying clients. Dr. Dan helps businesses diagnose and rebuild sales, marketing and client acquisition systems. Book a free 25-minute review." },
+      { property: "og:title", content: "Dr. Dan Odotukpono | Sales & Marketing Consultant" },
+      { property: "og:description", content: "Turn inconsistent leads into a clearer path to paying clients. Diagnose what is holding sales back and find the next move with Dr. Dan." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Dr. Dan Odotukpono | Sales & Marketing Consultant" },
+      { name: "twitter:description", content: "Turn inconsistent leads into a clearer path to paying clients. Diagnose what is holding sales back and find the next move with Dr. Dan." },
     ],
   }),
   component: Index,
