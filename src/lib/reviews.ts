@@ -10,5 +10,12 @@ export const reviewSchema = z.object({
 });
 const mediaFile = z.object({ base64: z.string().max(7_000_000), contentType: z.enum(["image/jpeg", "image/png", "image/webp"]) }).nullable().default(null);
 export const reviewSubmitSchema = reviewSchema.extend({ photo: mediaFile, screenshot: mediaFile });
-export type PublicReview = { id: string; name: string; role: string; rating: number; body: string; photoUrl: string | null; screenshotUrl: string | null };
+export type PublicReview = { id: string; name: string; role: string; rating: number; body: string; photoUrl: string | null; screenshotUrl: string | null; source_key?: string | null };
+export async function loadReviewsSafely(load: () => Promise<PublicReview[]>): Promise<PublicReview[]> {
+  try {
+    return await load();
+  } catch {
+    return [];
+  }
+}
 export const adminReviewEditSchema = reviewSchema.pick({ name: true, role: true, rating: true, body: true }).extend({ id: z.string().uuid(), photo: mediaFile, screenshot: mediaFile });

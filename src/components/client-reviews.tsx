@@ -8,9 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { StackedCards } from "./stacked-cards";
 import { publicReviews, submitReview } from "@/lib/reviews.functions";
-import { reviewSchema } from "@/lib/reviews";
+import { loadReviewsSafely, reviewSchema, type PublicReview } from "@/lib/reviews";
 
-export const reviewsQuery = queryOptions({ queryKey: ["public-reviews"], queryFn: () => publicReviews(), staleTime: 60_000 });
+export const reviewsQuery = queryOptions({
+  queryKey: ["public-reviews"],
+  queryFn: () => loadReviewsSafely(publicReviews),
+  staleTime: 60_000,
+});
 
 export function ClientReviews() {
   const { data } = useSuspenseQuery(reviewsQuery);
@@ -20,20 +24,20 @@ export function ClientReviews() {
   const [done, setDone] = useState(false);
   const [error, setError] = useState("");
   const save = useServerFn(submitReview);
-  const cards = data.map(r => ({ ...r, rating: r.source_key ? null : r.rating }));
+  const cards: (Omit<PublicReview, "rating"> & { rating: number | null })[] = data.map(r => ({ ...r, rating: r.source_key ? null : r.rating }));
   return <div className="mt-16 grid items-center gap-12 md:grid-cols-2">
     <div className="reviews-intro">
       <p className="eyebrow">Reviews</p>
       <div className="mt-6 flex flex-wrap gap-3"><Button variant="premium" className="gap-2" onClick={() => { setDone(false); setError(""); setRating(0); setOpen(true); }}><MessageSquarePlus /> Write a review</Button>
       <Link to="/reviews" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-semibold hover:border-primary hover:text-primary"><Images className="h-4 w-4" /> See more</Link></div>
     </div>
-    <StackedCards label="review" items={cards.map((r, i) => <>
+    {cards.length > 0 ? <StackedCards label="review" items={cards.map((r, i) => <>
       <div className="stack-badge review-avatar" aria-hidden="true">{r.photoUrl ? <img src={r.photoUrl} alt="" className="h-full w-full rounded-full object-cover" /> : <span className="font-display text-3xl font-bold">{r.name?.split(" ").map((p: string) => p[0]).join("").slice(0, 2)}</span>}<span className="stack-number">{i + 1}</span></div>
-      {r.rating !== null && <div className="mt-6 flex justify-center gap-1 text-primary" aria-label={`${r.rating} out of 5 stars`}>{[1,2,3,4,5].map((n) => <Star key={n} className={`h-4 w-4 ${n <= r.rating ? "fill-current" : "opacity-25"}`} />)}</div>}
+      {r.rating !== null && <div className="mt-6 flex justify-center gap-1 text-primary" aria-label={`${r.rating} out of 5 stars`}>{[1,2,3,4,5].map((n) => <Star key={n} className={`h-4 w-4 ${n <= (r.rating ?? 0) ? "fill-current" : "opacity-25"}`} />)}</div>}
       <blockquote className="mt-6 whitespace-pre-wrap break-words text-lg font-semibold leading-relaxed">{r.body}</blockquote>
       {r.source_key && <p className="mt-3 text-xs text-muted-foreground">Demo review</p>}
       <p className="mt-auto pt-7 text-sm"><strong className="block">{r.name}</strong><span className="text-muted-foreground">{r.role}</span></p>
-    </>)} />
+    </>)} /> : <p className="text-sm text-muted-foreground">Reviews are temporarily unavailable.</p>}
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-h-[90dvh] overflow-y-auto rounded-3xl">
         <DialogHeader><DialogTitle>{done ? "Thank you for your review" : "Write a review"}</DialogTitle><DialogDescription>{done ? "Your review has been saved and is awaiting approval." : "Worked with Dr. Dan? Share your honest feedback in under 2 minutes."}</DialogDescription></DialogHeader>

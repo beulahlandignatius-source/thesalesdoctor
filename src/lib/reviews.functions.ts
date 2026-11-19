@@ -62,17 +62,21 @@ export const moderateReview = createServerFn({ method: "POST" }).middleware([req
     return { ok: true };
   });
 async function signMedia<T extends { photo_path: string | null; screenshot_path: string | null }>(rows: T[]) {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const paths = rows.flatMap((r) => [r.photo_path, r.screenshot_path]).filter((p): p is string => !!p);
   const urls = new Map<string, string>();
   if (paths.length) {
-    const { data } = await supabaseAdmin.storage.from("review-media").createSignedUrls(paths, 3600);
-    for (const d of data ?? []) if (d.path && d.signedUrl) urls.set(d.path, d.signedUrl);
+    try {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { data } = await supabaseAdmin.storage.from("review-media").createSignedUrls(paths, 3600);
+      for (const d of data ?? []) if (d.path && d.signedUrl) urls.set(d.path, d.signedUrl);
+    } catch {
+      // Reviews remain readable when private image signing is unavailable.
+    }
   }
   return rows.map(({ photo_path, screenshot_path, ...r }) => {
     const sourceKey = "source_key" in r && typeof r.source_key === "string" ? r.source_key : "";
     const sample = existingTestimonials.find(([, name]) => `existing:${name}` === sourceKey);
-    return { ...r, photoUrl: photo_path ? urls.get(photo_path) ?? null : sample?.[3] ?? null, screenshotUrl: screenshot_path ? urls.get(screenshot_path) ?? null : null };
+    return { ...r, photoUrl: photo_path ? urls.get(photo_path) ?? sample?.[3] ?? null : sample?.[3] ?? null, screenshotUrl: screenshot_path ? urls.get(screenshot_path) ?? null : null };
   });
 }
 
